@@ -7,7 +7,7 @@
 
 <p>This content is static, always shown.</p>
 
-<Link href="/">Home</Link> | <Link href="/test">Test page</Link>
+<Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link>
 
 <Router path="/test">
   <Route path="/">
@@ -21,4 +21,15 @@
   <Route path="/props" component={TestProps} />
 
   <p data-test="routeless">Any <tt>Route</tt>-less content is always shown!</p>
+</Router>
+
+<Router path="/sub">
+  <Route>
+    <Link href="/sub#">Home</Link> | <Link href="/sub#/about">About page</Link>
+  </Route>
+
+  <p>
+    <Route exact path="#">HOME</Route>
+    <Route exact path="#/about">ABOUT</Route>
+  </p>
 </Router>
