@@ -1,0 +1,7 @@
+**
+!src
+!tests
+!docker
+!*.js
+!*.json
+!Makefile

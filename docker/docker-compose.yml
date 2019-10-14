@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  chrome:
+    image: martinsthiago/chrome:64.0.3282.186
+    command: google-chrome http://app:9505/browser/connect
+    volumes:
+      - ../chrome/:/data
+    ports:
+      - 9505:9505
+      - 9506:9506
+    links:
+      - app
+  app:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: app
+    container_name: e2e
+    command: sleep infinity
+    entrypoint: /home/docker/startup.dev.sh
+    volumes:
+      - ../src:/var/lib/app/src
+      - ../tests:/var/lib/app/tests
+    expose:
+      - 8080
+    ports:
+      - 8080:8080

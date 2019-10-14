@@ -1,0 +1,24 @@
+language: node_js
+
+node_js:
+  - 10
+
+cache:
+  directories:
+  - $HOME/.npm
+
+services:
+  - docker
+
+before_script:
+  - npm run lint
+  - make build
+
+script:
+  - make test
+
+after_script:
+  - make clean
+
+notifications:
+  email: false
