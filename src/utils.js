@@ -1,4 +1,5 @@
 export const CTX_ROUTER = {};
+export const CTX_ROUTE = {};
 
 export function navigateTo(path) {
   // If path empty or no string, throws error

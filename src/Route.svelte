@@ -1,6 +1,10 @@
+<script context="module">
+  import { CTX_ROUTER, CTX_ROUTE } from './utils';
+</script>
+
 <script>
-  import { onDestroy, getContext } from 'svelte';
-  import { CTX_ROUTER } from './utils';
+  import { writable } from 'svelte/store';
+  import { onDestroy, getContext, setContext } from 'svelte';
 
   export let key = null;
   export let path = '';
@@ -10,6 +14,9 @@
   export let component = undefined;
   export let condition = undefined;
   export let redirect = undefined;
+
+  const routeContext = getContext(CTX_ROUTE);
+  const routePath = routeContext ? routeContext.routePath : writable(path);
 
   const { assignRoute, unassignRoute, routeInfo } = getContext(CTX_ROUTER);
 
@@ -31,7 +38,11 @@
     };
   }
 
-  [key, fullpath] = assignRoute(key, path, { condition, redirect, fallback, exact });
+  const fixedRoot = $routePath !== path && $routePath !== '/'
+    ? `${$routePath}${path !== '/' ? path : ''}`
+    : path;
+
+  [key, fullpath] = assignRoute(key, fixedRoot, { condition, redirect, fallback, exact });
 
   $: {
     activeRouter = $routeInfo[key];
@@ -40,6 +51,10 @@
 
   onDestroy(() => {
     unassignRoute(fullpath);
+  });
+
+  setContext(CTX_ROUTE, {
+    routePath,
   });
 </script>
 
