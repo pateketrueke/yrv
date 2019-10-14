@@ -7,5 +7,5 @@ export {
   Router,
   Route,
   Link,
-  navigateTo
+  navigateTo,
 };

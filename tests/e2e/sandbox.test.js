@@ -23,7 +23,7 @@ test('it should mount from slot-content nodes', async t => {
 });
 
 fixture('yrv (params)')
-  .page(url('/test'))
+  .page(url('/test'));
 
 test('it should mount from component-based nodes', async t => {
   await t.click(Selector('a').withText('Test props'));
