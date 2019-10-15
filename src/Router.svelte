@@ -1,8 +1,8 @@
 <script context="module">
   import Router from 'abstract-nested-router';
-  import { CTX_ROUTER, navigateTo } from './utils';
+  import { CTX_ROUTER, navigateTo, router } from './utils';
 
-  const router = new Router();
+  const baseRouter = new Router();
 </script>
 
 <script>
@@ -30,14 +30,25 @@
     return route;
   }
 
-  function handleRoutes(map) {
-    const params = map.reduce((prev, cur) => {
-      prev[cur.key] = Object.assign(prev[cur.key] || {}, cur.params);
+  function handleRoutes(map, _path) {
+    const _shared = {
+      params: {},
+      path: _path || '/',
+    };
+
+    const _params = map.reduce((prev, cur) => {
+      if (cur.key) {
+        Object.assign(_shared.params, cur.params);
+
+        prev[cur.key] = Object.assign(prev[cur.key] || {}, cur.params);
+      }
+
       return prev;
     }, {});
 
+    const routes = {};
+
     let skip;
-    let routes = {};
 
     map.some(x => {
       if (typeof x.condition === 'boolean' || typeof x.condition === 'function') {
@@ -51,11 +62,13 @@
       }
 
       if (x.key && x.matches && !routes[x.key]) {
-        routes[x.key] = { ...x, params: params[x.key] };
+        routes[x.key] = { ...x, params: _params[x.key] };
       }
 
       return false;
     });
+
+    $router = _shared;
 
     if (!skip) {
       failure = null;
@@ -78,9 +91,9 @@
       if (key) prefix.push(`/${key}`);
 
       try {
-        const next = router.find(sub);
+        const next = baseRouter.find(sub);
 
-        handleRoutes(next);
+        handleRoutes(next, path);
         map.push(...next);
       } catch (e_) {
         doFallback(e_, path);
@@ -97,7 +110,7 @@
       const found = resolveRoutes(fullpath);
 
       if (fullpath.includes('#')) {
-        const next = router.find(fullpath);
+        const next = baseRouter.find(fullpath);
         const keys = {};
 
         // override previous routes to avoid non-exact matches
@@ -109,7 +122,7 @@
           prev[keys[cur.key]] = cur;
 
           return prev;
-        }, []));
+        }, []), fullpath);
       }
     } catch (e) {
       if (!fallback) {
@@ -137,8 +150,8 @@
 
     let fullpath;
 
-    router.mount(fixedRoot, () => {
-      fullpath = router.add(route !== '/' ? fixPath(route) : '', handler);
+    baseRouter.mount(fixedRoot, () => {
+      fullpath = baseRouter.add(route !== '/' ? fixPath(route) : '', handler);
       fallback = (handler.fallback && key) || fallback;
     });
 
@@ -148,7 +161,7 @@
   }
 
   function unassignRoute(route) {
-    router.rm(fixPath(route));
+    baseRouter.rm(fixPath(route));
     _handlePopState();
   }
 

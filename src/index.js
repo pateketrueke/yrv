@@ -1,11 +1,12 @@
 import Router from './Router.svelte';
 import Route from './Route.svelte';
 import Link from './Link.svelte';
-import { navigateTo } from './utils';
+import { navigateTo, router } from './utils';
 
 export {
   Router,
   Route,
   Link,
+  router,
   navigateTo,
 };

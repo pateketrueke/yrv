@@ -1,3 +1,7 @@
+import { writable } from 'svelte/store';
+
+export const router = writable({});
+
 export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
 

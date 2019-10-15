@@ -1,5 +1,5 @@
 <script>
-  import { Router, Route, Link } from '../src';
+  import { Router, Route, Link, router } from '../src';
   import TestProps from './components/TestProps.svelte';
 </script>
 
@@ -8,7 +8,6 @@
 <p>This content is static, always shown.</p>
 
 <Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
-
 
 <Router path="/test" nofallback>
   <Route path="/">
@@ -44,3 +43,6 @@
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
 </Router>
+
+<h4>Route info</h4>
+<pre>{JSON.stringify($router, null, 2)}</pre>
