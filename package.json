@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Your routing bro!",
   "main": "dist/yrv.js",
-  "svelte": "src/main.js",
+  "svelte": "src/index.js",
   "module": "dist/yrv.es.js",
   "browser": "dist/yrv.min.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
@@ -56,6 +56,6 @@
     "testcafe": "^1.5.0"
   },
   "dependencies": {
-    "abstract-nested-router": "^0.1.3"
+    "abstract-nested-router": "^0.1.5"
   }
 }

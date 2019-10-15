@@ -50,8 +50,7 @@
         }
       }
 
-      if (x.key && !routes[x.key]) {
-        if (x.exact && !x.matches) return false;
+      if (x.key && x.matches && !routes[x.key]) {
         routes[x.key] = { ...x, params: params[x.key] };
       }
 

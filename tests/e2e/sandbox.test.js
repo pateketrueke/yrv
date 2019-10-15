@@ -6,7 +6,7 @@ function url(x = '') {
   return process.env.BASE_URL + x;
 }
 
-fixture('yrv /')
+fixture('yrv (dsl)')
   .page(url());
 
 test('it just loads!', async t => {
@@ -35,4 +35,19 @@ fixture('yrv (nested params)')
 
 test('it should inject params from resolved routes', async t => {
   await t.expect(Selector('p').withText('Value: Hello World').visible).ok();
+});
+
+fixture('yrv (anchored routes)')
+  .page(url('/sub'));
+
+test('it should inject params from resolved routes', async t => {
+  await t.click(Selector('a').withText('Root'));
+  await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
+  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+});
+
+test('it should skip non-exact routes from matched ones', async t => {
+  await t.click(Selector('a').withText('About page'));
+  await t.expect(Selector('p[data-test=anchored]').innerText).contains('ABOUT');
+  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('HOME');
 });

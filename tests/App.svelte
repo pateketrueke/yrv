@@ -25,10 +25,10 @@
 
 <Router path="/sub">
   <Route>
-    <Link href="/sub#">Home</Link> | <Link href="/sub#/about">About page</Link>
+    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link>
   </Route>
 
-  <p>
+  <p data-test="anchored">
     <Route exact path="#">HOME</Route>
     <Route exact path="#/about">ABOUT</Route>
   </p>
