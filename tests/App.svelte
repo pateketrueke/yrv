@@ -1,5 +1,8 @@
 <script>
-  import { Router, Route, Link, router } from '../src';
+  import {
+    Router, Route, Link, router,
+  } from '../src';
+
   import Testing from './components/Testing.svelte';
 </script>
 

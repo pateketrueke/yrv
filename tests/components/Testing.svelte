@@ -1,5 +1,7 @@
 <script>
-  import { Router, Route, Link, navigateTo } from '../../src';
+  import {
+    Router, Route, Link, navigateTo,
+  } from '../../src';
 
   export let router = null;
 
