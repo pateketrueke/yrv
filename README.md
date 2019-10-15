@@ -6,7 +6,7 @@
 
 > The `v` is for Svelte
 
-Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-nested-router), so you can use nested routers
+Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-nested-router), so you can use nested routers, also:
 
 - Advanced parameters can be used, e.g. `/:id<\d+>` &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 - Conditional montage and redirection through props
@@ -32,11 +32,11 @@ Install `yrv` through NPM or Yarn, and then:
 
 ## Components
 
-> You MUST declare at least, one top-level `Router` to boostrap the bindings.
+> You MUST declare at least, one top-level `Router` to setup the bindings.
 
 ### `<Router {path} {nofallback} />`
 
-This component will hold any given routes as children, path is always derived parent ones.
+This component will hold any given routes as children, path is always derived from parent ones.
 
 Available props:
 

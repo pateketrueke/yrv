@@ -9,11 +9,11 @@
   export let key = null;
   export let path = '';
   export let props = null;
-  export let exact = undefined;
-  export let fallback = undefined;
-  export let component = undefined;
-  export let condition = undefined;
-  export let redirect = undefined;
+  export let exact = null;
+  export let fallback = null;
+  export let component = null;
+  export let condition = null;
+  export let redirect = null;
 
   const routeContext = getContext(CTX_ROUTE);
   const routePath = routeContext ? routeContext.routePath : writable(path);
@@ -25,7 +25,7 @@
   let fullpath;
 
   function getProps(given, required) {
-    const { props, ...others } = given;
+    const { props: sub, ...others } = given;
 
     // prune all declared props from this component
     required.forEach(k => {
@@ -33,7 +33,7 @@
     });
 
     return {
-      ...props,
+      ...sub,
       ...others,
     };
   }
@@ -42,11 +42,13 @@
     ? `${$routePath}${path !== '/' ? path : ''}`
     : path;
 
-  [key, fullpath] = assignRoute(key, fixedRoot, { condition, redirect, fallback, exact });
+  [key, fullpath] = assignRoute(key, fixedRoot, {
+    condition, redirect, fallback, exact,
+  });
 
   $: {
     activeRouter = $routeInfo[key];
-    activeProps = getProps($$props, arguments[0]['$$'].props);
+    activeProps = getProps($$props, arguments[0].$$.props);
   }
 
   onDestroy(() => {

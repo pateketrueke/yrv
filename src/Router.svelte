@@ -74,16 +74,16 @@
     }
   }
 
-  function doFallback(e, path, queryParams) {
+  function doFallback(e, _path, queryParams) {
     $routeInfo[fallback] = {
       failure: e,
       query: queryParams,
-      params: { _: path.substr(1) || undefined },
+      params: { _: _path.substr(1) || undefined },
     };
   }
 
-  function resolveRoutes(path, queryParams) {
-    const segments = path.split('#')[0].split('/');
+  function resolveRoutes(_path, queryParams) {
+    const segments = _path.split('#')[0].split('/');
     const prefix = [];
     const map = [];
 
@@ -95,10 +95,10 @@
       try {
         const next = baseRouter.find(sub);
 
-        handleRoutes(next, path, queryParams);
+        handleRoutes(next, _path, queryParams);
         map.push(...next);
       } catch (e_) {
-        doFallback(e_, path, queryParams);
+        doFallback(e_, _path, queryParams);
       }
     });
 
@@ -109,7 +109,7 @@
     const [baseUri, searchQuery] = location.href.split('?');
 
     const fullpath = `/${baseUri.split('/').slice(3).join('/')}`;
-    const queryParams  = queryString.parse(searchQuery);
+    const queryParams = queryString.parse(searchQuery);
 
     let found;
 
