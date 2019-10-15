@@ -40,6 +40,6 @@ export function navigateTo(path, options) {
   }
 
   // If has History API support, uses it
-  history[replace ? 'replaceState' : 'pushState']({}, '', path);
+  history[replace ? 'replaceState' : 'pushState'](null, '', path);
   window.dispatchEvent(new Event('popstate'));
 }

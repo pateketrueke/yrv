@@ -4,13 +4,14 @@
   import { CTX_ROUTER, navigateTo, router } from './utils';
 
   const baseRouter = new Router();
+
+  let t;
 </script>
 
 <script>
   import { writable } from 'svelte/store';
   import { onMount, getContext, setContext } from 'svelte';
 
-  let t;
   let failure;
   let fallback;
 
@@ -46,13 +47,19 @@
 
     map.some(x => {
       if (typeof x.condition === 'boolean' || typeof x.condition === 'function') {
-        const ok = typeof x.condition === 'function' ? x.condition() : x.condition;
+        const ok = typeof x.condition === 'function' ? x.condition($router) : x.condition;
 
-        if (ok === false && x.redirect) {
+        if (ok !== true && x.redirect) {
           navigateTo(x.redirect);
           skip = true;
           return true;
         }
+      }
+
+      if (x.redirect && !x.condition) {
+        navigateTo(x.redirect);
+        skip = true;
+        return true;
       }
 
       if (x.key && x.matches && !_routes[x.key]) {

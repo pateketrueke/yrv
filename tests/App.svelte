@@ -1,6 +1,6 @@
 <script>
   import {
-    Router, Route, Link, router,
+    Router, Route, Link, router, navigateTo,
   } from '../src';
 
   import Testing from './components/Testing.svelte';
@@ -19,6 +19,15 @@
     <p>This content is always mounted when the current URL starts-with <tt>/test</tt>.</p>
 
     <Link exact button go="-1" href="/test">Undo</Link> | <Link href="/test/props">Test props</Link>
+
+    | <Link href="/test/static">Redirect</Link>
+    | <Link href="/test/dynamic">Protected</Link>
+
+    <p>
+      <Route path="/failed">Wrong!</Route>
+      <Route path="/static" redirect="/test" />
+      <Route path="/dynamic" redirect="/test/failed" condition={() => confirm('Are you sure?')}>Yay!</Route>
+    </p>
   </Route>
 
   <Route path="/props" component={Testing} />
