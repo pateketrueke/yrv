@@ -51,3 +51,8 @@ test('it should skip non-exact routes from matched ones', async t => {
   await t.expect(Selector('p[data-test=anchored]').innerText).contains('ABOUT');
   await t.expect(Selector('p[data-test=anchored]').innerText).notContains('HOME');
 });
+
+test('it should handle non-matched routes as Router-fallback', async t => {
+  await t.click(Selector('a').withText('Broken link'));
+  await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
+});

@@ -58,6 +58,7 @@
     });
 
     if (!skip) {
+      failure = null;
       $routeInfo = routes;
     }
   }

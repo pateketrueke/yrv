@@ -9,7 +9,7 @@
 
 <Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link>
 
-<Router path="/test">
+<Router path="/test" nofallback>
   <Route path="/">
     <h2>Testing features</h2>
 
@@ -25,7 +25,7 @@
 
 <Router path="/sub">
   <Route>
-    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link>
+    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken link</Link>
   </Route>
 
   <p data-test="anchored">

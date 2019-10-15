@@ -10,8 +10,8 @@
   import { Router, Route } from 'yrv';
 </script>
 
-<Router let:route>
+<Router>
   <Route path="/">Hello World</Route>
-  <Route path="/:name">Hello ${route.params.name}</Route>
+  <Route path="/:name" let:router>Hello ${router.params.name}</Route>
 </Router>
 ```
