@@ -30,6 +30,7 @@
   }
 
   function handleRoutes(map, _path, _query) {
+    const _routes = {};
     const _shared = {};
     const _params = map.reduce((prev, cur) => {
       if (cur.key) {
@@ -54,8 +55,8 @@
         }
       }
 
-      if (x.key && x.matches && !$routeInfo[x.key]) {
-        $routeInfo[x.key] = {
+      if (x.key && x.matches && !_routes[x.key]) {
+        _routes[x.key] = {
           ...x,
           query: _query,
           params: _params[x.key],
@@ -68,6 +69,7 @@
     if (!skip) {
       failure = null;
 
+      $routeInfo = _routes;
       $router.params = _shared;
       $router.query = _query;
       $router.path = _path || '/';
