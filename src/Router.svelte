@@ -111,8 +111,10 @@
     const fullpath = `/${baseUri.split('/').slice(3).join('/')}`;
     const queryParams  = queryString.parse(searchQuery);
 
+    let found;
+
     try {
-      const found = resolveRoutes(fullpath, queryParams);
+      found = resolveRoutes(fullpath, queryParams);
 
       if (fullpath.includes('#')) {
         const next = baseRouter.find(fullpath);
@@ -135,7 +137,9 @@
         return;
       }
 
-      doFallback(e, fullpath, queryParams);
+      if (!found.find(x => x.matches)) {
+        doFallback(e, fullpath, queryParams);
+      }
     }
   }
 
@@ -144,7 +148,7 @@
       t = true;
       setTimeout(() => {
         t = false; handlePopState();
-      }, 100);
+      }, 50);
     }
   }
 

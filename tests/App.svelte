@@ -39,7 +39,7 @@
     <h2>It works!</h2>
   </Route>
 
-  <Route fallback path="*">
+  <Route fallback>
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
 </Router>
