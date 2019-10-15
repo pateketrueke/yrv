@@ -54,7 +54,7 @@
     </tr>
   </table>
 
-  <Link on:click={() => navigateTo(router.path, { queryParams: { truth: 42 } })}>Do not click</Link>
+  <Link on:click={() => overrideQueryParams('truth', 42)}>Do not click</Link>
 </fieldset>
 
 <Router>
