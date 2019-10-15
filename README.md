@@ -58,6 +58,8 @@ Available props:
 - `{condition}` &mdash; Function; if given, the route will render only if evaluates to true
 - `{redirect}` &mdash; Alternate redirection location, only if the previous condition was true
 
+> If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
+
 ### `<Link {href} {title} {exact} {reload} {replace} {class|className} />`
 
 In order to navigate, you can use `Link` components, or regular links, etc.
