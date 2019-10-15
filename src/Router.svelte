@@ -4,15 +4,13 @@
   import { CTX_ROUTER, navigateTo, router } from './utils';
 
   const baseRouter = new Router();
-
-  let t;
-
 </script>
 
 <script>
   import { writable } from 'svelte/store';
   import { onMount, getContext, setContext } from 'svelte';
 
+  let t;
   let failure;
   let fallback;
 
@@ -184,7 +182,7 @@
   });
 </script>
 
-<svelte:window on:popstate={_handlePopState}></svelte:window>
+<slot />
 
 {#if failure && !nofallback}
   <fieldset>
@@ -193,4 +191,4 @@
   </fieldset>
 {/if}
 
-<slot />
+<svelte:window on:popstate={_handlePopState}></svelte:window>
