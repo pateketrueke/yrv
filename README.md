@@ -66,7 +66,7 @@ In order to navigate, you can use `Link` components, or regular links, etc.
 
 Available props:
 
-- `{href}` &mdash; New location, default to '/'
+- `{href}` &mdash; New location, default to `/`
 - `{title}` &mdash; HTML title-attribute value
 - `{exact}` &mdash; Determine if link should match exactly to be set as active
 - `{reload}` &mdash; Use `location.href` instead
