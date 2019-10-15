@@ -7,18 +7,11 @@ cache:
   directories:
   - $HOME/.npm
 
-services:
-  - docker
-
-before_script:
-  - npm run lint
-  - make build
+addons:
+  chrome: stable
 
 script:
-  - make test
-
-after_script:
-  - make clean
+  - npm test
 
 notifications:
   email: false
