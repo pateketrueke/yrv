@@ -7,11 +7,11 @@
   let cssClass = '';
 
   export let href = '/';
+  export let title = '';
   export let exact = false;
   export let reload = false;
   export let replace = false;
   export let className = '';
-  export let title = '';
   export { cssClass as class };
 
   $: if (ref && $router.path) {
