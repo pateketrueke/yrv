@@ -55,7 +55,11 @@
       }
 
       if (x.key && x.matches && !$routeInfo[x.key]) {
-        $routeInfo[x.key] = { ...x, params: _params[x.key] };
+        $routeInfo[x.key] = {
+          ...x,
+          query: _query,
+          params: _params[x.key],
+        };
       }
 
       return false;
@@ -70,8 +74,12 @@
     }
   }
 
-  function doFallback(e, path) {
-    $routeInfo[fallback] = { failure: e, params: { _: path.substr(1) || undefined } };
+  function doFallback(e, path, queryParams) {
+    $routeInfo[fallback] = {
+      failure: e,
+      query: queryParams,
+      params: { _: path.substr(1) || undefined },
+    };
   }
 
   function resolveRoutes(path, queryParams) {
@@ -90,7 +98,7 @@
         handleRoutes(next, path, queryParams);
         map.push(...next);
       } catch (e_) {
-        doFallback(e_, path);
+        doFallback(e_, path, queryParams);
       }
     });
 
@@ -127,7 +135,7 @@
         return;
       }
 
-      doFallback(e, fullpath);
+      doFallback(e, fullpath, queryParams);
     }
   }
 

@@ -11,6 +11,7 @@
     <li>key: {JSON.stringify(router.key)}</li>
     <li>matches: {JSON.stringify(router.matches)}</li>
     <li>params: {JSON.stringify(router.params)}</li>
+    <li>query: {JSON.stringify(router.query)}</li>
     <li>route: {JSON.stringify(router.route)}</li>
     <li>path: {JSON.stringify(router.path)}</li>
   </ul>
