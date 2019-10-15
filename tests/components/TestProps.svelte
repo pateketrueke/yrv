@@ -1,7 +1,25 @@
 <script>
-  import { Router, Route } from '../../src';
+  import { Router, Route, navigateTo } from '../../src';
 
   export let router = null;
+
+  let newKey = '';
+  let newValue = '';
+
+  function overrideQueryParams(key, value) {
+    navigateTo(router.path, { queryParams: { ...router.query, [key]: value } });
+  }
+
+  function addNewValue() {
+    overrideQueryParams(newKey, newValue);
+
+    newKey = '';
+    newValue = '';
+  }
+
+  function rmValue(key) {
+    overrideQueryParams(key);
+  }
 </script>
 
 <h3>Injected parameters</h3>
@@ -11,10 +29,30 @@
     <li>key: {JSON.stringify(router.key)}</li>
     <li>matches: {JSON.stringify(router.matches)}</li>
     <li>params: {JSON.stringify(router.params)}</li>
-    <li>query: {JSON.stringify(router.query)}</li>
     <li>route: {JSON.stringify(router.route)}</li>
+    <li>query: {JSON.stringify(router.query)}</li>
     <li>path: {JSON.stringify(router.path)}</li>
   </ul>
+
+  <table>
+    <caption>QueryParams</caption>
+    <tr>
+      <th>key</th>
+      <th>value</th>
+    </tr>
+    {#each Object.entries(router.query) as [key, value]}
+      <tr>
+        <td>{key}</td>
+        <td>{value}</td>
+        <td><button on:click={() => rmValue(key)}>rm</button></td>
+      </tr>
+    {/each}
+    <tr>
+      <td><input bind:value={newKey} /></td>
+      <td><input bind:value={newValue} /></td>
+      <td><button on:click={addNewValue}>add</td>
+    </tr>
+  </table>
 </fieldset>
 
 <Router>
