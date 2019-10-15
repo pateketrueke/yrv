@@ -34,13 +34,14 @@ Install `yrv` through NPM or Yarn, and then:
 
 > You MUST declare at least, one top-level `Router` to setup the bindings.
 
-### `<Router {path} {nofallback} />`
+### `<Router {path} {exact} {nofallback} />`
 
 This component will hold any given routes as children, path is always derived from parent ones.
 
 Available props:
 
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
+- `{exact}` &mdash; If set, all routes (but no routers) will inherit `exact`
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
 ### `<Route {key} {path} {props} {exact} {fallback} {component} {condition} {redirect} />`
@@ -52,8 +53,8 @@ Available props:
 - `{key}` &mdash; The route identity, not its path; default to random pseudo-hash
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
 - `{props}` &mdash; Additional properties for rendered component
-- `{exact}` &mdash; If given, the route will render only if the route exactly matches
-- `{fallback}` &mdash; If given, the route will render only if no more routes were matched
+- `{exact}` &mdash; If set, the route will render only if the route exactly matches
+- `{fallback}` &mdash; If set, the route will render only if no more routes were matched
 - `{component}` &mdash; A valid svelte-component to render if the route matches
 - `{condition}` &mdash; Function; if given, the route will render only if evaluates to true
 - `{redirect}` &mdash; Alternate redirection location, only if the previous condition was true

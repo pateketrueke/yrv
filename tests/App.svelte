@@ -26,14 +26,14 @@
   <p data-test="routeless">Any <tt>Route</tt>-less content is always shown!</p>
 </Router>
 
-<Router path="/sub">
+<Router exact path="/sub">
   <Route>
     <Link exact href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
   </Route>
 
   <p data-test="anchored">
-    <Route exact path="#">HOME</Route>
-    <Route exact path="#/about">ABOUT</Route>
+    <Route path="#">HOME</Route>
+    <Route path="#/about">ABOUT</Route>
   </p>
 </Router>
 
