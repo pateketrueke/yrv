@@ -22,6 +22,17 @@ test('it should mount from slot-content nodes', async t => {
   await t.expect(Selector('h2').withText('Testing features').visible).ok();
 });
 
+fixture('yrv (fallback)')
+  .page(url('/e'));
+
+test('should not mount any fallback et all', async t => {
+  await t.expect(Selector('h2[data-test=fallback]').exists).notOk();
+});
+
+test.page(url('/e/im_not_exists'))('should handle non-matched routes as fallback', async t => {
+  await t.expect(Selector('h2').withText('NOT FOUND').visible).ok();
+});
+
 fixture('yrv (params)')
   .page(url('/test'));
 
@@ -52,7 +63,7 @@ test('it should skip non-exact routes from matched ones', async t => {
   await t.expect(Selector('p[data-test=anchored]').innerText).notContains('HOME');
 });
 
-test('it should handle non-matched routes as Router-fallback', async t => {
-  await t.click(Selector('a').withText('Broken link'));
+test('it should handle non-matched routes as fallback', async t => {
+  await t.click(Selector('a').withText('Broken anchor'));
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });

@@ -7,7 +7,8 @@
 
 <p>This content is static, always shown.</p>
 
-<Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link>
+<Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
+
 
 <Router path="/test" nofallback>
   <Route path="/">
@@ -25,11 +26,21 @@
 
 <Router path="/sub">
   <Route>
-    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken link</Link>
+    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
   </Route>
 
   <p data-test="anchored">
     <Route exact path="#">HOME</Route>
     <Route exact path="#/about">ABOUT</Route>
   </p>
+</Router>
+
+<Router path="/e">
+  <Route exact>
+    <h2>It works!</h2>
+  </Route>
+
+  <Route fallback path="*">
+    <h2 data-test="fallback">NOT FOUND</h2>
+  </Route>
 </Router>
