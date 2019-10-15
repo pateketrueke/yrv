@@ -3,7 +3,7 @@
 [![NPM version](https://badge.fury.io/js/yrv.png)](http://badge.fury.io/js/yrv)
 [![travis-ci](https://api.travis-ci.org/pateketrueke/yrv.svg)](https://travis-ci.org/pateketrueke/yrv)
 
-> The `v` is for Svelte.
+> The `v` is for Svelte
 
 ```html
 <script>
@@ -11,7 +11,7 @@
 </script>
 
 <Router>
-  <Route path="/">Hello World</Route>
-  <Route path="/:name" let:router>Hello ${router.params.name}</Route>
+  <Route exact path="/">Hello World</Route>
+  <Route exact path="/:name" let:router>Hello {router.params.name}</Route>
 </Router>
 ```
