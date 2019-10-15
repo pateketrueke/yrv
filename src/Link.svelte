@@ -8,6 +8,8 @@
 
   export let href = '/';
   export let exact = false;
+  export let reload = false;
+  export let replace = false;
   export let className = '';
   export let title = '';
   export { cssClass as class };
@@ -41,7 +43,7 @@
       fixedHref = window.location.pathname + fixedHref;
     }
 
-    navigateTo(fixedHref);
+    navigateTo(fixedHref, { reload, replace });
     dispatch('click', e);
   }
 </script>

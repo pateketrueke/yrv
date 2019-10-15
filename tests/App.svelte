@@ -1,6 +1,6 @@
 <script>
   import { Router, Route, Link, router } from '../src';
-  import TestProps from './components/TestProps.svelte';
+  import Testing from './components/Testing.svelte';
 </script>
 
 <h1>Example page</h1>
@@ -18,7 +18,7 @@
     <Link exact href="/test">Back</Link> | <Link href="/test/props">Test props</Link>
   </Route>
 
-  <Route path="/props" component={TestProps} />
+  <Route path="/props" component={Testing} />
 
   <p data-test="routeless">Any <tt>Route</tt>-less content is always shown!</p>
 </Router>

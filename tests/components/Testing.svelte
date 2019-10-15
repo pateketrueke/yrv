@@ -1,5 +1,5 @@
 <script>
-  import { Router, Route, navigateTo } from '../../src';
+  import { Router, Route, Link, navigateTo } from '../../src';
 
   export let router = null;
 
@@ -53,6 +53,8 @@
       <td><button on:click={addNewValue}>add</td>
     </tr>
   </table>
+
+  <Link on:click={() => navigateTo(router.path, { queryParams: { truth: 42 } })}>Do not click</Link>
 </fieldset>
 
 <Router>
