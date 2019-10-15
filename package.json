@@ -23,7 +23,7 @@
     "lint": "eslint src tests",
     "prepublishOnly": "npm run test && NODE_ENV=production npm run build",
     "pretest": "NODE_ENV=test npm run build",
-    "test": "npm run test:e2e -- ${BROWSER:-chrome} -a 'npm run serve' tests/cases",
+    "test": "npm run test:e2e -- ${BROWSER:-chrome:headless} -a 'npm run serve' tests/e2e",
     "test:e2e": "BASE_URL=http://localhost:8080 testcafe",
     "test:e2e:ci": "npm run test:e2e -- --ports 9505,9506 remote:1"
   },

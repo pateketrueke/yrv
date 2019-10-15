@@ -1,4 +1,5 @@
 .DS_Store
+dist
 node_modules
 tests/public/test.js
 tests/public/test.js.map
