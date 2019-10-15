@@ -1,4 +1,4 @@
-BROWSER ?= chrome
+BROWSER ?= chrome:headless
 BASE_COMPOSE=-f ./docker/docker-compose.yml
 
 help: Makefile
