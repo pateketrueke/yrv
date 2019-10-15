@@ -1,13 +1,30 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
-  import { navigateTo } from './utils';
+  import { navigateTo, router } from './utils';
 
+  let ref;
+  let active;
   let cssClass = '';
 
   export let href = '/';
+  export let exact = false;
   export let className = '';
   export let title = '';
   export { cssClass as class };
+
+  $: if (ref && $router.path) {
+    const isActive = (exact !== true && $router.path.indexOf(href) === 0) || ($router.path === href);
+
+    if (isActive && !active) {
+      active = true;
+      ref.setAttribute('aria-current', 'page');
+    }
+
+    if (!isActive && active) {
+      active = false;
+      ref.removeAttribute('aria-current');
+    }
+  }
 
   onMount(() => {
     className = className || cssClass;
@@ -29,4 +46,4 @@
   }
 </script>
 
-<a {href} class={className} {title} on:click|preventDefault={onClick}><slot /></a>
+<a {href} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}><slot /></a>

@@ -7,7 +7,7 @@
 
 <p>This content is static, always shown.</p>
 
-<Link href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
+<Link exact href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
 
 <Router path="/test" nofallback>
   <Route path="/">
@@ -15,7 +15,7 @@
 
     <p>This content is always mounted when the current URL starts-with <tt>/test</tt>.</p>
 
-    <Link href="/test">Back</Link> | <Link href="/test/props">Test props</Link>
+    <Link exact href="/test">Back</Link> | <Link href="/test/props">Test props</Link>
   </Route>
 
   <Route path="/props" component={TestProps} />
@@ -25,7 +25,7 @@
 
 <Router path="/sub">
   <Route>
-    <Link href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
+    <Link exact href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
   </Route>
 
   <p data-test="anchored">
