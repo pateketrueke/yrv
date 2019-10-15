@@ -1,15 +1,18 @@
 <script context="module">
+  import queryString from 'query-string';
   import Router from 'abstract-nested-router';
   import { CTX_ROUTER, navigateTo, router } from './utils';
 
   const baseRouter = new Router();
+
+  let t;
+
 </script>
 
 <script>
   import { writable } from 'svelte/store';
   import { onMount, getContext, setContext } from 'svelte';
 
-  let t;
   let failure;
   let fallback;
 
@@ -20,33 +23,23 @@
   const routerContext = getContext(CTX_ROUTER);
   const basePath = routerContext ? routerContext.basePath : writable(path);
 
-  function cleanPath(route) {
-    return route.replace(/\?[^#]*/, '').replace(/(?!^)\/#/, '#').replace('/#', '#').replace(/\/$/, '');
-  }
-
   function fixPath(route) {
     if (route === '/#*' || route === '#*') return '#*_';
     if (route === '/*' || route === '*') return '/*_';
     return route;
   }
 
-  function handleRoutes(map, _path) {
-    const _shared = {
-      params: {},
-      path: _path || '/',
-    };
-
+  function handleRoutes(map, _path, _query) {
+    const _shared = {};
     const _params = map.reduce((prev, cur) => {
       if (cur.key) {
-        Object.assign(_shared.params, cur.params);
+        Object.assign(_shared, cur.params);
 
         prev[cur.key] = Object.assign(prev[cur.key] || {}, cur.params);
       }
 
       return prev;
     }, {});
-
-    const routes = {};
 
     let skip;
 
@@ -61,18 +54,19 @@
         }
       }
 
-      if (x.key && x.matches && !routes[x.key]) {
-        routes[x.key] = { ...x, params: _params[x.key] };
+      if (x.key && x.matches && !$routeInfo[x.key]) {
+        $routeInfo[x.key] = { ...x, params: _params[x.key] };
       }
 
       return false;
     });
 
-    $router = _shared;
-
     if (!skip) {
       failure = null;
-      $routeInfo = routes;
+
+      $router.params = _shared;
+      $router.query = _query;
+      $router.path = _path || '/';
     }
   }
 
@@ -80,7 +74,7 @@
     $routeInfo[fallback] = { failure: e, params: { _: path.substr(1) || undefined } };
   }
 
-  function resolveRoutes(path) {
+  function resolveRoutes(path, queryParams) {
     const segments = path.split('#')[0].split('/');
     const prefix = [];
     const map = [];
@@ -93,7 +87,7 @@
       try {
         const next = baseRouter.find(sub);
 
-        handleRoutes(next, path);
+        handleRoutes(next, path, queryParams);
         map.push(...next);
       } catch (e_) {
         doFallback(e_, path);
@@ -104,10 +98,13 @@
   }
 
   function handlePopState() {
-    const fullpath = cleanPath(`/${location.href.split('/').slice(3).join('/')}`);
+    const [baseUri, searchQuery] = location.href.split('?');
+
+    const fullpath = `/${baseUri.split('/').slice(3).join('/')}`;
+    const queryParams  = queryString.parse(searchQuery);
 
     try {
-      const found = resolveRoutes(fullpath);
+      const found = resolveRoutes(fullpath, queryParams);
 
       if (fullpath.includes('#')) {
         const next = baseRouter.find(fullpath);
@@ -122,7 +119,7 @@
           prev[keys[cur.key]] = cur;
 
           return prev;
-        }, []), fullpath);
+        }, []), fullpath, queryParams);
       }
     } catch (e) {
       if (!fallback) {
@@ -135,8 +132,12 @@
   }
 
   function _handlePopState() {
-    clearTimeout(t);
-    t = setTimeout(handlePopState, 100);
+    if (!t) {
+      t = true;
+      setTimeout(() => {
+        t = false; handlePopState();
+      }, 100);
+    }
   }
 
   function assignRoute(key, route, detail) {
@@ -173,7 +174,7 @@
   });
 </script>
 
-<svelte:window on:popstate={handlePopState}></svelte:window>
+<svelte:window on:popstate={_handlePopState}></svelte:window>
 
 {#if failure && !nofallback}
   <fieldset>
