@@ -18,7 +18,7 @@
 
     <p>This content is always mounted when the current URL starts-with <tt>/test</tt>.</p>
 
-    <Link exact href="/test">Back</Link> | <Link href="/test/props">Test props</Link>
+    <Link exact button go="-1" href="/test">Undo</Link> | <Link href="/test/props">Test props</Link>
   </Route>
 
   <Route path="/props" component={Testing} />

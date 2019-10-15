@@ -1,6 +1,6 @@
 <script>
   import {
-    Router, Route, Link, navigateTo,
+    Router, Route, Link, navigateTo, router as _router,
   } from '../../src';
 
   export let router = null;
@@ -9,7 +9,7 @@
   let newValue = '';
 
   function overrideQueryParams(key, value) {
-    navigateTo(router.path, { queryParams: { ...router.query, [key]: value } });
+    navigateTo($_router.path, { replace: true, queryParams: { ...router.query, [key]: value } });
   }
 
   function addNewValue() {

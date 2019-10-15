@@ -6,8 +6,10 @@
   let active;
   let cssClass = '';
 
+  export let go = null;
   export let href = '/';
   export let title = '';
+  export let button = false;
   export let exact = false;
   export let reload = false;
   export let replace = false;
@@ -20,10 +22,15 @@
     if (isActive && !active) {
       active = true;
       ref.setAttribute('aria-current', 'page');
+
+      if (button) {
+        ref.setAttribute('disabled', true);
+      }
     }
 
     if (!isActive && active) {
       active = false;
+      ref.removeAttribute('disabled');
       ref.removeAttribute('aria-current');
     }
   }
@@ -36,6 +43,13 @@
 
   // this will enable `<Link on:click={...} />` calls
   function onClick(e) {
+    if (typeof go === 'string') {
+      if (go === 'back') history.back();
+      else if (go === 'fwd') history.forward();
+      else history.go(parseInt(go, 10));
+      return;
+    }
+
     let fixedHref = href;
 
     // this will rebase anchors to avoid location changes
@@ -43,9 +57,19 @@
       fixedHref = window.location.pathname + fixedHref;
     }
 
-    navigateTo(fixedHref, { reload, replace });
-    dispatch('click', e);
+    if (window.location.pathname !== fixedHref) {
+      navigateTo(fixedHref, { reload, replace });
+      dispatch('click', e);
+    }
   }
 </script>
 
-<a {href} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}><slot /></a>
+{#if button}
+  <button bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+    <slot />
+  </button>
+{:else}
+  <a {href} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+    <slot />
+  </a>
+{/if}
