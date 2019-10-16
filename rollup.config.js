@@ -18,12 +18,12 @@ function bundle(file, format) {
 }
 
 export default {
-  input: isProd ? 'src/index.js' : 'tests/main.js',
+  input: isProd ? 'src/index.js' : 'e2e/main.js',
   output: isProd ? [
     bundle(pkg.main, 'cjs'),
     bundle(pkg.module, 'es'),
     bundle(pkg.browser, 'umd'),
-  ] : bundle('tests/public/test.js', 'iife'),
+  ] : bundle('e2e/public/test.js', 'iife'),
   external: isProd ? ['svelte', 'svelte/store', 'svelte/internal'] : [],
   plugins: [
     svelte({

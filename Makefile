@@ -7,7 +7,7 @@ dev: src deps ## Start dev tasks
 	@npm run dev & npm run serve
 
 e2e: src deps ## Run E2E tests locally
-	@npm run test:e2e $(BROWSER) tests/e2e
+	@npm run test:e2e $(BROWSER) e2e/cases
 
 deps: package*.json
 	@(((ls node_modules | grep .) > /dev/null 2>&1) || npm i) || true

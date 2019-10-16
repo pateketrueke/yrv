@@ -68,3 +68,8 @@ test('it should handle non-matched routes as fallback', async t => {
   await t.expect(Selector('h2[data-test=fallback]').exists).notOk();
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });
+
+// FIXME: redirections
+// FIXME: conditions
+// FIXME: query-params
+// FIXME: buttons

@@ -58,7 +58,7 @@
     </tr>
   </table>
 
-  <Link on:click={() => overrideQueryParams('truth', 42)}>Do not click</Link>
+  <Link on:click={() => overrideQueryParams('truth', 42)}>Do not click!</Link>
 </fieldset>
 
 <Router>
