@@ -27,7 +27,7 @@
 </script>
 
 <h3>Injected parameters</h3>
-<fieldset>
+<fieldset data-test="parameters">
   <legend>router</legend>
   <ul>
     <li>key: {JSON.stringify(router.key)}</li>

@@ -43,7 +43,7 @@
 
   // this will enable `<Link on:click={...} />` calls
   function onClick(e) {
-    if (typeof go === 'string') {
+    if (typeof go === 'string' && history.length > 1) {
       if (go === 'back') history.back();
       else if (go === 'fwd') history.forward();
       else history.go(parseInt(go, 10));
@@ -58,7 +58,7 @@
     }
 
     // do not change location et all...
-    if (location.pathname !== fixedHref) {
+    if ((location.pathname + location.search) !== fixedHref) {
       navigateTo(fixedHref, { reload, replace });
       dispatch('click', e);
     }

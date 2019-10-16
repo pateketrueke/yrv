@@ -33,13 +33,35 @@ test.page(url('/e/im_not_exists'))('should handle non-matched routes as fallback
   await t.expect(Selector('h2').withText('NOT FOUND').visible).ok();
 });
 
-fixture('yrv (params)')
+fixture('yrv (buttons)')
   .page(url('/test'));
 
-test('it should mount from component-based nodes', async t => {
+test('it should disable Link buttons if they are active', async t => {
+  const UndoButton = Selector('button').withText('Undo');
+  const Parameters = Selector('[data-test=parameters]');
+
+  await t.expect(UndoButton.visible).ok();
+  await t.expect(UndoButton.hasAttribute('disabled')).ok();
   await t.click(Selector('a').withText('Test props'));
-  await t.expect(Selector('h3').withText('Injected parameters').visible).ok();
+
+  await t.expect(Parameters.visible).ok();
+  await t.expect(UndoButton.hasAttribute('disabled')).notOk();
+
+  await t.click(UndoButton);
+  await t.expect(Parameters.exists).notOk();
+  await t.expect(UndoButton.hasAttribute('disabled')).ok();
 });
+
+fixture('yrv (query params)')
+  .page(url('/test/props'));
+
+// FIXME: query-params
+
+fixture('yrv (middleware)')
+  .page(url('/test/props'));
+
+// FIXME: redirections
+// FIXME: conditions
 
 fixture('yrv (nested params)')
   .page(url('/test/props/Hello%20World'));
@@ -68,8 +90,3 @@ test('it should handle non-matched routes as fallback', async t => {
   await t.expect(Selector('h2[data-test=fallback]').exists).notOk();
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });
-
-// FIXME: redirections
-// FIXME: conditions
-// FIXME: query-params
-// FIXME: buttons

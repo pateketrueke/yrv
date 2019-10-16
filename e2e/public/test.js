@@ -1169,7 +1169,7 @@
       }
 
       // make sure we're not invoking events from same page twice!
-      if (location.pathname !== path || (location.search && !path.includes('?'))) {
+      if ((location.pathname + location.search) !== path) {
         // If has History API support, uses it
         history[replace ? 'replaceState' : 'pushState'](null, '', path);
         dispatchEvent(new Event('popstate'));
@@ -1986,7 +1986,7 @@
     			a.href = ctx.href;
     			a.className = ctx.className;
     			a.title = ctx.title;
-    			add_location(a, file$1, 72, 2, 1745);
+    			add_location(a, file$1, 72, 2, 1787);
     			dispose = listen(a, "click", prevent_default(ctx.onClick));
     		},
 
@@ -2066,7 +2066,7 @@
 
     			button_1.className = ctx.className;
     			button_1.title = ctx.title;
-    			add_location(button_1, file$1, 68, 2, 1625);
+    			add_location(button_1, file$1, 68, 2, 1667);
     			dispose = listen(button_1, "click", prevent_default(ctx.onClick));
     		},
 
@@ -2226,7 +2226,7 @@
 
       // this will enable `<Link on:click={...} />` calls
       function onClick(e) {
-        if (typeof go === 'string') {
+        if (typeof go === 'string' && history.length > 1) {
           if (go === 'back') history.back();
           else if (go === 'fwd') history.forward();
           else history.go(parseInt(go, 10));
@@ -2241,7 +2241,7 @@
         }
 
         // do not change location et all...
-        if (location.pathname !== fixedHref) {
+        if ((location.pathname + location.search) !== fixedHref) {
           navigateTo(fixedHref, { reload, replace });
           dispatch('click', e);
         }
@@ -2427,11 +2427,11 @@
     			td2 = element("td");
     			button = element("button");
     			button.textContent = "rm";
-    			add_location(td0, file$2, 48, 8, 1070);
-    			add_location(td1, file$2, 49, 8, 1093);
-    			add_location(button, file$2, 50, 12, 1122);
-    			add_location(td2, file$2, 50, 8, 1118);
-    			add_location(tr, file$2, 47, 6, 1057);
+    			add_location(td0, file$2, 48, 8, 1093);
+    			add_location(td1, file$2, 49, 8, 1116);
+    			add_location(button, file$2, 50, 12, 1145);
+    			add_location(td2, file$2, 50, 8, 1141);
+    			add_location(tr, file$2, 47, 6, 1080);
     			dispose = listen(button, "click", click_handler);
     		},
 
@@ -2498,7 +2498,7 @@
     			p = element("p");
     			t0 = text("Value: ");
     			t1 = text(t1_value);
-    			add_location(p, file$2, 65, 4, 1515);
+    			add_location(p, file$2, 65, 4, 1538);
     		},
 
     		m: function mount(target, anchor) {
@@ -2664,26 +2664,27 @@
     			t33 = space();
     			router_1.$$.fragment.c();
     			add_location(h3, file$2, 28, 0, 502);
-    			add_location(legend, file$2, 30, 2, 544);
-    			add_location(li0, file$2, 32, 4, 579);
-    			add_location(li1, file$2, 33, 4, 626);
-    			add_location(li2, file$2, 34, 4, 681);
-    			add_location(li3, file$2, 35, 4, 734);
-    			add_location(li4, file$2, 36, 4, 785);
-    			add_location(li5, file$2, 37, 4, 836);
-    			add_location(ul, file$2, 31, 2, 570);
-    			add_location(caption, file$2, 41, 4, 904);
-    			add_location(th0, file$2, 43, 6, 950);
-    			add_location(th1, file$2, 44, 6, 969);
-    			add_location(tr0, file$2, 42, 4, 939);
-    			add_location(input0, file$2, 54, 10, 1220);
-    			add_location(td0, file$2, 54, 6, 1216);
-    			add_location(input1, file$2, 55, 10, 1265);
-    			add_location(td1, file$2, 55, 6, 1261);
-    			add_location(button, file$2, 56, 10, 1312);
-    			add_location(td2, file$2, 56, 6, 1308);
-    			add_location(tr1, file$2, 53, 4, 1205);
-    			add_location(table, file$2, 40, 2, 892);
+    			add_location(legend, file$2, 30, 2, 567);
+    			add_location(li0, file$2, 32, 4, 602);
+    			add_location(li1, file$2, 33, 4, 649);
+    			add_location(li2, file$2, 34, 4, 704);
+    			add_location(li3, file$2, 35, 4, 757);
+    			add_location(li4, file$2, 36, 4, 808);
+    			add_location(li5, file$2, 37, 4, 859);
+    			add_location(ul, file$2, 31, 2, 593);
+    			add_location(caption, file$2, 41, 4, 927);
+    			add_location(th0, file$2, 43, 6, 973);
+    			add_location(th1, file$2, 44, 6, 992);
+    			add_location(tr0, file$2, 42, 4, 962);
+    			add_location(input0, file$2, 54, 10, 1243);
+    			add_location(td0, file$2, 54, 6, 1239);
+    			add_location(input1, file$2, 55, 10, 1288);
+    			add_location(td1, file$2, 55, 6, 1284);
+    			add_location(button, file$2, 56, 10, 1335);
+    			add_location(td2, file$2, 56, 6, 1331);
+    			add_location(tr1, file$2, 53, 4, 1228);
+    			add_location(table, file$2, 40, 2, 915);
+    			fieldset.dataset.test = "parameters";
     			add_location(fieldset, file$2, 29, 0, 531);
 
     			dispose = [

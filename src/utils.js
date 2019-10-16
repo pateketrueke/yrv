@@ -40,7 +40,7 @@ export function navigateTo(path, options) {
   }
 
   // make sure we're not invoking events from same page twice!
-  if (location.pathname !== path || (location.search && !path.includes('?'))) {
+  if ((location.pathname + location.search) !== path) {
     // If has History API support, uses it
     history[replace ? 'replaceState' : 'pushState'](null, '', path);
     dispatchEvent(new Event('popstate'));
