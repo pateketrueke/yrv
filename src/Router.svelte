@@ -2,7 +2,7 @@
   import queryString from 'query-string';
   import Router from 'abstract-nested-router';
 
-  import { CTX_ROUTER, navigateTo, router } from './utils';
+  import { CTX_ROUTER, navigateTo, isActive, router } from './utils';
 
   const baseRouter = new Router();
 </script>
@@ -90,7 +90,7 @@
       const ctx = {};
 
       try {
-        if (fullpath.indexOf($basePath) === 0) {
+        if (isActive($basePath, fullpath, exact)) {
           baseRouter.resolve(fullpath, (err, result) => {
             if (err) {
               failure = err;
@@ -99,10 +99,6 @@
 
             handleRoutes(result, fullpath, query, ctx);
           });
-
-          if (failure && fallback) {
-            doFallback(failure, fullpath, query);
-          }
         }
       } catch (e) {
         failure = e;
@@ -110,6 +106,10 @@
         $router.path = fullpath;
         $router.query = query;
         $router.params = ctx;
+      }
+
+      if (failure && fallback) {
+        doFallback(failure, fullpath, query);
       }
     }, 50);
   }

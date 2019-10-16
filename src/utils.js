@@ -46,3 +46,11 @@ export function navigateTo(path, options) {
     dispatchEvent(new Event('popstate'));
   }
 }
+
+export function isActive(uri, path, exact) {
+  if (exact !== true && path.indexOf(uri) === 0) {
+    return /^[#/?]?$/.test(path.substr(uri.length, 1));
+  }
+
+  return path === uri;
+}

@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
-  import { navigateTo, router } from './utils';
+  import { navigateTo, isActive, router } from './utils';
 
   let ref;
   let active;
@@ -17,18 +17,16 @@
   export { cssClass as class };
 
   $: if (ref && $router.path) {
-    const isActive = (exact !== true && $router.path.indexOf(href) === 0) || ($router.path === href);
+    if (isActive(href, $router.path, exact)) {
+      if (!active) {
+        active = true;
+        ref.setAttribute('aria-current', 'page');
 
-    if (isActive && !active) {
-      active = true;
-      ref.setAttribute('aria-current', 'page');
-
-      if (button) {
-        ref.setAttribute('disabled', true);
+        if (button) {
+          ref.setAttribute('disabled', true);
+        }
       }
-    }
-
-    if (!isActive && active) {
+    } else if (active) {
       active = false;
       ref.removeAttribute('disabled');
       ref.removeAttribute('aria-current');
