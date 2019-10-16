@@ -1,5 +1,4 @@
 <script context="module">
-  import { writable } from 'svelte/store';
   import queryString from 'query-string';
   import Router from 'abstract-nested-router';
 
@@ -10,6 +9,7 @@
 
 <script>
   import { onMount, getContext, setContext } from 'svelte';
+  import { writable } from 'svelte/store';
 
   let failure;
   let fallback;
