@@ -57,10 +57,12 @@
       fixedHref = window.location.pathname + fixedHref;
     }
 
-    if (window.location.pathname !== fixedHref) {
+    // FIXME: avoid useless changes... move & reuse from here!
+
+    // if (window.location.pathname !== fixedHref) {
       navigateTo(fixedHref, { reload, replace });
       dispatch('click', e);
-    }
+    // }
   }
 </script>
 
