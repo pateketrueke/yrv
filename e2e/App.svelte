@@ -23,7 +23,7 @@
     | <Link href="/test/static">Redirect</Link>
     | <Link href="/test/dynamic">Protected</Link>
 
-    <p>
+    <p data-test="redirect">
       <Route path="/failed">Wrong!</Route>
       <Route path="/static" redirect="/test" />
       <Route path="/dynamic" redirect="/test/failed" condition={() => confirm('Are you sure?')}>Yay!</Route>

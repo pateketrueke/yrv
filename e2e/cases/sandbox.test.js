@@ -55,13 +55,38 @@ test('it should disable Link buttons if they are active', async t => {
 fixture('yrv (query params)')
   .page(url('/test/props'));
 
-// FIXME: query-params
+test('it should parse from location.search', async t => {
+  await t.expect(Selector('li').withText('query: {}').exists).ok();
+});
+
+test('it should take queryParams from navigateTo()', async t => {
+  await t.click(Selector('a').withText('Do not click!'));
+  await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
+
+  await t.typeText(Selector('[data-test=key]'), 'x');
+  await t.typeText(Selector('[data-test=value]'), 'y');
+  await t.click(Selector('[data-test=append]'));
+
+  await t.expect(Selector('li').withText('query: {"truth":"42","x":"y"}').exists).ok();
+});
 
 fixture('yrv (middleware)')
   .page(url('/test/props'));
 
-// FIXME: redirections
-// FIXME: conditions
+test('it should redirect if the given route matches', async t => {
+  await t.click(Selector('a').withText('Redirect'));
+  await t.expect(Selector('button').withText('Undo').hasAttribute('disabled')).ok();
+});
+
+test('it should mount or redirect based on given condition', async t => {
+  await t.setNativeDialogHandler(() => false);
+  await t.click(Selector('a').withText('Protected'));
+  await t.expect(Selector('[data-test=redirect]').innerText).contains('Wrong!');
+
+  await t.setNativeDialogHandler(() => true);
+  await t.click(Selector('a').withText('Protected'));
+  await t.expect(Selector('[data-test=redirect]').innerText).contains('Yay!');
+});
 
 fixture('yrv (nested params)')
   .page(url('/test/props/Hello%20World'));

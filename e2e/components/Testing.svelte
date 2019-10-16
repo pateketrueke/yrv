@@ -52,9 +52,9 @@
       </tr>
     {/each}
     <tr>
-      <td><input bind:value={newKey} /></td>
-      <td><input bind:value={newValue} /></td>
-      <td><button on:click={addNewValue}>add</td>
+      <td><input data-test="key" bind:value={newKey} /></td>
+      <td><input data-test="value" bind:value={newValue} /></td>
+      <td><button data-test="append" on:click={addNewValue}>add</td>
     </tr>
   </table>
 
