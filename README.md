@@ -25,6 +25,7 @@ Install `yrv` through NPM or Yarn, and then:
 </script>
 
 <Router>
+  <Route fallback>Not found</Route>
   <Route exact path="/">Hello World</Route>
   <Route exact path="/:name" let:router>Hello {router.params.name}</Route>
 </Router>
@@ -69,6 +70,7 @@ Available props:
 
 - `{href}` &mdash; New location, default to `/`
 - `{title}` &mdash; HTML title-attribute value
+- `{button}` &mdash; If set, will use button-tag instead
 - `{exact}` &mdash; Determine if link should match exactly to be set as active
 - `{reload}` &mdash; Use `location.href` instead
 - `{replace}` &mdash; Use `history.replaceState()` instead
@@ -80,7 +82,15 @@ Normal `on:click` events are still allowed, so you can use:
 <Link on:click={() => navigateTo('/')}>Back to home</Link>
 ```
 
-> Active links will gain the `[aria-current]` attribute, no other classes/attributes are set.
+> Active _links_ will gain the `[aria-current]` attribute, and `[disabled]` if they're buttons.
+
+## What are fallbacks?
+
+Normally, you would like to declare a catch-all route, the **Not found** handler.
+
+Using the `fallback` attribute on any given route to mount only if no other route matches or when an **Error** is thrown during the router's lifecycle.
+
+> Only a fallback-route is allowed per Router instance, also they'll be tried last.
 
 ## Public API
 
