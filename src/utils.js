@@ -33,15 +33,16 @@ export function navigateTo(path, options) {
     }
   }
 
-  // if (window.location.pathname !== path) {
-    // If no History API support, fallbacks to URL redirect
-    if (reload || !history.pushState || !window.dispatchEvent) {
-      window.location.href = path;
-      return;
-    }
+  // If no History API support, fallbacks to URL redirect
+  if (reload || !history.pushState || !dispatchEvent) {
+    location.href = path;
+    return;
+  }
 
+  // make sure we're not invoking events from same page twice!
+  if (location.pathname !== path || (location.search && !path.includes('?'))) {
     // If has History API support, uses it
     history[replace ? 'replaceState' : 'pushState'](null, '', path);
-    window.dispatchEvent(new Event('popstate'));
-  // }
+    dispatchEvent(new Event('popstate'));
+  }
 }

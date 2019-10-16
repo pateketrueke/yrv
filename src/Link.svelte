@@ -54,15 +54,14 @@
 
     // this will rebase anchors to avoid location changes
     if (fixedHref.charAt() !== '/') {
-      fixedHref = window.location.pathname + fixedHref;
+      fixedHref = location.pathname + fixedHref;
     }
 
-    // FIXME: avoid useless changes... move & reuse from here!
-
-    // if (window.location.pathname !== fixedHref) {
+    // do not change location et all...
+    if (location.pathname !== fixedHref) {
       navigateTo(fixedHref, { reload, replace });
       dispatch('click', e);
-    // }
+    }
   }
 </script>
 
