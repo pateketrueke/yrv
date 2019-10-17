@@ -105,12 +105,6 @@
             handleRoutes(result, fullpath, query, ctx);
           });
         }
-
-        baseRouter.find(fullpath, 2).forEach(sub => {
-          if (!sub.matches && sub.exact && sub.key) {
-            $routeInfo[sub.key] = null;
-          }
-        });
       } catch (e) {
         failure = e;
       } finally {
@@ -121,6 +115,18 @@
 
       if (failure && fallback) {
         doFallback(failure, fullpath, query);
+        return;
+      }
+
+      try {
+        baseRouter.find(fullpath).forEach(sub => {
+          // clear routes that are not longer matches!
+          if (!sub.matches && sub.exact && sub.key) {
+            $routeInfo[sub.key] = null;
+          }
+        });
+      } catch (e) {
+        // this is fine
       }
     }, 50);
   }
