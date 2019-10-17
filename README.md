@@ -94,7 +94,7 @@ Normally, you would like to declare a catch-all route, the **Not found** handler
 
 Using the `fallback` attribute on any given route to mount only if no other route matches or when an **Error** is thrown during the router's lifecycle.
 
-> Only a fallback-route is allowed per Router instance, also they'll be tried last.
+> Only a fallback-route is allowed per Router instance, ensure you've declared it at the end.
 
 ## Public API
 
