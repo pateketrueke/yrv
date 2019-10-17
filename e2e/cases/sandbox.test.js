@@ -22,6 +22,23 @@ test('it should mount from slot-content nodes', async t => {
   await t.expect(Selector('h2').withText('Testing features').visible).ok();
 });
 
+fixture('yrv (example)')
+  .page(url('/example'));
+
+test('it should mount "Hello World"', async t => {
+  await t.expect(Selector('[data-test=example]').withText('Hello World').visible).ok();
+});
+
+test('it should mount nested content', async t => {
+  await t.click(Selector('a').withText('Link'));
+  await t.expect(Selector('[data-test=example]').withText('Hello a').visible).ok();
+});
+
+test('it should fallback on unmatched routes', async t => {
+  await t.click(Selector('a').withText('Broken link'));
+  await t.expect(Selector('[data-test=example]').withText('Not found').visible).ok();
+});
+
 fixture('yrv (fallback)')
   .page(url('/e'));
 

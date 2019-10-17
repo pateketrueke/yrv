@@ -10,7 +10,19 @@
 
 <p>This content is static, always shown.</p>
 
-<Link exact href="/">Home</Link> | <Link href="/test">Test page</Link> | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
+<Link exact href="/">Home</Link> | <Link href="/test">Test page</Link>
+| <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
+| <Link exact href="/example">Example page</Link>
+
+<Router path="/example">
+  | <Link exact href="/example/a">Link</Link> | <Link exact href="/example/a/b">Broken link</Link>
+
+  <p data-test="example">
+    <Route exact>Hello World</Route>
+    <Route path="/:name" let:router>Hello {router.params.name}</Route>
+    <Route fallback>Not found</Route>
+  </p>
+</Router>
 
 <Router path="/test" nofallback>
   <Route path="/">
@@ -35,14 +47,14 @@
   <p data-test="routeless">Any <tt>Route</tt>-less content is always shown!</p>
 </Router>
 
-<Router exact path="/sub">
+<Router path="/sub">
   <Route>
     <Link exact href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
   </Route>
 
   <p data-test="anchored">
-    <Route path="#">HOME</Route>
-    <Route path="#/about">ABOUT</Route>
+    <Route exact path="#">HOME</Route>
+    <Route exact path="#/about">ABOUT</Route>
   </p>
 </Router>
 
