@@ -2,7 +2,9 @@
   import queryString from 'query-string';
   import Router from 'abstract-nested-router';
 
-  import { CTX_ROUTER, navigateTo, isActive, router } from './utils';
+  import {
+    CTX_ROUTER, navigateTo, isActive, router,
+  } from './utils';
 
   const baseRouter = new Router();
 </script>
@@ -15,10 +17,8 @@
   let fallback;
 
   export let path = '/';
-  export let exact = null;
   export let nofallback = false;
 
-  const isExact = exact;
   const routerContext = getContext(CTX_ROUTER);
   const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
@@ -90,7 +90,7 @@
       const ctx = {};
 
       try {
-        if (isActive($basePath, fullpath, exact)) {
+        if (isActive($basePath, fullpath, false)) {
           baseRouter.resolve(fullpath, (err, result) => {
             if (err) {
               failure = err;
@@ -141,7 +141,6 @@
   }
 
   setContext(CTX_ROUTER, {
-    isExact,
     basePath,
     routeInfo,
     assignRoute,

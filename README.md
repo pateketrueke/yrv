@@ -35,19 +35,20 @@ Install `yrv` through NPM or Yarn, and then:
 
 > You MUST declare at least, one top-level `Router` to setup the bindings.
 
-### `<Router {path} {exact} {nofallback} />`
+### `<Router {path} {nofallback} />`
 
 This component will hold any given routes as children, path is always derived from parent ones.
 
 Available props:
 
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
-- `{exact}` &mdash; If set, all routes (but no routers) will inherit `exact`
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
 ### `<Route {key} {path} {props} {exact} {fallback} {component} {condition} {redirect} />`
 
 Main container for routing, they can hold any component or children.
+
+> Mounted routes will receive a `router` prop, e.g. `<Route let:router>...</Route>`
 
 Available props:
 

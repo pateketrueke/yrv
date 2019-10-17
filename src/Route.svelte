@@ -19,11 +19,8 @@
   const routePath = routeContext ? routeContext.routePath : writable(path);
 
   const {
-    assignRoute, unassignRoute, routeInfo, isExact,
+    assignRoute, unassignRoute, routeInfo,
   } = getContext(CTX_ROUTER);
-
-  // inherit exact from parent Router
-  if (isExact) exact = true;
 
   let activeRouter = null;
   let activeProps = {};
