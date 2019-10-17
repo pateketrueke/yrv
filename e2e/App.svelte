@@ -6,7 +6,10 @@
   import Testing from './components/Testing.svelte';
 </script>
 
-<h1>Example page</h1>
+<h1>
+  Example page
+  <small>{$router.path}</small>
+</h1>
 
 <p>This content is static, always shown.</p>
 
@@ -67,6 +70,3 @@
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
 </Router>
-
-<h4>Route info</h4>
-<pre>{JSON.stringify($router, null, 2)}</pre>

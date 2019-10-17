@@ -23,12 +23,6 @@
   const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
 
-  function fixPath(route) {
-    if (route === '/#*' || route === '#*') return '#*_';
-    if (route === '/*' || route === '*') return '/*_';
-    return route;
-  }
-
   function doFallback(e, _path, queryParams) {
     $routeInfo = {
       [fallback]: {
@@ -143,7 +137,7 @@
     let fullpath;
 
     baseRouter.mount(fixedRoot, () => {
-      fullpath = baseRouter.add(fixPath(route + (detail.fallback ? '*' : '')), handler);
+      fullpath = baseRouter.add(route, handler);
       fallback = (handler.fallback && key) || fallback;
     });
 
@@ -153,7 +147,7 @@
   }
 
   function unassignRoute(route) {
-    baseRouter.rm(fixPath(route));
+    baseRouter.rm(route);
     resolveRoutes();
   }
 
