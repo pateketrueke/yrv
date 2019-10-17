@@ -17,8 +17,10 @@
   let fallback;
 
   export let path = '/';
+  export let exact = null;
   export let nofallback = false;
 
+  const isExact = exact;
   const routerContext = getContext(CTX_ROUTER);
   const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
@@ -152,6 +154,7 @@
   }
 
   setContext(CTX_ROUTER, {
+    isExact,
     basePath,
     routeInfo,
     assignRoute,

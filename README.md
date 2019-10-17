@@ -35,13 +35,14 @@ Install `yrv` through NPM or Yarn, and then:
 
 > You MUST declare at least, one top-level `Router` to setup the bindings.
 
-### `<Router {path} {nofallback} />`
+### `<Router {path} {exact} {nofallback} />`
 
 This component will hold any given routes as children, path is always derived from parent ones.
 
 Available props:
 
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
+- `{exact}` &mdash; If set, all routes (but no routers) will inherit `exact`
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
 ### `<Route {key} {path} {props} {exact} {fallback} {component} {condition} {redirect} />`
