@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
-  import { navigateTo, isActive, router } from './utils';
+  import { fixedLocation, navigateTo, isActive, router } from './utils';
 
   let ref;
   let active;
@@ -48,18 +48,10 @@
       return;
     }
 
-    let fixedHref = href;
-
-    // this will rebase anchors to avoid location changes
-    if (fixedHref.charAt() !== '/') {
-      fixedHref = location.pathname + fixedHref;
-    }
-
-    // do not change location et all...
-    if ((location.pathname + location.search) !== fixedHref) {
-      navigateTo(fixedHref, { reload, replace });
+    fixedLocation(href, nextURL => {
+      navigateTo(nextURL, { reload, replace });
       dispatch('click', e);
-    }
+    });
   }
 </script>
 

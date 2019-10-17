@@ -9,6 +9,20 @@ export const router = writable({
 export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
 
+export function fixedLocation(path, callback) {
+  const baseUri = location.pathname.charAt() === '/' ? location.pathname : '/';
+
+  // this will rebase anchors to avoid location changes
+  if (path.charAt() !== '/') {
+    path = baseUri + path;
+  }
+
+  // do not change location et all...
+  if ((baseUri + location.search) !== path) {
+    callback(path);
+  }
+}
+
 export function navigateTo(path, options) {
   const {
     reload, replace,
@@ -42,12 +56,11 @@ export function navigateTo(path, options) {
     return;
   }
 
-  // make sure we're not invoking events from same page twice!
-  if ((location.pathname + location.search) !== path) {
-    // If has History API support, uses it
-    history[replace ? 'replaceState' : 'pushState'](null, '', path);
+  // If has History API support, uses it
+  fixedLocation(path, nextURL => {
+    history[replace ? 'replaceState' : 'pushState'](null, '', nextURL);
     dispatchEvent(new Event('popstate'));
-  }
+  });
 }
 
 export function isActive(uri, path, exact) {
