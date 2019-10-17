@@ -66,11 +66,16 @@
           return true;
         }
 
-        $routeInfo[x.key] = {
-          ...x,
-          query: _query,
-          params: _params[x.key],
-        };
+        if (!x.fallback) {
+          $routeInfo[x.key] = {
+            ...x,
+            query: _query,
+            params: _params[x.key],
+          };
+        } else {
+          doFallback(null, _path, _query);
+          return true;
+        }
       }
 
       return false;
@@ -100,6 +105,12 @@
             handleRoutes(result, fullpath, query, ctx);
           });
         }
+
+        baseRouter.find(fullpath, 2).forEach(sub => {
+          if (!sub.matches && sub.exact && sub.key) {
+            $routeInfo[sub.key] = null;
+          }
+        });
       } catch (e) {
         failure = e;
       } finally {
@@ -126,7 +137,7 @@
     let fullpath;
 
     baseRouter.mount(fixedRoot, () => {
-      fullpath = baseRouter.add(route !== '/' ? fixPath(route) : '', handler);
+      fullpath = baseRouter.add(fixPath(route + (detail.fallback ? '*' : '')), handler);
       fallback = (handler.fallback && key) || fallback;
     });
 
