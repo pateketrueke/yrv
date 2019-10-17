@@ -25,6 +25,10 @@
   const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
 
+  const fixedRoot = $basePath !== path && $basePath !== '/'
+    ? `${$basePath}${path !== '/' ? path : ''}`
+    : path;
+
   function doFallback(e, _path, queryParams) {
     $routeInfo = {
       [fallback]: {
@@ -91,7 +95,7 @@
       const ctx = {};
 
       try {
-        if (isActive($basePath, fullpath, false)) {
+        if (isActive(fixedRoot, fullpath, false) || fixedRoot === '/') {
           baseRouter.resolve(fullpath, (err, result) => {
             if (err) {
               failure = err;
@@ -129,10 +133,6 @@
 
   function assignRoute(key, route, detail) {
     key = key || Math.random().toString(36).substr(2);
-
-    const fixedRoot = $basePath !== path && $basePath !== '/'
-      ? `${$basePath}${path !== '/' ? path : ''}`
-      : path;
 
     const handler = { key, ...detail };
 
