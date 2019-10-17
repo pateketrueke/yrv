@@ -22,7 +22,7 @@ export function navigateTo(path, options) {
   }
 
   if (params) {
-    path = path.replace(/:([a-zA-Z][a-zA-Z0-9]*)/g, (_, key) => params[key]);
+    path = path.replace(/:([a-zA-Z][a-zA-Z0-9_-]*)/g, (_, key) => params[key]);
   }
 
   if (queryParams) {
