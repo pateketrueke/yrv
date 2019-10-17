@@ -21,14 +21,20 @@ Install `yrv` through NPM or Yarn, and then:
 
 ```html
 <script>
-  import { Router, Route } from 'yrv';
+  import { Router, Route, Link } from 'yrv';
 </script>
 
-<Router>
-  <Route fallback>Not found</Route>
-  <Route exact path="/">Hello World</Route>
-  <Route exact path="/:name" let:router>Hello {router.params.name}</Route>
-</Router>
+<Link href="/">Home</Link>
+| <Link href="/World">Hello</Link>
+| <Link href="/not/found">NotFound</Link>
+
+<p>
+  <Router>
+    <Route exact path="/">Hello World</Route>
+    <Route exact path="/:name" let:router>Hey {router.params.name}!</Route>
+    <Route fallback>Not found</Route>
+  </Router>
+</p>
 ```
 
 ## Components
