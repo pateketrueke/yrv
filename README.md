@@ -68,6 +68,8 @@ Available props:
 
 In order to navigate, you can use `Link` components, or regular links, etc.
 
+> All `href` values MUST be absolute, only links starting with `/` or `#` are allowed.
+
 Available props:
 
 - `{href}` &mdash; New location, default to `/`
