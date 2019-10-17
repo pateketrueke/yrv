@@ -11,7 +11,7 @@ addons:
   chrome: stable
 
 script:
-  - npm test
+  - npm test && HASHCHANGE=true npm test
 
 notifications:
   email: false

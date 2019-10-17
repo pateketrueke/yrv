@@ -3,6 +3,10 @@
     Router, Route, Link, router, navigateTo,
   } from '../src';
 
+  if (typeof USE_HASH_CHANGE !== 'undefined' && USE_HASH_CHANGE) {
+    Router.hashchange = USE_HASH_CHANGE;
+  }
+
   import Testing from './components/Testing.svelte';
 </script>
 

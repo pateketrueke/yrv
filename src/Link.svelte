@@ -1,6 +1,9 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
-  import { fixedLocation, navigateTo, isActive, router } from './utils';
+
+  import {
+    fixedLocation, navigateTo, isActive, router,
+  } from './utils';
 
   let ref;
   let active;

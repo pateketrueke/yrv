@@ -3,6 +3,10 @@ import { Selector } from 'testcafe';
 /* global fixture, test */
 
 function url(x = '') {
+  if (process.env.HASHCHANGE) {
+    return `${process.env.BASE_URL}#${x}`;
+  }
+
   return process.env.BASE_URL + x;
 }
 

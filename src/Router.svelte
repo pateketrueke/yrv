@@ -3,14 +3,17 @@
   import Router from 'abstract-nested-router';
 
   import {
-    CTX_ROUTER, navigateTo, isActive, router,
+    CTX_ROUTER, hashchangeEnable, navigateTo, isActive, router,
   } from './utils';
 
   const baseRouter = new Router();
 </script>
 
 <script>
-  import { onMount, getContext, setContext } from 'svelte';
+  import {
+    onMount, onDestroy, getContext, setContext,
+  } from 'svelte';
+
   import { writable } from 'svelte/store';
 
   let failure;
@@ -89,8 +92,9 @@
       failure = null;
       $routeInfo = {};
 
-      const [baseUri, searchQuery] = location.href.split('?');
-      const fullpath = `/${baseUri.split('/').slice(3).join('/')}`;
+      const baseUri = !hashchangeEnable() ? location.href.replace(location.origin, '') : location.hash;
+
+      const [fullpath, searchQuery] = `/${baseUri.replace(/^#?\//, '')}`.split('?');
       const query = queryString.parse(searchQuery);
       const ctx = {};
 
@@ -153,6 +157,12 @@
     resolveRoutes();
   }
 
+  window.addEventListener('popstate', resolveRoutes, false);
+
+  onDestroy(() => {
+    window.removeEventListener('popstate', resolveRoutes, false);
+  });
+
   setContext(CTX_ROUTER, {
     isExact,
     basePath,
@@ -170,5 +180,3 @@
     <pre>{failure}</pre>
   </fieldset>
 {/if}
-
-<svelte:window on:popstate={resolveRoutes}></svelte:window>

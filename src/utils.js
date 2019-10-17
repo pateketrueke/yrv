@@ -9,8 +9,19 @@ export const router = writable({
 export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
 
+// use location.hash on embedded pages, e.g. Svelte REPL
+export let HASHCHANGE = location.origin === 'null';
+
+export function hashchangeEnable(value) {
+  if (typeof value === 'boolean') {
+    HASHCHANGE = !!value;
+  }
+
+  return HASHCHANGE;
+}
+
 export function fixedLocation(path, callback) {
-  const baseUri = location.pathname.charAt() === '/' ? location.pathname : '/';
+  const baseUri = hashchangeEnable() ? location.hash.replace('#', '') : location.pathname;
 
   // this will rebase anchors to avoid location changes
   if (path.charAt() !== '/') {
@@ -48,6 +59,11 @@ export function navigateTo(path, options) {
     if (qs) {
       path += `?${qs}`;
     }
+  }
+
+  if (hashchangeEnable()) {
+    location.hash = path.replace(/^#/, '');
+    return;
   }
 
   // If no History API support, fallbacks to URL redirect
