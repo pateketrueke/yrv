@@ -1,7 +1,10 @@
 import { writable } from 'svelte/store';
 import queryString from 'query-string';
 
-export const router = writable({});
+export const router = writable({
+  path: '/',
+  params: {},
+});
 
 export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
