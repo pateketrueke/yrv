@@ -7,7 +7,7 @@
   import { onDestroy, getContext, setContext } from 'svelte';
 
   export let key = null;
-  export let path = '';
+  export let path = '/';
   export let props = null;
   export let exact = null;
   export let fallback = null;
