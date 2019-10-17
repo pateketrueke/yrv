@@ -21,7 +21,7 @@
     "build": "rollup -c",
     "serve": "sirv start e2e/public --dev --quiet --single --port 8080",
     "lint": "eslint src e2e",
-    "prepublishOnly": "npm run test && NODE_ENV=production npm run build",
+    "prepublishOnly": "NODE_ENV=production npm run build",
     "pretest": "npm run lint && NODE_ENV=test npm run build",
     "test": "npm run test:e2e -- ${BROWSER:-chrome:headless} -a 'npm run serve' e2e/cases",
     "test:e2e": "BASE_URL=http://localhost:8080 testcafe"
