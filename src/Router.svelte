@@ -172,11 +172,18 @@
   });
 </script>
 
-<slot />
+<style>
+  .yrv-failure {
+    margin: 10px;
+    border: 1px dashed silver;
+  }
+</style>
 
-{#if failure && !fallback}
-  <fieldset>
+{#if failure && !fallback && !nofallback}
+  <fieldset class="yrv-failure">
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>
   </fieldset>
 {/if}
+
+<slot />
