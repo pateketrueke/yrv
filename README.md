@@ -9,15 +9,14 @@
 Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-nested-router), so you can use nested routers, also:
 
 - Advanced parameters can be used, e.g. `/:id<\d+>` &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
-- Conditional montage and redirection through props
-- Cascade montage of matched routes
+- Conditionals and redirection through props
 - Fallback `<Route />` handlers
 - Hash and URI-based routes
 - Support for [query-string](https://www.npmjs.com/package/query-string)
 
 ## Usage
 
-Install `yrv` through NPM or Yarn, and then:
+Install `yrv` through NPM or Yarn:
 
 ```html
 <script>
@@ -37,6 +36,8 @@ Install `yrv` through NPM or Yarn, and then:
 </p>
 ```
 
+> In order to declare a catch-all route, the **Not found** handler, it should have a `fallback` attribute and it MUST be placed last. :bomb:
+
 ## Components
 
 > You MUST declare at least, one top-level `Router` to setup the bindings.
@@ -51,11 +52,9 @@ Available props:
 - `{exact}` &mdash; If set, all routes (but no routers) will inherit `exact`
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
-### `<Route {key} {path} {props} {exact} {fallback} {component} {condition} {redirect} />`
+### `<Route {key} {path} {props} {exact} {fallback} {component} {condition} {redirect} let:router />`
 
 Main container for routing, they can hold any component or children.
-
-> Mounted routes will receive a `router` prop, e.g. `<Route let:router>...</Route>`
 
 Available props:
 
@@ -67,6 +66,7 @@ Available props:
 - `{component}` &mdash; A valid svelte-component to render if the route matches
 - `{condition}` &mdash; Function; if given, the route will render only if evaluates to true
 - `{redirect}` &mdash; Alternate redirection location, only if the previous condition was true
+- `let:router` &mdash; Injects the `router` context, it also provides `failure` in case of errors
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
@@ -94,14 +94,6 @@ Normal `on:click` events are still allowed, so you can use:
 
 > Active _links_ will gain the `[aria-current]` attribute, and `[disabled]` if they're buttons.
 
-## What are fallbacks?
-
-Normally, you would like to declare a catch-all route, the **Not found** handler.
-
-Using the `fallback` attribute on any given route to mount only if no other route matches or when an **Error** is thrown during the router's lifecycle.
-
-> Only a fallback-route is allowed per Router instance, ensure you've declared it at the end.
-
 ## Public API
 
 - `navigateTo(path[, options])` &mdash; Change the location, supported options are:
@@ -110,3 +102,5 @@ Using the `fallback` attribute on any given route to mount only if no other rout
   - `params` &mdash; Used to replace `:placeholders` from given path
   - `queryParams` &mdash; Additional search-params for the new location
 - `$router` &mdash; Store with shared routeInfo details, similar to `let:router`
+
+> `yrv` gracefully degrades to `location.hash` on environments where `history` is not suitable, also it can be forced through `Router.hashchange = true`.
