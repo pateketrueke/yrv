@@ -9,10 +9,13 @@
 Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-nested-router), so you can use nested routers, also:
 
 - Advanced parameters can be used, e.g. `/:id<\d+>` &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
+- Seamless `<base href="..." />` integration
 - Conditionals and redirection through props
 - Fallback `<Route />` handlers
 - Hash and URI-based routes
 - Support for [query-string](https://www.npmjs.com/package/query-string)
+
+> `yrv` will use any _base-href_ found on the current page to rewrite links and routes.
 
 ## Usage
 

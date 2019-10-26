@@ -137,7 +137,6 @@ test('it should handle non-matched routes as fallback', async t => {
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });
 
-
 fixture('yrv (base-href)')
   .page(url('/folder'));
 
