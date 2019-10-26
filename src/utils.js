@@ -1,6 +1,11 @@
 import { writable } from 'svelte/store';
 import queryString from 'query-string';
 
+const baseTag = document.getElementsByTagName('base');
+const basePrefix = (baseTag[0] && baseTag[0].href.replace(/\/$/, '')) || '/';
+
+export const ROOT_URL = basePrefix.replace(window.location.origin, '');
+
 export const router = writable({
   path: '/',
   params: {},
@@ -51,6 +56,11 @@ export function navigateTo(path, options) {
 
   if (params) {
     path = path.replace(/:([a-zA-Z][a-zA-Z0-9_-]*)/g, (_, key) => params[key]);
+  }
+
+  // rebase active URL
+  if (ROOT_URL !== '/' && path.indexOf(ROOT_URL) !== 0) {
+    path = ROOT_URL + path;
   }
 
   if (queryParams) {

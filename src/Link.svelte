@@ -2,12 +2,13 @@
   import { onMount, createEventDispatcher } from 'svelte';
 
   import {
-    fixedLocation, navigateTo, isActive, router,
+    ROOT_URL, fixedLocation, navigateTo, isActive, router,
   } from './utils';
 
   let ref;
   let active;
   let cssClass = '';
+  let fixedHref = null;
 
   export let go = null;
   export let href = '/';
@@ -18,6 +19,13 @@
   export let replace = false;
   export let className = '';
   export { cssClass as class };
+
+  // rebase active URL
+  if (ROOT_URL !== '/') {
+    fixedHref = ROOT_URL + href;
+  } else {
+    fixedHref = href;
+  }
 
   $: if (ref && $router.path) {
     if (isActive(href, $router.path, exact)) {
@@ -63,7 +71,7 @@
     <slot />
   </button>
 {:else}
-  <a {href} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+  <a href={fixedHref} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
     <slot />
   </a>
 {/if}

@@ -3,7 +3,7 @@
   import Router from 'abstract-nested-router';
 
   import {
-    CTX_ROUTER, hashchangeEnable, navigateTo, isActive, router,
+    CTX_ROUTER, ROOT_URL, hashchangeEnable, navigateTo, isActive, router,
   } from './utils';
 
   const baseRouter = new Router();
@@ -92,7 +92,12 @@
       failure = null;
       $routeInfo = {};
 
-      const baseUri = !hashchangeEnable() ? location.href.replace(location.origin, '') : location.hash;
+      let baseUri = !hashchangeEnable() ? location.href.replace(location.origin, '') : location.hash;
+
+      // unprefix active URL
+      if (ROOT_URL !== '/') {
+        baseUri = baseUri.replace(ROOT_URL, '');
+      }
 
       const [fullpath, searchQuery] = `/${baseUri.replace(/^#?\//, '')}`.split('?');
       const query = queryString.parse(searchQuery);
