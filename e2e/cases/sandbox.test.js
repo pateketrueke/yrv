@@ -137,23 +137,25 @@ test('it should handle non-matched routes as fallback', async t => {
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });
 
-fixture('yrv (base-href)')
-  .page(url('/folder'));
+if (!process.env.HASHCHANGE) {
+  fixture('yrv (base-href)')
+    .page(url('/folder'));
 
-test('it should handle <base href="..." /> on all routes and links', async t => {
-  await t.click(Selector('a').withText('Test page'));
-  await t.expect(Selector('h2').withText('Testing features').visible).ok();
-  await t.expect(Selector('a').withText('Home').getAttribute('href')).contains('/folder/');
+  test('it should handle <base href="..." /> on all routes and links', async t => {
+    await t.click(Selector('a').withText('Test page'));
+    await t.expect(Selector('h2').withText('Testing features').visible).ok();
+    await t.expect(Selector('a').withText('Home').getAttribute('href')).contains('/folder/');
 
-  await t.click(Selector('a').withText('Test props'));
-  await t.click(Selector('a').withText('Do not click!'));
-  await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
+    await t.click(Selector('a').withText('Test props'));
+    await t.click(Selector('a').withText('Do not click!'));
+    await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
 
-  await t.click(Selector('a').withText('Anchor page'));
-  await t.click(Selector('a').withText('Root'));
-  await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
-  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+    await t.click(Selector('a').withText('Anchor page'));
+    await t.click(Selector('a').withText('Root'));
+    await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
+    await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
 
-  await t.click(Selector('a').withText('Link'));
-  await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
-});
+    await t.click(Selector('a').withText('Link'));
+    await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
+  });
+}
