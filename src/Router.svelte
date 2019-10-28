@@ -130,8 +130,8 @@
       try {
         baseRouter.find(fullpath).forEach(sub => {
           // clear routes that are not longer matches!
-          if (!sub.matches && sub.exact && sub.key) {
-            $routeInfo[sub.key] = null;
+          if (sub.key && sub.exact) {
+            $routeInfo[sub.key] = sub.matches ? sub : null;
           }
         });
       } catch (e) {
