@@ -1,6 +1,6 @@
 {
   "name": "yrv",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Your routing bro!",
   "main": "dist/yrv.js",
   "svelte": "src/index.js",
