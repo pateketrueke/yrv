@@ -143,7 +143,9 @@
   function assignRoute(key, route, detail) {
     key = key || Math.random().toString(36).substr(2);
 
-    const handler = { key, ...detail };
+    // consider as nested routes if they does not have any segment
+    const nested = !route.substr(1).includes('/');
+    const handler = { key, nested, ...detail };
 
     let fullpath;
 

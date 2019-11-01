@@ -137,6 +137,30 @@ test('it should handle non-matched routes as fallback', async t => {
   await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
 });
 
+fixture('yrv (nested routes)')
+  .page(url('/top'));
+
+test('it should nothing at top-level', async t => {
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
+
+  await t.click(Selector('a').withText('1'));
+  await t.expect(Selector('p[data-test=nested]').innerText).contains('a');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
+
+  await t.click(Selector('a').withText('2'));
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
+  await t.expect(Selector('p[data-test=nested]').innerText).contains('b');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
+
+  await t.click(Selector('a').withText('3'));
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
+  await t.expect(Selector('p[data-test=nested]').innerText).contains('c');
+});
+
 if (!process.env.HASHCHANGE) {
   fixture('yrv (base-href)')
     .page(url('/folder'));

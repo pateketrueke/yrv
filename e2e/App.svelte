@@ -65,6 +65,24 @@
   </p>
 </Router>
 
+<h3>Nested routes</h3>
+
+<p>
+  Routes with more than one segment are considered nested routes, e.g.
+
+  <Link href="/top/foo/a">1</Link>
+  | <Link href="/top/bar/b">2</Link>
+  | <Link href="/top/bar/c">3</Link>
+</p>
+
+<p data-test="nested">
+  <Router path="/top">
+    <Route path="/foo/a">a</Route>
+    <Route path="/bar/b">b</Route>
+    <Route path="/bar/c">c</Route>
+  </Router>
+</p>
+
 <Router path="/e">
   <Route exact>
     <h2>It works!</h2>
