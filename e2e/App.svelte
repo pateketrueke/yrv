@@ -70,14 +70,25 @@
   <p data-test="routeless">Any <tt>Route</tt>-less content is always shown!</p>
 </Router>
 
-<Router exact path="/sub">
+<div data-test="hashed">
+  <Router path="/gist">
+    <Route exact>GIST INFO</Route>
+    <Router path="#:sha1" nofallback>
+      <Route let:router>SHA1: {router.params.sha1 || 'N/A'}</Route>
+      <Route exact path="/edit">(edit)</Route>
+      <Route exact path="/save">(save)</Route>
+    </Router>
+  </Router>
+</div>
+
+<Router path="/sub">
   <Route>
     <Link exact href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
   </Route>
 
   <p data-test="anchored">
-    <Route path="#">HOME</Route>
-    <Route path="#/about">ABOUT</Route>
+    <Route exact path="#">HOME</Route>
+    <Route exact path="#/about">ABOUT</Route>
   </p>
 </Router>
 

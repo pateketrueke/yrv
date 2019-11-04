@@ -1,3 +1,4 @@
+import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
 import queryString from 'query-string';
 
@@ -8,6 +9,7 @@ export const ROOT_URL = basePrefix.replace(window.location.origin, '');
 
 export const router = writable({
   path: '/',
+  query: {},
   params: {},
 });
 
@@ -33,8 +35,10 @@ export function fixedLocation(path, callback) {
     path = baseUri + path;
   }
 
+  const currentURL = baseUri + location.hash + location.search;
+
   // do not change location et all...
-  if ((baseUri + location.search) !== path) {
+  if (currentURL !== path) {
     callback(path);
   }
 }
@@ -92,6 +96,10 @@ export function navigateTo(path, options) {
 export function isActive(uri, path, exact) {
   if (exact !== true && path.indexOf(uri) === 0) {
     return /^[#/?]?$/.test(path.substr(uri.length, 1));
+  }
+
+  if (uri.includes('*') || uri.includes(':')) {
+    return Router.matches(uri, path);
   }
 
   return path === uri;

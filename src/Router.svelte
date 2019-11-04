@@ -20,10 +20,8 @@
   let fallback;
 
   export let path = '/';
-  export let exact = null;
   export let nofallback = false;
 
-  const isExact = exact;
   const routerContext = getContext(CTX_ROUTER);
   const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
@@ -99,7 +97,7 @@
         baseUri = baseUri.replace(ROOT_URL, '');
       }
 
-      const [fullpath, searchQuery] = `/${baseUri.replace(/^#?\//, '')}`.split('?');
+      const [fullpath, searchQuery] = baseUri.replace('/#', '#').split('?');
       const query = queryString.parse(searchQuery);
       const ctx = {};
 
@@ -129,9 +127,11 @@
 
       try {
         baseRouter.find(fullpath).forEach(sub => {
-          // clear routes that are not longer matches!
-          if (sub.key && sub.exact) {
-            $routeInfo[sub.key] = sub.matches ? sub : null;
+          // clear routes that not longer matches!
+          if (!sub.matches) {
+            $routeInfo[sub.key] = null;
+          } else {
+            $routeInfo[sub.key] = { ...sub, query };
           }
         });
       } catch (e) {
@@ -171,7 +171,6 @@
   });
 
   setContext(CTX_ROUTER, {
-    isExact,
     basePath,
     routeInfo,
     assignRoute,
@@ -186,11 +185,11 @@
   }
 </style>
 
+<slot />
+
 {#if failure && !fallback && !nofallback}
   <fieldset class="yrv-failure">
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>
   </fieldset>
 {/if}
-
-<slot />

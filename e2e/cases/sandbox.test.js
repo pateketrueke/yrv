@@ -161,6 +161,45 @@ test('it should nothing at top-level', async t => {
   await t.expect(Selector('p[data-test=nested]').innerText).contains('c');
 });
 
+fixture('yrv (hashed routes)')
+  .page(url('/gist'));
+
+test('it should load root-handlers', async t => {
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('GIST INFO');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('SHA1');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
+});
+
+test.page(url('/gist#test'))('it should load sub-handlers', async t => {
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('SHA1: test');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
+});
+
+test.page(url('/gist#test/edit'))('it should load nested sub-handlers (/edit)', async t => {
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('SHA1: test');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('(edit)');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
+});
+
+test.page(url('/gist#test/save'))('it should load nsted root-handlers (/save)', async t => {
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('SHA1: test');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('(save)');
+});
+
+test.page(url('/gist#test/not_found'))('it should fail on unreachable routes', async t => {
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('SHA1');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('Unreachable');
+});
+
 if (!process.env.HASHCHANGE) {
   fixture('yrv (base-href)')
     .page(url('/folder'));
