@@ -55,28 +55,28 @@
     }, {});
 
     map.some(x => {
-      if (x.key && x.matches && !$routeInfo[x.key]) {
-        if (typeof x.condition === 'boolean' || typeof x.condition === 'function') {
+      if (x.key && x.matches && !x.fallback && !$routeInfo[x.key]) {
+        if (x.redirect && typeof x.condition === 'function') {
           const ok = typeof x.condition === 'function' ? x.condition($router) : x.condition;
 
           if (ok !== true && x.redirect) {
             navigateTo(x.redirect);
             return true;
           }
+
+          return false;
         }
 
-        if (x.redirect && !x.condition) {
+        if (x.redirect && x.condition === null) {
           navigateTo(x.redirect);
           return true;
         }
 
-        if (!x.fallback) {
-          $routeInfo[x.key] = {
-            ...x,
-            query: _query,
-            params: _params[x.key],
-          };
-        }
+        $routeInfo[x.key] = {
+          ...x,
+          query: _query,
+          params: _params[x.key],
+        };
       }
 
       return false;
@@ -139,7 +139,7 @@
       } catch (e) {
         // this is fine
       }
-    }, 50);
+    });
   }
 
   function assignRoute(key, route, detail) {

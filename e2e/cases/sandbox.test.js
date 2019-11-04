@@ -185,7 +185,7 @@ test.page(url('/gist#test/edit'))('it should load nested sub-handlers (/edit)', 
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
 });
 
-test.page(url('/gist#test/save'))('it should load nsted root-handlers (/save)', async t => {
+test.page(url('/gist#test/save'))('it should load nested root-handlers (/save)', async t => {
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
   await t.expect(Selector('[data-test=hashed]').innerText).contains('SHA1: test');
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
