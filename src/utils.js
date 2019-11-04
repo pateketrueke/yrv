@@ -17,7 +17,7 @@ export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
 
 // use location.hash on embedded pages, e.g. Svelte REPL
-export let HASHCHANGE = location.origin === 'null';
+export let HASHCHANGE = window.location.origin === 'null';
 
 export function hashchangeEnable(value) {
   if (typeof value === 'boolean') {
@@ -28,14 +28,14 @@ export function hashchangeEnable(value) {
 }
 
 export function fixedLocation(path, callback) {
-  const baseUri = hashchangeEnable() ? location.hash.replace('#', '') : location.pathname;
+  const baseUri = hashchangeEnable() ? window.location.hash.replace('#', '') : window.location.pathname;
 
   // this will rebase anchors to avoid location changes
   if (path.charAt() !== '/') {
     path = baseUri + path;
   }
 
-  const currentURL = baseUri + location.hash + location.search;
+  const currentURL = baseUri + window.location.hash + window.location.search;
 
   // do not change location et all...
   if (currentURL !== path) {
@@ -76,19 +76,19 @@ export function navigateTo(path, options) {
   }
 
   if (hashchangeEnable()) {
-    location.hash = path.replace(/^#/, '');
+    window.location.hash = path.replace(/^#/, '');
     return;
   }
 
   // If no History API support, fallbacks to URL redirect
-  if (reload || !history.pushState || !dispatchEvent) {
-    location.href = path;
+  if (reload || !window.history.pushState || !dispatchEvent) {
+    window.location.href = path;
     return;
   }
 
   // If has History API support, uses it
   fixedLocation(path, nextURL => {
-    history[replace ? 'replaceState' : 'pushState'](null, '', nextURL);
+    window.history[replace ? 'replaceState' : 'pushState'](null, '', nextURL);
     dispatchEvent(new Event('popstate'));
   });
 }

@@ -52,10 +52,10 @@
 
   // this will enable `<Link on:click={...} />` calls
   function onClick(e) {
-    if (typeof go === 'string' && history.length > 1) {
-      if (go === 'back') history.back();
-      else if (go === 'fwd') history.forward();
-      else history.go(parseInt(go, 10));
+    if (typeof go === 'string' && window.history.length > 1) {
+      if (go === 'back') window.history.back();
+      else if (go === 'fwd') window.history.forward();
+      else window.history.go(parseInt(go, 10));
       return;
     }
 

@@ -2,19 +2,19 @@
   import queryString from 'query-string';
   import Router from 'abstract-nested-router';
 
-  import {
-    CTX_ROUTER, ROOT_URL, hashchangeEnable, navigateTo, isActive, router,
-  } from './utils';
-
   const baseRouter = new Router();
 </script>
 
 <script>
   import {
-    onMount, onDestroy, getContext, setContext,
+    onDestroy, getContext, setContext,
   } from 'svelte';
 
   import { writable } from 'svelte/store';
+
+  import {
+    CTX_ROUTER, ROOT_URL, hashchangeEnable, navigateTo, isActive, router,
+  } from './utils';
 
   let failure;
   let fallback;
@@ -90,7 +90,7 @@
       failure = null;
       $routeInfo = {};
 
-      let baseUri = !hashchangeEnable() ? location.href.replace(location.origin, '') : location.hash;
+      let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
 
       // unprefix active URL
       if (ROOT_URL !== '/') {

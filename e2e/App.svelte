@@ -1,8 +1,9 @@
 <script>
   import {
-    Router, Route, Link, router, navigateTo,
+    Router, Route, Link, router,
   } from '../src';
 
+  /* global USE_HASH_CHANGE */
   if (typeof USE_HASH_CHANGE !== 'undefined' && USE_HASH_CHANGE) {
     Router.hashchange = USE_HASH_CHANGE;
   }
@@ -61,7 +62,7 @@
     <p data-test="redirect">
       <Route path="/failed">Wrong!</Route>
       <Route path="/static" redirect="/test" />
-      <Route path="/dynamic" redirect="/test/failed" condition={() => confirm('Are you sure?')}>Yay!</Route>
+      <Route path="/dynamic" redirect="/test/failed" condition={() => /* eslint-disable no-alert */ window.confirm('Are you sure?')}>Yay!</Route>
     </p>
   </Route>
 

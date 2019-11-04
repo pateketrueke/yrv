@@ -1,10 +1,7 @@
-<script context="module">
-  import { CTX_ROUTER, CTX_ROUTE } from './utils';
-</script>
-
 <script>
   import { writable } from 'svelte/store';
   import { onDestroy, getContext, setContext } from 'svelte';
+  import { CTX_ROUTER, CTX_ROUTE } from './utils';
 
   export let key = null;
   export let path = '/';
@@ -54,6 +51,7 @@
   }
 
   $: if (key) {
+    /* global arguments */
     activeRouter = $routeInfo[key];
     activeProps = getProps($$props, arguments[0].$$.props);
   }
