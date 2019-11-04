@@ -97,7 +97,7 @@
         baseUri = baseUri.replace(ROOT_URL, '');
       }
 
-      const [fullpath, searchQuery] = baseUri.replace('/#', '#').split('?');
+      const [fullpath, searchQuery] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
       const query = queryString.parse(searchQuery);
       const ctx = {};
 
