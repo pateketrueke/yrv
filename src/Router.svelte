@@ -73,9 +73,6 @@
             query: _query,
             params: _params[x.key],
           };
-        } else {
-          doFallback(null, _path, _query);
-          return true;
         }
       }
 
@@ -126,11 +123,14 @@
       }
 
       try {
+        // FIXME: this smeels like more compelxity... how to avoid?
         baseRouter.find(fullpath).forEach(sub => {
           // clear routes that not longer matches!
-          if (!sub.matches) {
+          if (sub.exact && !sub.matches) {
             $routeInfo[sub.key] = null;
-          } else {
+          }
+
+          if (sub.matches && !sub.fallback) {
             $routeInfo[sub.key] = { ...sub, query };
           }
         });
@@ -179,8 +179,7 @@
 </script>
 
 <style>
-  .yrv-failure {
-    margin: 10px;
+  [data-failure] {
     border: 1px dashed silver;
   }
 </style>
@@ -188,7 +187,7 @@
 <slot />
 
 {#if failure && !fallback && !nofallback}
-  <fieldset class="yrv-failure">
+  <fieldset data-failure>
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>
   </fieldset>

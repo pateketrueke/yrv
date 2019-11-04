@@ -25,6 +25,7 @@
   let activeRouter = null;
   let activeProps = {};
   let fullpath;
+  let failure;
 
   function getProps(given, required) {
     const { props: sub, ...others } = given;
@@ -44,11 +45,15 @@
     ? `${$routePath}${path !== '/' ? path : ''}`
     : path;
 
-  [key, fullpath] = assignRoute(key, fixedRoot, {
-    condition, redirect, fallback, exact,
-  });
+  try {
+    [key, fullpath] = assignRoute(key, fixedRoot, {
+      condition, redirect, fallback, exact,
+    });
+  } catch (e) {
+    failure = e;
+  }
 
-  $: {
+  $: if (key) {
     activeRouter = $routeInfo[key];
     activeProps = getProps($$props, arguments[0].$$.props);
   }
@@ -61,6 +66,16 @@
     routePath,
   });
 </script>
+
+<style>
+  [data-failure] {
+    color: red;
+  }
+</style>
+
+{#if failure}
+  <p data-failure>{failure}</p>
+{/if}
 
 {#if activeRouter}
   {#if component}
