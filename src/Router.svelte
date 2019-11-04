@@ -45,7 +45,10 @@
       if (cur.key) {
         Object.assign(_shared, cur.params);
 
-        prev[cur.key] = Object.assign(prev[cur.key] || {}, cur.params);
+        prev[cur.key] = {
+          ...prev[cur.key],
+          ...cur.params,
+        };
       }
 
       return prev;

@@ -26,8 +26,8 @@
 
   <p data-test="example">
     <Route exact>Hello World</Route>
-    <Route path="/:name" let:router>Hello {router.params.name}</Route>
     <Route fallback>Not found</Route>
+    <Route path="/:name" let:router>Hello {router.params.name}</Route>
   </p>
 </Router>
 

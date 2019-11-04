@@ -32,14 +32,14 @@ Install `yrv` through NPM or Yarn:
 
 <p>
   <Router>
-    <Route exact path="/">Hello World</Route>
-    <Route exact path="/:name" let:router>Hey {router.params.name}!</Route>
+    <Route exact>Hello World</Route>
     <Route fallback>Not found</Route>
+    <Route exact path="/:name" let:router>Hey {router.params.name}!</Route>
   </Router>
 </p>
 ```
 
-> In order to declare a catch-all route, the **Not found** handler, it should have a `fallback` attribute and it MUST be placed last. :bomb:
+> Notice `fallback` routes can't be placed at the beginning. :bomb:
 
 ## Components
 
