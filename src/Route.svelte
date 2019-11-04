@@ -43,6 +43,14 @@
     : path;
 
   try {
+    if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
+      throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
+    }
+
+    if (condition !== null && typeof condition !== 'function') {
+      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+    }
+
     [key, fullpath] = assignRoute(key, fixedRoot, {
       condition, redirect, fallback, exact,
     });

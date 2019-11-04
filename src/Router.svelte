@@ -56,18 +56,7 @@
 
     map.some(x => {
       if (x.key && x.matches && !x.fallback && !$routeInfo[x.key]) {
-        if (x.redirect && typeof x.condition === 'function') {
-          const ok = typeof x.condition === 'function' ? x.condition($router) : x.condition;
-
-          if (ok !== true && x.redirect) {
-            navigateTo(x.redirect);
-            return true;
-          }
-
-          return false;
-        }
-
-        if (x.redirect && x.condition === null) {
+        if (x.redirect && (x.condition === null || x.condition($router) !== true)) {
           navigateTo(x.redirect);
           return true;
         }
@@ -102,7 +91,7 @@
       const ctx = {};
 
       try {
-        if (isActive(fixedRoot, fullpath, false) || fixedRoot === '/') {
+        if (isActive(fixedRoot, fullpath, false)) {
           baseRouter.resolve(fullpath, (err, result) => {
             if (err) {
               failure = err;

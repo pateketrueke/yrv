@@ -50,12 +50,8 @@ export function navigateTo(path, options) {
   } = options || {};
 
   // If path empty or no string, throws error
-  if (!path || typeof path !== 'string') {
-    throw new Error(`yrv expects navigateTo() to have a string parameter. The parameter provided was: ${path} of type ${typeof path} instead.`);
-  }
-
-  if (path[0] !== '/' && path[0] !== '#') {
-    throw new Error(`yrv expects navigateTo() param to start with slash or hash, e.g. "/${path}" or "#${path}" instead of "${path}".`);
+  if (!path || typeof path !== 'string' || (path[0] !== '/' && path[0] !== '#')) {
+    throw new Error(`Expecting '/${path}' or '#${path}', given '${path}'`);
   }
 
   if (params) {
