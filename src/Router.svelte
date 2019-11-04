@@ -126,7 +126,6 @@
       }
 
       try {
-        // FIXME: this smeels like more compelxity... how to avoid?
         baseRouter.find(fullpath).forEach(sub => {
           // clear routes that not longer matches!
           if (sub.exact && !sub.matches) {
