@@ -112,7 +112,7 @@
 
   function addRouter(root, callback) {
     if (!routers) {
-      window.addEventListener('popstate', evtHandler, false);
+      window.addEventListener('popstate', findRoutes, false);
     }
 
     // FIXME: how to get rid of these callbacks?
@@ -120,12 +120,11 @@
     routers += 1;
 
     return () => {
+      delete callbacks[root];
       routers -= 1;
 
-      delete callbacks[root];
-
       if (!routers) {
-        window.removeEventListener('popstate', evtHandler, false);
+        window.removeEventListener('popstate', findRoutes, false);
       }
     };
   }
