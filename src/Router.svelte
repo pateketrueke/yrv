@@ -19,66 +19,33 @@
   router.subscribe(value => { context.router = value; });
   routeInfo.subscribe(value => { context.routeInfo = value; });
 
-  // function doFallback(e, _path, queryParams) {
-  //   $routeInfo = {
-  //     [fallback]: {
-  //       failure: e,
-  //       query: queryParams,
-  //       params: { _: _path.substr(1) || undefined },
-  //     },
-  //   };
-  // }
+  function doFallback(root, failure, fallback) {
+    console.log('FALLBACK', root, failure, fallback);
+  }
 
-  function handleRoutes(query, routes, fullpath) {
-    routes.some(x => {
+  function handleRoutes(map, _path, _query) {
+    map.some(x => {
       if (x.key && x.matches && !x.fallback && !context.routeInfo[x.key]) {
+        context.params = Object.assign(context.params || {}, x.params);
+
         if (x.redirect && (x.condition === null || x.condition(context.router) !== true)) {
-          if (x.exact && fullpath !== x.path) return false;
-          console.log('GO!');
+          if (x.exact && _path !== x.path) return false;
           navigateTo(x.redirect);
           return true;
         }
 
-        // upgrade macthing routes...
-        context.routeInfo[x.key] = { ...x, query };
+        routeInfo.update(defaults => ({
+          ...defaults,
+          [x.key]: {
+            ...x,
+            query: _query,
+            params: context.params,
+          },
+        }));
       }
+
       return false;
     });
-  }
-
-  function resolveFrom(callback, fullpath, query) {
-    let _error;
-
-    try {
-      baseRouter.resolve(fullpath, (err, routes) => {
-        if (err) {
-          _error = err;
-          return;
-        }
-
-        handleRoutes(query, routes, fullpath);
-      });
-    } catch (e) {
-      _error = e;
-    }
-
-    try {
-      baseRouter.find(fullpath).forEach(sub => {
-        // clear routes that not longer matches!
-        if (sub.exact && !sub.matches) {
-          delete context.routeInfo[sub.key];
-        }
-
-        // upgrade existing routes...
-        if (sub.key && sub.matches && !sub.fallback) {
-          context.routeInfo[sub.key] = { ...sub, query };
-        }
-      });
-    } catch (e) {
-      // this is fine
-    }
-
-    callback(_error);
   }
 
   function evtHandler() {
@@ -92,26 +59,48 @@
     const [fullpath, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
     const query = queryString.parse(qs);
 
-    console.log('CHECK!', fullpath);
-
-    Object.keys(callbacks).some(baseDir => {
-      if (isActive(baseDir, fullpath, false)) {
-        resolveFrom(callbacks[baseDir], fullpath, query);
-        return true;
-      }
-
-      return false;
-    });
-
-    // upgrade shared state
+    routeInfo.set({});
     router.set({
       query,
       path: fullpath,
       params: context.params,
     });
 
-    // notify all active routes
-    routeInfo.set(context.routeInfo);
+    let failure;
+
+    baseRouter.resolve(fullpath, (err, result) => {
+      if (err) {
+        failure = err;
+        return;
+      }
+
+      handleRoutes(result, fullpath, query);
+    });
+
+    try {
+      baseRouter.find(fullpath).forEach(sub => {
+        // clear routes that not longer matches!
+        if (sub.exact && !sub.matches) {
+          // $routeInfo[sub.key] = null;
+          routeInfo.update(defaults => ({
+            ...defaults,
+            [sub.key]: null,
+          }));
+        }
+
+        // upgrade existing routes...
+        if (sub.key && sub.matches && !sub.fallback) {
+          // $routeInfo[sub.key] = { ...sub, query };
+        }
+      });
+    } catch (e) {
+      // this is fine
+    }
+
+    // FIXME: find another way to make-it reactive...
+    Object.keys(callbacks).forEach(root => {
+      callbacks[root](isActive(root, fullpath, false) ? failure : null);
+    });
   }
 
   function addRouter(root, callback) {
@@ -178,12 +167,11 @@
   }
 
   onMount(() => {
-    cleanup = addRouter(fixedRoot, err => {
+    cleanup = addRouter(fixedRoot, (err, root) => {
       failure = err;
 
       if (failure && fallback) {
-        console.log('FAILURE', failure, fallback);
-        // doFallback(failure, fullpath, query);
+        doFallback(root, failure, fallback);
       }
     });
   });
