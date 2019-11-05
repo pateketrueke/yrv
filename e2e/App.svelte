@@ -9,6 +9,8 @@
   }
 
   import Testing from './components/Testing.svelte';
+
+  let loggedIn;
 </script>
 
 <h1>
@@ -79,6 +81,27 @@
       <Route exact path="/edit">(edit)</Route>
       <Route exact path="/save">(save)</Route>
     </Router>
+  </Router>
+</div>
+
+<div data-test="logged">
+  <label>
+    <input type="checkbox" bind:checked={loggedIn} /> on/off
+  </label>
+
+  <Link exact href="/auth">&rarr;</Link>
+  | <Link href="/auth/login">Login</Link>
+  | <Link href="/auth/protected">Protected page</Link>
+
+  <Router path="/auth">
+    {#if !loggedIn}
+      <Route redirect="/auth/login" />
+    {:else}
+      <Route>Welcome back.</Route>
+    {/if}
+
+    <Route path="/protected" condition={() => loggedIn} redirect="/auth/login">O.K.</Route>
+    <Route path="/login">Log-in</Route>
   </Router>
 </div>
 

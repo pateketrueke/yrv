@@ -200,6 +200,23 @@ test.page(url('/gist#test/not_found'))('it should fail on unreachable routes', a
   await t.expect(Selector('[data-test=hashed]').innerText).contains('Unreachable');
 });
 
+fixture('yrv (conditional routes)')
+  .page(url('/auth'));
+
+test('it should invoke condition callbacks', async t => {
+  await t.click(Selector('a').withText('Protected page'));
+  await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
+
+  await t.click(Selector('[data-test=logged]').find('input'));
+  await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
+  await t.expect(Selector('[data-test=logged]').innerText).contains('Welcome back.');
+
+  await t.click(Selector('a').withText('Protected page'));
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('Log-in');
+  await t.expect(Selector('[data-test=logged]').innerText).contains('Welcome back. O.K.');
+});
+
 if (!process.env.HASHCHANGE) {
   fixture('yrv (base-href)')
     .page(url('/folder'));
