@@ -19,27 +19,33 @@
   router.subscribe(value => { context.router = value; });
   routeInfo.subscribe(value => { context.routeInfo = value; });
 
-  function doFallback(root, failure, fallback) {
-    console.log('FALLBACK', root, failure, fallback);
+  function doFallback(failure, fallback) {
+    routeInfo.set({
+      [fallback]: {
+        ...context.router,
+        failure,
+      },
+    });
   }
 
-  function handleRoutes(map, _path, _query) {
+  function handleRoutes(map, params) {
     map.some(x => {
       if (x.key && x.matches && !x.fallback && !context.routeInfo[x.key]) {
-        context.params = Object.assign(context.params || {}, x.params);
-
         if (x.redirect && (x.condition === null || x.condition(context.router) !== true)) {
-          if (x.exact && _path !== x.path) return false;
+          if (x.exact && context.router.path !== x.path) return false;
           navigateTo(x.redirect);
           return true;
         }
 
+        // extend shared params...
+        Object.assign(params, x.params);
+
+        // upgrade matching routes!
         routeInfo.update(defaults => ({
           ...defaults,
           [x.key]: {
+            ...context.router,
             ...x,
-            query: _query,
-            params: context.params,
           },
         }));
       }
@@ -58,12 +64,14 @@
 
     const [fullpath, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
     const query = queryString.parse(qs);
+    const params = {};
 
+    // reset current state
     routeInfo.set({});
     router.set({
       query,
+      params,
       path: fullpath,
-      params: context.params,
     });
 
     let failure;
@@ -74,23 +82,17 @@
         return;
       }
 
-      handleRoutes(result, fullpath, query);
+      handleRoutes(result, params);
     });
 
     try {
+      // clear routes that not longer matches!
       baseRouter.find(fullpath).forEach(sub => {
-        // clear routes that not longer matches!
         if (sub.exact && !sub.matches) {
-          // $routeInfo[sub.key] = null;
           routeInfo.update(defaults => ({
             ...defaults,
             [sub.key]: null,
           }));
-        }
-
-        // upgrade existing routes...
-        if (sub.key && sub.matches && !sub.fallback) {
-          // $routeInfo[sub.key] = { ...sub, query };
         }
       });
     } catch (e) {
@@ -103,16 +105,19 @@
     });
   }
 
+  function findRoutes() {
+    clearTimeout(interval);
+    interval = setTimeout(evtHandler);
+  }
+
   function addRouter(root, callback) {
     if (!routers) {
       window.addEventListener('popstate', evtHandler, false);
     }
 
+    // FIXME: how to get rid of these callbacks?
     callbacks[root] = callback;
     routers += 1;
-
-    clearTimeout(interval);
-    interval = setTimeout(evtHandler);
 
     return () => {
       routers -= 1;
@@ -159,19 +164,22 @@
       fallback = (handler.fallback && key) || fallback;
     });
 
+    findRoutes();
+
     return [key, fullpath];
   }
 
   function unassignRoute(route) {
     baseRouter.rm(route);
+    findRoutes();
   }
 
   onMount(() => {
-    cleanup = addRouter(fixedRoot, (err, root) => {
+    cleanup = addRouter(fixedRoot, err => {
       failure = err;
 
       if (failure && fallback) {
-        doFallback(root, failure, fallback);
+        doFallback(failure, fallback);
       }
     });
   });
