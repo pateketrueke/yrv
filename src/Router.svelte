@@ -1,20 +1,20 @@
 <script context="module">
   import queryString from 'query-string';
   import Router from 'abstract-nested-router';
-
-  const baseRouter = new Router();
-</script>
-
-<script>
-  import {
-    onDestroy, getContext, setContext,
-  } from 'svelte';
-
   import { writable } from 'svelte/store';
 
   import {
     CTX_ROUTER, ROOT_URL, hashchangeEnable, navigateTo, isActive, router,
   } from './utils';
+
+  const routeInfo = writable({});
+  const baseRouter = new Router();
+</script>
+
+<script>
+  import {
+    onMount, onDestroy, getContext, setContext,
+  } from 'svelte';
 
   let failure;
   let fallback;
@@ -23,7 +23,6 @@
   export let nofallback = false;
 
   const routerContext = getContext(CTX_ROUTER);
-  const routeInfo = routerContext ? routerContext.routeInfo : writable({});
   const basePath = routerContext ? routerContext.basePath : writable(path);
 
   const fixedRoot = $basePath !== path && $basePath !== '/'
@@ -57,6 +56,7 @@
     map.some(x => {
       if (x.key && x.matches && !x.fallback && !$routeInfo[x.key]) {
         if (x.redirect && (x.condition === null || x.condition($router) !== true)) {
+          if (x.exact && _path !== x.path) return false;
           navigateTo(x.redirect);
           return true;
         }
@@ -72,63 +72,65 @@
     });
   }
 
+  function findRoutes() {
+    failure = null;
+    $routeInfo = {};
+
+    let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
+
+    // unprefix active URL
+    if (ROOT_URL !== '/') {
+      baseUri = baseUri.replace(ROOT_URL, '');
+    }
+
+    const [fullpath, searchQuery] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
+    const query = queryString.parse(searchQuery);
+    const ctx = {};
+
+    try {
+      if (isActive(fixedRoot, fullpath, false)) {
+        baseRouter.resolve(fullpath, (err, result) => {
+          if (err) {
+            failure = err;
+            return;
+          }
+
+          handleRoutes(result, fullpath, query, ctx);
+        });
+      }
+    } catch (e) {
+      failure = e;
+    } finally {
+      $router.path = fullpath;
+      $router.query = query;
+      $router.params = ctx;
+    }
+
+    if (failure && fallback) {
+      doFallback(failure, fullpath, query);
+      return;
+    }
+
+    try {
+      baseRouter.find(fullpath).forEach(sub => {
+        // clear routes that not longer matches!
+        if (sub.exact && !sub.matches) {
+          $routeInfo[sub.key] = null;
+        }
+
+        // upgrade existing routes...
+        if (sub.matches && !sub.fallback) {
+          $routeInfo[sub.key] = { ...sub, query };
+        }
+      });
+    } catch (e) {
+      // this is fine
+    }
+  }
+
   function resolveRoutes() {
     clearTimeout(resolveRoutes.t);
-
-    resolveRoutes.t = setTimeout(() => {
-      failure = null;
-      $routeInfo = {};
-
-      let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
-
-      // unprefix active URL
-      if (ROOT_URL !== '/') {
-        baseUri = baseUri.replace(ROOT_URL, '');
-      }
-
-      const [fullpath, searchQuery] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
-      const query = queryString.parse(searchQuery);
-      const ctx = {};
-
-      try {
-        if (isActive(fixedRoot, fullpath, false)) {
-          baseRouter.resolve(fullpath, (err, result) => {
-            if (err) {
-              failure = err;
-              return;
-            }
-
-            handleRoutes(result, fullpath, query, ctx);
-          });
-        }
-      } catch (e) {
-        failure = e;
-      } finally {
-        $router.path = fullpath;
-        $router.query = query;
-        $router.params = ctx;
-      }
-
-      if (failure && fallback) {
-        doFallback(failure, fullpath, query);
-        return;
-      }
-
-      try {
-        baseRouter.find(fullpath).forEach(sub => {
-          // clear routes that not longer matches!
-          if (sub.exact && !sub.matches) {
-            $routeInfo[sub.key] = null;
-          }
-
-          if (sub.matches && !sub.fallback) {
-            $routeInfo[sub.key] = { ...sub, query };
-          }
-        });
-      } catch (e) {
-        // this is fine
-      }
-    });
+    resolveRoutes.t = setTimeout(findRoutes);
   }
 
   function assignRoute(key, route, detail) {
@@ -155,7 +157,9 @@
     resolveRoutes();
   }
 
-  window.addEventListener('popstate', resolveRoutes, false);
+  onMount(() => {
+    window.addEventListener('popstate', resolveRoutes, false);
+  });
 
   onDestroy(() => {
     window.removeEventListener('popstate', resolveRoutes, false);

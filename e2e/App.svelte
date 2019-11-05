@@ -91,11 +91,12 @@
 
   <Link exact href="/auth">&rarr;</Link>
   | <Link href="/auth/login">Login</Link>
+  | <Link href="/auth/not_found">Not found</Link>
   | <Link href="/auth/protected">Protected page</Link>
 
   <Router path="/auth">
     {#if !loggedIn}
-      <Route redirect="/auth/login" />
+      <Route exact redirect="/auth/login" />
     {:else}
       <Route>Welcome back.</Route>
     {/if}

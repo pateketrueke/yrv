@@ -77,7 +77,7 @@ export function navigateTo(path, options) {
   }
 
   // If no History API support, fallbacks to URL redirect
-  if (reload || !window.history.pushState || !dispatchEvent) {
+  if (reload || !window.history.pushState || !window.dispatchEvent) {
     window.location.href = path;
     return;
   }
@@ -85,7 +85,7 @@ export function navigateTo(path, options) {
   // If has History API support, uses it
   fixedLocation(path, nextURL => {
     window.history[replace ? 'replaceState' : 'pushState'](null, '', nextURL);
-    dispatchEvent(new Event('popstate'));
+    window.dispatchEvent(new Event('popstate'));
   });
 }
 
