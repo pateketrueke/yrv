@@ -1,28 +1,7 @@
-<script>
+<script context="module">
   import { writable } from 'svelte/store';
-  import { onDestroy, getContext, setContext } from 'svelte';
+  import { routeInfo } from './router';
   import { CTX_ROUTER, CTX_ROUTE } from './utils';
-
-  export let key = null;
-  export let path = '/';
-  export let props = null;
-  export let exact = null;
-  export let fallback = null;
-  export let component = null;
-  export let condition = null;
-  export let redirect = null;
-
-  const routeContext = getContext(CTX_ROUTE);
-  const routePath = routeContext ? routeContext.routePath : writable(path);
-
-  const {
-    assignRoute, unassignRoute, routeInfo,
-  } = getContext(CTX_ROUTER);
-
-  let activeRouter = null;
-  let activeProps = {};
-  let fullpath;
-  let failure;
 
   function getProps(given, required) {
     const { props: sub, ...others } = given;
@@ -37,6 +16,31 @@
       ...others,
     };
   }
+</script>
+
+<script>
+  import { onDestroy, getContext, setContext } from 'svelte';
+
+  export let key = null;
+  export let path = '/';
+  export let props = null;
+  export let exact = null;
+  export let fallback = null;
+  export let component = null;
+  export let condition = null;
+  export let redirect = null;
+
+  const routeContext = getContext(CTX_ROUTE);
+  const routePath = routeContext ? routeContext.routePath : writable(path);
+
+  const {
+    assignRoute, unassignRoute,
+  } = getContext(CTX_ROUTER);
+
+  let activeRouter = null;
+  let activeProps = {};
+  let fullpath;
+  let failure;
 
   const fixedRoot = $routePath !== path && $routePath !== '/'
     ? `${$routePath}${path !== '/' ? path : ''}`
