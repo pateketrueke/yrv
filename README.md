@@ -95,7 +95,7 @@ Available props:
 Normal `on:click` events are still allowed, so you can use:
 
 ```html
-<Link go="back" href="/">Back to home</Link>
+<Link on:click={() => location.reload()}>Reload</Link>
 ```
 
 > Active _links_ will gain the `[aria-current]` attribute, and `[disabled]` if they're buttons.
