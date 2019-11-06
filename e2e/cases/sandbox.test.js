@@ -41,6 +41,7 @@ test('it should mount nested content', async t => {
 test('it should fallback on unmatched routes', async t => {
   await t.click(Selector('a').withText('Broken link'));
   await t.expect(Selector('[data-test=example]').withText('Not found').visible).ok();
+  await t.expect(Selector('[data-test=example]').innerText).notContains('Hello a');
 });
 
 fixture('yrv (fallback)')
@@ -203,18 +204,34 @@ test.page(url('/gist#test/not_found'))('it should fail on unreachable routes', a
 fixture('yrv (conditional routes)')
   .page(url('/auth'));
 
-test('it should invoke condition callbacks', async t => {
+test('it should redirect from protected pages', async t => {
   await t.click(Selector('a').withText('Protected page'));
   await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
   await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('O.K.');
+});
 
+test('it should skip redirections otherwise', async t => {
   await t.click(Selector('[data-test=logged]').find('input'));
-  await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
+  await t.click(Selector('a').withText('→'));
   await t.expect(Selector('[data-test=logged]').innerText).contains('Welcome back.');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('Log-in');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('O.K.');
+});
 
+test('it should allow routes if conditions are met', async t => {
+  await t.click(Selector('[data-test=logged]').find('input'));
   await t.click(Selector('a').withText('Protected page'));
   await t.expect(Selector('[data-test=logged]').innerText).notContains('Log-in');
-  await t.expect(Selector('[data-test=logged]').innerText).contains('Welcome back. O.K.');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
+  await t.expect(Selector('[data-test=logged]').innerText).contains('O.K.');
+});
+
+test('it should sync once conditions are reverted', async t => {
+  await t.click(Selector('[data-test=logged]').find('input'));
+  await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
+  await t.expect(Selector('[data-test=logged]').innerText).notContains('O.K.');
 });
 
 if (!process.env.HASHCHANGE) {

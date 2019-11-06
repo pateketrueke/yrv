@@ -30,7 +30,7 @@
   <p data-test="example">
     <Route exact>Hello World</Route>
     <Route fallback>Not found</Route>
-    <Route path="/:name" let:router>Hello {router.params.name}</Route>
+    <Route exact path="/:name" let:router>Hello {router.params.name}</Route>
   </p>
 </Router>
 
@@ -98,7 +98,7 @@
     {#if !loggedIn}
       <Route exact redirect="/auth/login" />
     {:else}
-      <Route>Welcome back.</Route>
+      <Route exact>Welcome back.</Route>
     {/if}
 
     <Route path="/protected" condition={() => loggedIn} redirect="/auth/login">O.K.</Route>
