@@ -9,29 +9,30 @@ import {
 export const baseRouter = new Router();
 export const routeInfo = writable({});
 
-const context = {};
-const callbacks = {};
+// private registries
+const onError = {};
+const shared = {};
 
 let routers = 0;
 let interval;
 
 // take snapshot from current state...
-router.subscribe(value => { context.router = value; });
-routeInfo.subscribe(value => { context.routeInfo = value; });
+router.subscribe(value => { shared.router = value; });
+routeInfo.subscribe(value => { shared.routeInfo = value; });
 
 function handleRoutes(map, params) {
-  const exactKeys = [];
+  const keys = [];
 
   map.some(x => {
-    if (x.key && x.matches && !x.fallback && !context.routeInfo[x.key]) {
-      if (x.redirect && (x.condition === null || x.condition(context.router) !== true)) {
-        if (x.exact && context.router.path !== x.path) return false;
+    if (x.key && x.matches && !x.fallback && !shared.routeInfo[x.key]) {
+      if (x.redirect && (x.condition === null || x.condition(shared.router) !== true)) {
+        if (x.exact && shared.router.path !== x.path) return false;
         navigateTo(x.redirect);
         return true;
       }
 
       if (x.exact) {
-        exactKeys.push(x.key);
+        keys.push(x.key);
       }
 
       // extend shared params...
@@ -41,7 +42,7 @@ function handleRoutes(map, params) {
       routeInfo.update(defaults => ({
         ...defaults,
         [x.key]: {
-          ...context.router,
+          ...shared.router,
           ...x,
         },
       }));
@@ -50,11 +51,12 @@ function handleRoutes(map, params) {
     return false;
   });
 
-  return exactKeys;
+  return keys;
 }
 
 function evtHandler() {
   let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
+  let failure;
 
   // unprefix active URL
   if (ROOT_URL !== '/') {
@@ -74,46 +76,46 @@ function evtHandler() {
     path: fullpath,
   });
 
-  let failure;
-
+  // load all matching routes...
   baseRouter.resolve(fullpath, (err, result) => {
     if (err) {
       failure = err;
       return;
     }
 
+    // save exact-keys for deletion after failures!
     keys.push(...handleRoutes(result, params));
   });
+
+  const toDelete = {};
+
+  if (failure) {
+    keys.reduce((prev, cur) => {
+      prev[cur] = null;
+      return prev;
+    }, toDelete);
+  }
 
   try {
     // clear routes that not longer matches!
     baseRouter.find(fullpath).forEach(sub => {
       if (sub.exact && !sub.matches) {
-        routeInfo.update(defaults => ({
-          ...defaults,
-          [sub.key]: null,
-        }));
+        toDelete[sub.key] = null;
       }
     });
   } catch (e) {
     // this is fine
   }
 
-  if (failure) {
-    const toDelete = keys.reduce((prev, cur) => {
-      prev[cur] = null;
-      return prev;
-    }, {});
+  // drop unwanted routes...
+  routeInfo.update(defaults => ({
+    ...defaults,
+    ...toDelete,
+  }));
 
-    routeInfo.update(defaults => ({
-      ...defaults,
-      ...toDelete,
-    }));
-  }
-
-  // FIXME: find another way to make-it reactive...
-  Object.keys(callbacks).forEach(root => {
-    callbacks[root](isActive(root, fullpath, false) ? failure : null);
+  // invoke error-handlers to clear out previous state!
+  Object.keys(onError).forEach(root => {
+    onError[root](isActive(root, fullpath, false) ? failure : null);
   });
 }
 
@@ -127,12 +129,12 @@ export function addRouter(root, callback) {
     window.addEventListener('popstate', findRoutes, false);
   }
 
-  // FIXME: how to get rid of these callbacks?
-  callbacks[root] = callback;
+  // register error-handlers
+  onError[root] = callback;
   routers += 1;
 
   return () => {
-    delete callbacks[root];
+    delete onError[root];
     routers -= 1;
 
     if (!routers) {
@@ -145,7 +147,7 @@ export function doFallback(failure, fallback) {
   routeInfo.update(defaults => ({
     ...defaults,
     [fallback]: {
-      ...context.router,
+      ...shared.router,
       failure,
     },
   }));

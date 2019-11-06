@@ -2,6 +2,7 @@ import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
 import queryString from 'query-string';
 
+const cache = {};
 const baseTag = document.getElementsByTagName('base');
 const basePrefix = (baseTag[0] && baseTag[0].href.replace(/\/$/, '')) || '/';
 
@@ -90,13 +91,15 @@ export function navigateTo(path, options) {
 }
 
 export function isActive(uri, path, exact) {
-  if (exact !== true && path.indexOf(uri) === 0) {
-    return /^[#/?]?$/.test(path.substr(uri.length, 1));
+  if (!cache[[uri, path, exact]]) {
+    if (exact !== true && path.indexOf(uri) === 0) {
+      cache[[uri, path, exact]] = /^[#/?]?$/.test(path.substr(uri.length, 1));
+    } else if (uri.includes('*') || uri.includes(':')) {
+      cache[[uri, path, exact]] = Router.matches(uri, path);
+    } else {
+      cache[[uri, path, exact]] = path === uri;
+    }
   }
 
-  if (uri.includes('*') || uri.includes(':')) {
-    return Router.matches(uri, path);
-  }
-
-  return path === uri;
+  return cache[[uri, path, exact]];
 }

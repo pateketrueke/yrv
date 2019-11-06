@@ -49,14 +49,16 @@
     findRoutes();
   }
 
-  onMount(() => {
-    cleanup = addRouter(fixedRoot, err => {
-      failure = err;
+  function onError(err) {
+    failure = err;
 
-      if (failure && fallback) {
-        doFallback(failure, fallback);
-      }
-    });
+    if (failure && fallback) {
+      doFallback(failure, fallback);
+    }
+  }
+
+  onMount(() => {
+    cleanup = addRouter(fixedRoot, onError);
   });
 
   onDestroy(() => {
