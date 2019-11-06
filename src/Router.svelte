@@ -20,21 +20,28 @@
   routeInfo.subscribe(value => { context.routeInfo = value; });
 
   function doFallback(failure, fallback) {
-    routeInfo.set({
+    routeInfo.update(defaults => ({
+      ...defaults,
       [fallback]: {
         ...context.router,
         failure,
       },
-    });
+    }));
   }
 
   function handleRoutes(map, params) {
+    const exactKeys = [];
+
     map.some(x => {
       if (x.key && x.matches && !x.fallback && !context.routeInfo[x.key]) {
         if (x.redirect && (x.condition === null || x.condition(context.router) !== true)) {
           if (x.exact && context.router.path !== x.path) return false;
           navigateTo(x.redirect);
           return true;
+        }
+
+        if (x.exact) {
+          exactKeys.push(x.key);
         }
 
         // extend shared params...
@@ -52,6 +59,8 @@
 
       return false;
     });
+
+    return exactKeys;
   }
 
   function evtHandler() {
@@ -65,6 +74,7 @@
     const [fullpath, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
     const query = queryString.parse(qs);
     const params = {};
+    const keys = [];
 
     // reset current state
     routeInfo.set({});
@@ -82,7 +92,7 @@
         return;
       }
 
-      handleRoutes(result, params);
+      keys.push(...handleRoutes(result, params));
     });
 
     try {
@@ -97,6 +107,18 @@
       });
     } catch (e) {
       // this is fine
+    }
+
+    if (failure) {
+      const toDelete = keys.reduce((prev, cur) => {
+        prev[cur] = null;
+        return prev;
+      }, {});
+
+      routeInfo.update(defaults => ({
+        ...defaults,
+        ...toDelete,
+      }));
     }
 
     // FIXME: find another way to make-it reactive...

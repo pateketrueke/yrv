@@ -194,7 +194,7 @@ test.page(url('/gist#test/save'))('it should load nested root-handlers (/save)',
 
 test.page(url('/gist#test/not_found'))('it should fail on unreachable routes', async t => {
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('GIST INFO');
-  await t.expect(Selector('[data-test=hashed]').innerText).notContains('SHA1');
+  await t.expect(Selector('[data-test=hashed]').innerText).contains('SHA1: test');
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
   await t.expect(Selector('[data-test=hashed]').innerText).contains('Unreachable');
