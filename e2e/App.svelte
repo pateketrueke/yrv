@@ -106,6 +106,12 @@
   </Router>
 </div>
 
+<Router condition={() => loggedIn}>
+  <p data-test="secret">
+    <Route>Shhhh! Top-secret</Route>
+  </p>
+</Router>
+
 <Router path="/sub">
   <Route>
     <Link exact href="/sub#">Root</Link> | <Link href="/sub#/about">About page</Link> | <Link href="/sub#broken">Broken anchor</Link>
