@@ -220,15 +220,16 @@ test('it should skip redirections otherwise', async t => {
 });
 
 test('it should allow routes if conditions are met', async t => {
+  await t.expect(Selector('[data-test=secret]').exists).notOk();
   await t.click(Selector('[data-test=logged]').find('input'));
   await t.click(Selector('a').withText('Protected page'));
+  await t.expect(Selector('[data-test=secret]').innerText).contains('Top-secret');
   await t.expect(Selector('[data-test=logged]').innerText).notContains('Log-in');
   await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
   await t.expect(Selector('[data-test=logged]').innerText).contains('O.K.');
-});
 
-test('it should sync once conditions are reverted', async t => {
   await t.click(Selector('[data-test=logged]').find('input'));
+  await t.expect(Selector('[data-test=secret]').exists).notOk();
   await t.expect(Selector('[data-test=logged]').innerText).contains('Log-in');
   await t.expect(Selector('[data-test=logged]').innerText).notContains('Welcome back.');
   await t.expect(Selector('[data-test=logged]').innerText).notContains('O.K.');

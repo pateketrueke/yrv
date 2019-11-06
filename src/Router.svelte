@@ -1,6 +1,6 @@
 <script context="module">
   import { writable } from 'svelte/store';
-  import { CTX_ROUTER } from './utils';
+  import { CTX_ROUTER, router } from './utils';
   import {
     baseRouter, addRouter, findRoutes, doFallback,
   } from './router';
@@ -14,8 +14,10 @@
   let cleanup;
   let failure;
   let fallback;
+  let disabled;
 
   export let path = '/';
+  export let condition = null;
   export let nofallback = false;
 
   const routerContext = getContext(CTX_ROUTER);
@@ -24,6 +26,14 @@
   const fixedRoot = $basePath !== path && $basePath !== '/'
     ? `${$basePath}${path !== '/' ? path : ''}`
     : path;
+
+  try {
+    if (condition !== null && typeof condition !== 'function') {
+      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+    }
+  } catch (e) {
+    failure = e;
+  }
 
   function assignRoute(key, route, detail) {
     key = key || Math.random().toString(36).substr(2);
@@ -62,7 +72,7 @@
   });
 
   onDestroy(() => {
-    cleanup();
+    if (cleanup) cleanup();
   });
 
   setContext(CTX_ROUTER, {
@@ -70,6 +80,10 @@
     assignRoute,
     unassignRoute,
   });
+
+  $: if (condition) {
+    disabled = !condition($router);
+  }
 </script>
 
 <style>
@@ -78,7 +92,9 @@
   }
 </style>
 
-<slot />
+{#if !disabled}
+  <slot />
+{/if}
 
 {#if failure && !fallback && !nofallback}
   <fieldset data-failure>
