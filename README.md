@@ -14,6 +14,7 @@ Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-
 - Fallback `<Route />` handlers
 - Hash and URI-based routes
 - Support for [query-string](https://www.npmjs.com/package/query-string)
+- [REPL ready!](https://svelte.dev/repl/0f07c6134b16432591a9a3a0095a80de?version=3.12.1)
 
 > `yrv` will use any _base-href_ found on the current page to rewrite links and routes.
 
