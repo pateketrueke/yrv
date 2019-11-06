@@ -9,6 +9,7 @@
 Built on top of [abstract-nested-router](https://www.npmjs.com/package/abstract-nested-router), so you can use nested routers, also:
 
 - Advanced parameters can be used, e.g. `/:id<\d+>` &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
+- ARIA-compliant, sets `[aria-current="page"]` on active links
 - Seamless `<base href="..." />` integration
 - Conditionals and redirection through props
 - Fallback `<Route />` handlers
@@ -40,7 +41,7 @@ Install `yrv` through NPM or Yarn:
 </p>
 ```
 
-> Notice `fallback` routes can't be placed at the beginning. :bomb:
+> Notice `fallback` routes can’t be placed at the beginning, otherwise further routes will not be mounted. :bomb:
 
 ## Components
 
