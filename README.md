@@ -75,7 +75,7 @@ Available props:
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
-### `<Link {href} {title} {exact} {reload} {replace} {class|className} />`
+### `<Link {go} {href} {title} {exact} {reload} {replace} {class|className} />`
 
 In order to navigate, you can use `Link` components, or regular links, etc.
 
@@ -83,6 +83,7 @@ In order to navigate, you can use `Link` components, or regular links, etc.
 
 Available props:
 
+- `{go}` &mdash; History shortcut (see below)
 - `{href}` &mdash; New location, default to `/`
 - `{title}` &mdash; HTML title-attribute value
 - `{button}` &mdash; If set, will use button-tag instead
@@ -94,10 +95,18 @@ Available props:
 Normal `on:click` events are still allowed, so you can use:
 
 ```html
-<Link on:click={() => navigateTo('/')}>Back to home</Link>
+<Link go="back" href="/">Back to home</Link>
 ```
 
 > Active _links_ will gain the `[aria-current]` attribute, and `[disabled]` if they're buttons.
+
+Aditionally, you can setup  `go` to moving around:
+
+- `"back"` &mdash; String; if given, will invoke `history.back()`
+- `"fwd"` &mdash; String; if given, will invoke `history.fwd()`
+- `n` &mdash; Number; if given, it'll be used to invoke `history.go(n)`
+
+> If navigating through `history` is not possible a normal redirection will run. :anchor:
 
 ## Public API
 
