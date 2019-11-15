@@ -51,7 +51,7 @@
 </p>
 
 <Router path="/test" nofallback>
-  <Route path="/">
+  <Route>
     <h2>Testing features</h2>
 
     <p>This content is always mounted when the current URL starts-with <tt>/test</tt>.</p>
