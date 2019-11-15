@@ -106,7 +106,7 @@
   </Router>
 </div>
 
-<Router condition={() => loggedIn}>
+<Router disabled={!loggedIn}>
   <p data-test="secret">
     <Route>Shhhh! Top-secret</Route>
   </p>

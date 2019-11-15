@@ -14,9 +14,9 @@
   let cleanup;
   let failure;
   let fallback;
-  let disabled;
 
   export let path = '/';
+  export let disabled = false;
   export let condition = null;
   export let nofallback = false;
 

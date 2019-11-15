@@ -25,6 +25,7 @@
   export let path = '/';
   export let props = null;
   export let exact = null;
+  export let disabled = false;
   export let fallback = null;
   export let component = null;
   export let condition = null;
@@ -68,7 +69,7 @@
 
   $: if (key) {
     /* global arguments */
-    activeRouter = $routeInfo[key];
+    activeRouter = !disabled && $routeInfo[key];
     activeProps = getProps($$props, arguments[0].$$.props);
   }
 
