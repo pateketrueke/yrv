@@ -65,7 +65,7 @@ export function handleRoutes(map, params) {
 }
 
 export function evtHandler() {
-  let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
+  let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash || '/';
   let failure;
 
   // unprefix active URL
