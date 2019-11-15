@@ -20,7 +20,17 @@ let interval;
 router.subscribe(value => { shared.router = value; });
 routeInfo.subscribe(value => { shared.routeInfo = value; });
 
-function handleRoutes(map, params) {
+export function doFallback(failure, fallback) {
+  routeInfo.update(defaults => ({
+    ...defaults,
+    [fallback]: {
+      ...shared.router,
+      failure,
+    },
+  }));
+}
+
+export function handleRoutes(map, params) {
   const keys = [];
 
   map.some(x => {
@@ -54,7 +64,7 @@ function handleRoutes(map, params) {
   return keys;
 }
 
-function evtHandler() {
+export function evtHandler() {
   let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash;
   let failure;
 
@@ -113,10 +123,23 @@ function evtHandler() {
     ...toDelete,
   }));
 
+  let fallback;
+
   // invoke error-handlers to clear out previous state!
   Object.keys(onError).forEach(root => {
-    onError[root](isActive(root, fullpath, false) ? failure : null);
+    if (isActive(root, fullpath, false)) {
+      onError[root].callback(failure);
+    }
+
+    if (onError[root].fallback) {
+      fallback = onError[root].fallback;
+    }
   });
+
+  // handle unmatched fallbacks
+  if (failure && fallback) {
+    doFallback(failure, fallback);
+  }
 }
 
 export function findRoutes() {
@@ -124,13 +147,13 @@ export function findRoutes() {
   interval = setTimeout(evtHandler);
 }
 
-export function addRouter(root, callback) {
+export function addRouter(root, fallback, callback) {
   if (!routers) {
     window.addEventListener('popstate', findRoutes, false);
   }
 
   // register error-handlers
-  onError[root] = callback;
+  onError[root] = { fallback, callback };
   routers += 1;
 
   return () => {
@@ -141,14 +164,4 @@ export function addRouter(root, callback) {
       window.removeEventListener('popstate', findRoutes, false);
     }
   };
-}
-
-export function doFallback(failure, fallback) {
-  routeInfo.update(defaults => ({
-    ...defaults,
-    [fallback]: {
-      ...shared.router,
-      failure,
-    },
-  }));
 }

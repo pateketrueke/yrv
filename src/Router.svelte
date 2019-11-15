@@ -68,7 +68,7 @@
   }
 
   onMount(() => {
-    cleanup = addRouter(fixedRoot, onError);
+    cleanup = addRouter(fixedRoot, fallback, onError);
   });
 
   onDestroy(() => {
