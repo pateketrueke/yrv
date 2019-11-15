@@ -32,11 +32,11 @@
   export let redirect = null;
 
   const routeContext = getContext(CTX_ROUTE);
-  const routePath = routeContext ? routeContext.routePath : writable(path);
+  const routerContext = getContext(CTX_ROUTER);
 
-  const {
-    assignRoute, unassignRoute,
-  } = getContext(CTX_ROUTER);
+  const { assignRoute, unassignRoute } = routerContext || {};
+
+  const routePath = routeContext ? routeContext.routePath : writable(path);
 
   let activeRouter = null;
   let activeProps = {};
@@ -60,6 +60,10 @@
       throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
     }
 
+    if (!assignRoute) {
+      throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
+    }
+
     [key, fullpath] = assignRoute(key, fixedRoot, {
       condition, redirect, fallback, exact,
     });
@@ -74,7 +78,9 @@
   }
 
   onDestroy(() => {
-    unassignRoute(fullpath);
+    if (unassignRoute) {
+      unassignRoute(fullpath);
+    }
   });
 
   setContext(CTX_ROUTE, {
