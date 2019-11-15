@@ -31,6 +31,10 @@
     if (condition !== null && typeof condition !== 'function') {
       throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
     }
+
+    if (path.charAt() !== '#' && path.charAt() !== '/') {
+      throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+    }
   } catch (e) {
     failure = e;
   }
