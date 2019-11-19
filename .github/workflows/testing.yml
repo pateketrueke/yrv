@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: tacoss/nodejs@v1.0.0
+      - uses: tacoss/nodejs@v0.0.1
         with:
           args: ci
