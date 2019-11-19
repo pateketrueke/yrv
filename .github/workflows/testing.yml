@@ -8,5 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: tacoss/nodejs@master
+        env:
+          BROWSER: chromium:headless
         with:
           args: ci
