@@ -19,4 +19,4 @@ jobs:
       - name: E2E (hashchange)
         uses: ianwalter/puppeteer@v2.0.0
         with:
-          args: --version && HASHCHANGE=true npm test
+          args: '"--version && HASHCHANGE=true npm test"'
