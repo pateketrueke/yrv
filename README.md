@@ -2,8 +2,8 @@
 
 ![yrv](yrv.png)
 
+![Build status](https://github.com/pateketrueke/yrv/workflows/build/badge.svg)
 [![NPM version](https://badge.fury.io/js/yrv.png)](http://badge.fury.io/js/yrv)
-[![travis-ci](https://api.travis-ci.org/pateketrueke/yrv.svg)](https://travis-ci.org/pateketrueke/yrv)
 [![Known Vulnerabilities](https://snyk.io/test/npm/yrv/badge.svg)](https://snyk.io/test/npm/yrv)
 
 </div>
