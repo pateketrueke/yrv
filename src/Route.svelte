@@ -7,7 +7,7 @@
     const { props: sub, ...others } = given;
 
     // prune all declared props from this component
-    required = typeof required === 'object'
+    required = Object.prototype.toString.call(required) !== '[object Array]'
       ? Object.keys(required)
       : required;
     required.forEach(k => {
