@@ -6,17 +6,8 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Dependencies
-        uses: ianwalter/puppeteer@v2.0.0
+      - uses: actions/checkout@v1
+      - uses: ianwalter/puppeteer@v2.0.0
         with:
-          args: npm ci
-      - name: E2E
-        uses: ianwalter/puppeteer@v2.0.0
-        with:
-          args: npm test
-      - name: E2E (hashchange)
-        uses: ianwalter/puppeteer@v2.0.0
-        with:
-          args: '"--version && HASHCHANGE=true npm test"'
+          entrypoint: /bin/make
+          args: ci
