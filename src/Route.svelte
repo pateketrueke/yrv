@@ -7,6 +7,9 @@
     const { props: sub, ...others } = given;
 
     // prune all declared props from this component
+    required = Object.prototype.toString.call(required) !== '[object Array]'
+      ? Object.keys(required)
+      : required;
     required.forEach(k => {
       delete others[k];
     });
