@@ -7,9 +7,10 @@
     const { props: sub, ...others } = given;
 
     // prune all declared props from this component
-    required = Object.prototype.toString.call(required) !== '[object Array]'
+    required = !Array.isArray(required)
       ? Object.keys(required)
       : required;
+
     required.forEach(k => {
       delete others[k];
     });
@@ -26,7 +27,6 @@
 
   export let key = null;
   export let path = '/';
-  export let props = null;
   export let exact = null;
   export let disabled = false;
   export let fallback = null;
