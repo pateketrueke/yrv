@@ -31,10 +31,11 @@
     "url": "git+https://github.com/pateketrueke/yrv.git"
   },
   "keywords": [
-    "nested",
     "router",
     "svelte",
-    "svelte3"
+    "svelte3",
+    "svelte-router",
+    "svelte3-router"
   ],
   "peerDependencies": {
     "svelte": "3.x"
