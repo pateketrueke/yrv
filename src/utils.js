@@ -90,6 +90,24 @@ export function navigateTo(path, options) {
   });
 }
 
+export function getProps(given, required) {
+  const { props: sub, ...others } = given;
+
+  // prune all declared props from this component
+  required = !Array.isArray(required)
+    ? Object.keys(required)
+    : required;
+
+  required.forEach(k => {
+    delete others[k];
+  });
+
+  return {
+    ...sub,
+    ...others,
+  };
+}
+
 export function isActive(uri, path, exact) {
   if (!cache[[uri, path, exact]]) {
     if (exact !== true && path.indexOf(uri) === 0) {

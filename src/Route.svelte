@@ -1,25 +1,7 @@
 <script context="module">
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
-  import { CTX_ROUTER, CTX_ROUTE } from './utils';
-
-  function getProps(given, required) {
-    const { props: sub, ...others } = given;
-
-    // prune all declared props from this component
-    required = !Array.isArray(required)
-      ? Object.keys(required)
-      : required;
-
-    required.forEach(k => {
-      delete others[k];
-    });
-
-    return {
-      ...sub,
-      ...others,
-    };
-  }
+  import { CTX_ROUTER, CTX_ROUTE, getProps } from './utils';
 </script>
 
 <script>

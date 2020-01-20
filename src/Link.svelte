@@ -2,7 +2,7 @@
   import { onMount, createEventDispatcher } from 'svelte';
 
   import {
-    ROOT_URL, fixedLocation, navigateTo, isActive, router,
+    ROOT_URL, fixedLocation, navigateTo, isActive, getProps, router,
   } from './utils';
 
   let ref;
@@ -21,7 +21,7 @@
   export { cssClass as class };
 
   // rebase active URL
-  if (ROOT_URL !== '/') {
+  $: if (ROOT_URL !== '/') {
     fixedHref = ROOT_URL + href;
   } else {
     fixedHref = href;
@@ -43,6 +43,10 @@
       ref.removeAttribute('aria-current');
     }
   }
+
+  // extract additional props
+  /* global arguments */
+  $: fixedProps = getProps($$props, arguments[0].$$.props);
 
   onMount(() => {
     className = className || cssClass;
@@ -67,11 +71,11 @@
 </script>
 
 {#if button}
-  <button bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+  <button {...fixedProps} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
     <slot />
   </button>
 {:else}
-  <a href={fixedHref} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+  <a {...fixedProps} href={fixedHref} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
     <slot />
   </a>
 {/if}

@@ -11,6 +11,7 @@
   import Testing from './components/Testing.svelte';
 
   let loggedIn;
+  let myLink = '/';
 </script>
 
 <h1>
@@ -40,6 +41,12 @@
   <Link href="/top/foo/a">1</Link>
   | <Link href="/top/bar/b">2</Link>
   | <Link href="/top/bar/c">3</Link>
+</p>
+
+<p>
+  Link's `href` can be changed as well, e.g.
+  <Link data-test="customhref" href={myLink}>Change me!</Link>
+  <input data-test="custominput" type="text" bind:value={myLink} />
 </p>
 
 <p data-test="nested">
