@@ -27,7 +27,7 @@ test('it should mount from slot-content nodes', async t => {
 });
 
 test('it should allow to bind <Link {href} /> and such', async t => {
-  await t.typeText(Selector('[data-test=custominput]'), '/success');
+  await t.typeText(Selector('[data-test=custominput]'), 'success');
   await t.expect(Selector('[data-test=customhref]').getAttribute('href')).contains('/success');
 });
 
