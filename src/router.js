@@ -13,6 +13,7 @@ export const routeInfo = writable({});
 const onError = {};
 const shared = {};
 
+let errors = [];
 let routers = 0;
 let interval;
 
@@ -106,6 +107,10 @@ export function evtHandler() {
     }, toDelete);
   }
 
+  // clear previously failed handlers
+  errors.forEach(cb => cb());
+  errors = [];
+
   try {
     // clear routes that not longer matches!
     baseRouter.find(fullpath).forEach(sub => {
@@ -128,10 +133,13 @@ export function evtHandler() {
   // invoke error-handlers to clear out previous state!
   Object.keys(onError).forEach(root => {
     if (isActive(root, fullpath, false)) {
-      onError[root].callback(failure);
+      const fn = onError[root].callback;
+
+      fn(failure);
+      errors.push(fn);
     }
 
-    if (onError[root].fallback) {
+    if (!fallback && onError[root].fallback) {
       fallback = onError[root].fallback;
     }
   });
