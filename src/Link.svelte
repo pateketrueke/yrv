@@ -58,8 +58,27 @@
     }
 
     if (!fixedHref) {
-      if (open) window.open(href);
-      else window.location.href = href;
+      if (open) {
+        let specs = typeof open === 'string' ? open : '';
+
+        const wmatch = specs.match(/width=(\d+)/);
+        const hmatch = specs.match(/height=(\d+)/);
+
+        if (wmatch) specs += `,left=${(window.screen.width - wmatch[1]) / 2}`;
+        if (hmatch) specs += `,top=${(window.screen.height - hmatch[1]) / 2}`;
+
+        if (wmatch && !hmatch) {
+          specs += `,height=${wmatch[1]},top=${(window.screen.height - wmatch[1]) / 2}`;
+        }
+
+        const w = window.open(href, '', specs);
+        const t = setInterval(() => {
+          if (w.closed) {
+            dispatch('close');
+            clearInterval(t);
+          }
+        }, 120);
+      } else window.location.href = href;
       return;
     }
 

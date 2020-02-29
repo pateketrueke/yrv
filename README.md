@@ -101,6 +101,8 @@ Available props:
 - `{replace}` &mdash; Use `history.replaceState()` instead
 - `{class}` &mdash; Custom class-name for the mounted anchor
 
+> The value for `open` can be a string including the window specs, e.g. `width=400,height=200` &mdash; a `on:close` event will be fired once the opened window is closed.
+
 Normal `on:click` events are still allowed, so you can use:
 
 ```html

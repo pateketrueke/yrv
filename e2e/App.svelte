@@ -25,6 +25,11 @@
 | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
 | <Link exact href="/example">Example page</Link>
 
+<p>
+  Links can open windows, and thay can set callbacks too:
+  <Link open href="//google.com" on:close={() => /* eslint-disable no-alert */ alert('GREAT!')}>Open window</Link>
+</p>
+
 <Router path="/example">
   | <Link exact href="/example/a">Link</Link> | <Link exact href="/example/a/b">Broken link</Link>
 
