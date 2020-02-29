@@ -1,5 +1,5 @@
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
 
   import {
     ROOT_URL, fixedLocation, navigateTo, isActive, getProps, router,
@@ -11,20 +11,18 @@
   let fixedHref = null;
 
   export let go = null;
+  export let open = null;
   export let href = '/';
   export let title = '';
   export let button = false;
   export let exact = false;
   export let reload = false;
   export let replace = false;
-  export let className = '';
   export { cssClass as class };
 
   // rebase active URL
   $: if (!/^(\w+:)?\/\//.test(href)) {
     fixedHref = ROOT_URL + href;
-  } else {
-    fixedHref = href;
   }
 
   $: if (ref && $router.path) {
@@ -48,10 +46,6 @@
   /* global arguments */
   $: fixedProps = getProps($$props, arguments[0].$$.props);
 
-  onMount(() => {
-    className = className || cssClass;
-  });
-
   const dispatch = createEventDispatcher();
 
   // this will enable `<Link on:click={...} />` calls
@@ -63,6 +57,12 @@
       return;
     }
 
+    if (!fixedHref) {
+      if (open) window.open(href);
+      else window.location.href = href;
+      return;
+    }
+
     fixedLocation(href, nextURL => {
       navigateTo(nextURL, { reload, replace });
       dispatch('click', e);
@@ -71,11 +71,11 @@
 </script>
 
 {#if button}
-  <button {...fixedProps} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+  <button {...fixedProps} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
     <slot />
   </button>
 {:else}
-  <a {...fixedProps} href={fixedHref} bind:this={ref} class={className} {title} on:click|preventDefault={onClick}>
+  <a {...fixedProps} href={fixedHref || href} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
     <slot />
   </a>
 {/if}

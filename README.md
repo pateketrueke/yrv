@@ -83,7 +83,7 @@ Available props:
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
-### `<Link {go} {href} {title} {exact} {reload} {replace} {class|className} />`
+### `<Link {go} {href} {open} {title} {exact} {reload} {replace} {class} />`
 
 In order to navigate, you can use `Link` components, or regular links, etc.
 
@@ -93,12 +93,13 @@ Available props:
 
 - `{go}` &mdash; History shortcut (see below)
 - `{href}` &mdash; New location, default to `/`
+- `{open}` &mdash; Same behavior as `<a target="_blank">`
 - `{title}` &mdash; HTML title-attribute value
 - `{button}` &mdash; If set, will use button-tag instead
 - `{exact}` &mdash; Determine if link should match exactly to be set as active
 - `{reload}` &mdash; Use `location.href` instead
 - `{replace}` &mdash; Use `history.replaceState()` instead
-- `{class|className}` &mdash; Custom class-name for the mounted anchor
+- `{class}` &mdash; Custom class-name for the mounted anchor
 
 Normal `on:click` events are still allowed, so you can use:
 
