@@ -28,7 +28,7 @@ export function hashchangeEnable(value) {
   return HASHCHANGE;
 }
 
-export function fixedLocation(path, callback) {
+export function fixedLocation(path, callback, doFinally) {
   const baseUri = hashchangeEnable() ? window.location.hash.replace('#', '') : window.location.pathname;
 
   // this will rebase anchors to avoid location changes
@@ -41,6 +41,11 @@ export function fixedLocation(path, callback) {
   // do not change location et all...
   if (currentURL !== path) {
     callback(path);
+  }
+
+  // invoke final guard regardless of previous result
+  if (typeof doFinally === 'function') {
+    doFinally();
   }
 }
 

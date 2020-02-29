@@ -50,8 +50,6 @@
 
   // this will enable `<Link on:click={...} />` calls
   function onClick(e) {
-    dispatch('click', e);
-
     if (typeof go === 'string' && window.history.length > 1) {
       if (go === 'back') window.history.back();
       else if (go === 'fwd') window.history.forward();
@@ -86,7 +84,7 @@
 
     fixedLocation(href, nextURL => {
       navigateTo(nextURL, { reload, replace });
-    });
+    }, () => dispatch('click', e));
   }
 </script>
 
