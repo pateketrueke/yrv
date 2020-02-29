@@ -21,7 +21,7 @@
   export { cssClass as class };
 
   // rebase active URL
-  $: if (ROOT_URL !== '/') {
+  $: if (!/^(\w+:)?\/\//.test(href)) {
     fixedHref = ROOT_URL + href;
   } else {
     fixedHref = href;
