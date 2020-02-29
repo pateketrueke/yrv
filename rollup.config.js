@@ -2,6 +2,7 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
+import buble from 'rollup-plugin-buble';
 import { terser } from 'rollup-plugin-terser';
 
 const pkg = require('./package.json');
@@ -34,6 +35,10 @@ export default {
     commonjs(),
     replace({
       USE_HASH_CHANGE: JSON.stringify(!!process.env.HASHCHANGE),
+    }),
+    buble({
+      objectAssign: 'Object.assign',
+      transforms: { dangerousForOf: true },
     }),
     isProd && terser(),
   ],

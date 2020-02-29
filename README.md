@@ -124,3 +124,17 @@ Aditionally, you can setup  `go` to moving around:
 - `$router` &mdash; Store with shared routeInfo details, similar to `let:router`
 
 > `yrv` gracefully degrades to `location.hash` on environments where `history` is not suitable, also it can be forced through `Router.hashchange = true`.
+
+### IE11 support
+
+Support for IE11 is _granted_ if you include, at least, the following polyfills before your application:
+
+```html
+<script>if (!!window.MSInputMethodContext && !!document.documentMode)
+  document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=default,Promise,Object.getOwnPropertyDescriptors"><\/script>');</script>
+<script src="your-app.js"></script>
+```
+
+> `document.write()` is used because conditional comments were dropped in IE10, so this way you can conditionally load polyfills anyway.
+
+Also, you MUST to [enable either `buble` or `babel`](https://github.com/sveltejs/svelte/issues/2621) within your build pipeline to transpile down to ES5.
