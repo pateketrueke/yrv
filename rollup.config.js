@@ -25,7 +25,7 @@ export default {
     bundle(pkg.main, 'cjs'),
     bundle(pkg.module, 'es'),
     bundle(pkg.browser, 'umd'),
-  ] : bundle('e2e/public/test.js', 'iife'),
+  ] : bundle('e2e/public/assets/test.js', 'iife'),
   external: isProd ? ['svelte', 'svelte/store', 'svelte/internal'] : [],
   plugins: [
     svelte({

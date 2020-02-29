@@ -1,5 +1,4 @@
 .DS_Store
 dist
 node_modules
-e2e/public/test.js
-e2e/public/test.js.map
+e2e/public/assets

@@ -10,6 +10,8 @@
   export let key = null;
   export let path = '/';
   export let exact = null;
+  export let dynamic = null;
+  export let pending = null;
   export let disabled = false;
   export let fallback = null;
   export let component = null;
@@ -84,9 +86,17 @@
 {/if}
 
 {#if activeRouter}
-  {#if component}
-    <svelte:component this={component} router={activeRouter} {...activeProps} />
+  {#if dynamic}
+    {#await dynamic}
+      {#if pending}{pending}{/if}
+    {:then c}
+      <svelte:component this={c.default} router={activeRouter} {...activeProps} />
+    {/await}
   {:else}
-    <slot router={activeRouter} props={activeProps} />
+    {#if component}
+      <svelte:component this={component} router={activeRouter} {...activeProps} />
+    {:else}
+      <slot router={activeRouter} props={activeProps} />
+    {/if}
   {/if}
 {/if}

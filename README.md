@@ -62,7 +62,7 @@ Available props:
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
-### `<Route {key} {path} {props} {exact} {fallback} {component} {disabled} {condition} {redirect} let:router />`
+### `<Route {key} {path} {props} {exact} {dynamic} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
 
 Main container for routing, they can hold any component or children.
 
@@ -72,6 +72,8 @@ Available props:
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
 - `{props}` &mdash; Additional properties for rendered component
 - `{exact}` &mdash; If set, the route will render only if the route exactly matches
+- `{dynamic}` &mdash; Promise, if set will resolve and use its result as lazy-component
+- `{pending}` &mdash; String, this value is rendered during the loading of dynamic components
 - `{fallback}` &mdash; If set, the route will render only if no more routes were matched
 - `{component}` &mdash; A valid svelte-component to render if the route matches
 - `{disabled}` &mdash; Boolean; Similar to condition, but for bound props
