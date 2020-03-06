@@ -20,6 +20,9 @@
   export let replace = false;
   export { cssClass as class };
 
+  // replacement for `Object.keys(arguments[0].$$.props)`
+  const thisProps = ['go', 'open', 'href', 'class', 'title', 'button', 'exact', 'reload', 'replace'];
+
   // rebase active URL
   $: if (!/^(\w+:)?\/\//.test(href)) {
     fixedHref = ROOT_URL + href;
@@ -43,8 +46,7 @@
   }
 
   // extract additional props
-  /* global arguments */
-  $: fixedProps = getProps($$props, arguments[0].$$.props);
+  $: fixedProps = getProps($$props, thisProps);
 
   const dispatch = createEventDispatcher();
 

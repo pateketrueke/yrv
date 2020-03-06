@@ -18,6 +18,9 @@
   export let condition = null;
   export let redirect = null;
 
+  // replacement for `Object.keys(arguments[0].$$.props)`
+  const thisProps = ['key', 'path', 'exact', 'dynamic', 'pending', 'disabled', 'fallback', 'component', 'condition', 'redirect'];
+
   const routeContext = getContext(CTX_ROUTE);
   const routerContext = getContext(CTX_ROUTER);
 
@@ -59,9 +62,8 @@
   }
 
   $: if (key) {
-    /* global arguments */
     activeRouter = !disabled && $routeInfo[key];
-    activeProps = getProps($$props, arguments[0].$$.props);
+    activeProps = getProps($$props, thisProps);
   }
 
   onDestroy(() => {

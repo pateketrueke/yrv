@@ -99,10 +99,6 @@ export function getProps(given, required) {
   const { props: sub, ...others } = given;
 
   // prune all declared props from this component
-  required = !Array.isArray(required)
-    ? Object.keys(required)
-    : required;
-
   required.forEach(k => {
     delete others[k];
   });
