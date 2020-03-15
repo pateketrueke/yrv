@@ -5,7 +5,6 @@
   "main": "dist/yrv.js",
   "svelte": "src/index.js",
   "module": "dist/yrv.es.js",
-  "browser": "dist/yrv.min.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
   "bugs": {
