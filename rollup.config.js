@@ -36,7 +36,7 @@ export default {
     }),
     buble({
       objectAssign: 'Object.assign',
-      transforms: { dangerousForOf: true },
+      transforms: { dangerousForOf: true, asyncAwait: false },
     }),
     isProd && terser(),
   ],
