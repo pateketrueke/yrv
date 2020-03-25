@@ -62,7 +62,7 @@ Available props:
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
-### `<Route {key} {path} {props} {exact} {dynamic} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
+### `<Route {key} {path} {props} {exact} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
 
 Main container for routing, they can hold any component or children.
 

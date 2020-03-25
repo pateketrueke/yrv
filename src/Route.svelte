@@ -2,7 +2,7 @@
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
   import {
-    CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent, isFunction,
+    CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent,
   } from './utils';
 </script>
 

@@ -123,10 +123,6 @@ export function isActive(uri, path, exact) {
   return cache[[uri, path, exact]];
 }
 
-export function isFunction(object) {
-  return typeof object === 'function';
-}
-
 export function isPromise(object) {
   return object && typeof object.then === 'function';
 }
