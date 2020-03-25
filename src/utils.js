@@ -122,3 +122,15 @@ export function isActive(uri, path, exact) {
 
   return cache[[uri, path, exact]];
 }
+
+export function isFunction(object) {
+  return Object.prototype.toString.call(object).includes('Function');
+}
+
+export function isPromise(object) {
+  return Object.prototype.toString.call(object).includes('Promise');
+}
+
+export function isSvelteComponent(object) {
+  return object && object.prototype;
+}
