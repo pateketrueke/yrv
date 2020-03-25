@@ -1,7 +1,9 @@
 <script context="module">
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
-  import { CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent, isFunction } from './utils';
+  import {
+    CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent, isFunction,
+  } from './utils';
 </script>
 
 <script>
@@ -66,21 +68,23 @@
     activeProps = getProps($$props, thisProps);
   }
 
-  $: activeRouter && (async () => {
+  $: if (activeRouter) {
     if (!component) { // component passed as slot
       hasLoaded = true;
     } else if (isSvelteComponent(component)) { // component passed as Svelte component
       hasLoaded = true;
     } else if (isPromise(component)) { // component passed as import()
-      const {default: M} = await component;
-      component = M;
-      hasLoaded = true;
+      component.then(module => {
+        component = module.default;
+        hasLoaded = true;
+      });
     } else if (isFunction(component) && activeRouter.path === path) { // component passed as () => import()
-      const {default: M} = await component();
-      component = M;
-      hasLoaded = true;
+      component().then(module => {
+        component = module.default;
+        hasLoaded = true;
+      });
     }
-  })();
+  }
 
   onDestroy(() => {
     if (unassignRoute) {
