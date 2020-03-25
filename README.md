@@ -72,16 +72,37 @@ Available props:
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
 - `{props}` &mdash; Additional properties for rendered component
 - `{exact}` &mdash; If set, the route will render only if the route exactly matches
-- `{dynamic}` &mdash; Promise, if set will resolve and use its result as lazy-component
-- `{pending}` &mdash; String, this value is rendered during the loading of dynamic components
+- `{pending}` &mdash; Svelte-component or String; rendered during the loading of dynamic components
 - `{fallback}` &mdash; If set, the route will render only if no more routes were matched
-- `{component}` &mdash; A valid svelte-component to render if the route matches
+- `{component}` &mdash; Accepts either a valid svelte-component, a promise, or a dynamic import function
 - `{disabled}` &mdash; Boolean; Similar to condition, but for bound props
 - `{condition}` &mdash; Function; if given, the route will render only if evaluates to true
 - `{redirect}` &mdash; Alternate redirection location, only if the previous condition was true
 - `let:router` &mdash; Injects the `router` context, it also provides `failure` in case of errors
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
+
+> {component} prop examples:
+
+```html
+<script>
+  import SvelteComponent from 'path/to/svelte-component.svelte';
+</script>
+
+<Link href="/">Home</Link>
+| <Link href="/svelte-component">Svelte component</Link>
+| <Link href="/promise">Promised component</Link>
+| <Link href="/async">Async component</Link>
+
+<p>
+  <Router>
+    <Route exact>Hello World</Route>
+    <Route exact path="/svelte-component" component={SvelteComponent}/>
+    <Route exact path="/promise" component={import('path/to/other-component.svelte')}/>
+    <Route exact path="/async" component={() => import('path/to/another-component.svelte')}/>
+  </Router>
+</p>
+```
 
 ### `<Link {go} {href} {open} {title} {exact} {reload} {replace} {class} />`
 

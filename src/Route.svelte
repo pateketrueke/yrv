@@ -1,7 +1,9 @@
 <script context="module">
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
-  import { CTX_ROUTER, CTX_ROUTE, getProps } from './utils';
+  import {
+    CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent, isFunction,
+  } from './utils';
 </script>
 
 <script>
@@ -10,7 +12,6 @@
   export let key = null;
   export let path = '/';
   export let exact = null;
-  export let dynamic = null;
   export let pending = null;
   export let disabled = false;
   export let fallback = null;
@@ -19,7 +20,7 @@
   export let redirect = null;
 
   // replacement for `Object.keys(arguments[0].$$.props)`
-  const thisProps = ['key', 'path', 'exact', 'dynamic', 'pending', 'disabled', 'fallback', 'component', 'condition', 'redirect'];
+  const thisProps = ['key', 'path', 'exact', 'pending', 'disabled', 'fallback', 'component', 'condition', 'redirect'];
 
   const routeContext = getContext(CTX_ROUTE);
   const routerContext = getContext(CTX_ROUTER);
@@ -32,6 +33,7 @@
   let activeProps = {};
   let fullpath;
   let failure;
+  let hasLoaded;
 
   const fixedRoot = $routePath !== path && $routePath !== '/'
     ? `${$routePath}${path !== '/' ? path : ''}`
@@ -66,6 +68,24 @@
     activeProps = getProps($$props, thisProps);
   }
 
+  $: if (activeRouter) {
+    if (!component) { // component passed as slot
+      hasLoaded = true;
+    } else if (isSvelteComponent(component)) { // component passed as Svelte component
+      hasLoaded = true;
+    } else if (isPromise(component)) { // component passed as import()
+      component.then(module => {
+        component = module.default;
+        hasLoaded = true;
+      });
+    } else if (activeRouter.path === path) { // component passed as () => import()
+      component().then(module => {
+        component = module.default;
+        hasLoaded = true;
+      });
+    }
+  }
+
   onDestroy(() => {
     if (unassignRoute) {
       unassignRoute(fullpath);
@@ -88,12 +108,14 @@
 {/if}
 
 {#if activeRouter}
-  {#if dynamic}
-    {#await dynamic}
-      {#if pending}{pending}{/if}
-    {:then c}
-      <svelte:component this={c.default} router={activeRouter} {...activeProps} />
-    {/await}
+  {#if !hasLoaded}
+    {#if pending}
+      {#if isSvelteComponent(pending)}
+        <svelte:component this={pending} router={activeRouter} {...activeProps} />
+      {:else}
+        {pending}
+      {/if}
+    {/if}
   {:else}
     {#if component}
       <svelte:component this={component} router={activeRouter} {...activeProps} />
