@@ -124,11 +124,11 @@ export function isActive(uri, path, exact) {
 }
 
 export function isFunction(object) {
-  return Object.prototype.toString.call(object).includes('Function');
+  return typeof object === 'function';
 }
 
 export function isPromise(object) {
-  return Object.prototype.toString.call(object).includes('Promise');
+  return object && typeof object.then === 'function';
 }
 
 export function isSvelteComponent(object) {
