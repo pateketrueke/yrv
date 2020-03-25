@@ -1,7 +1,7 @@
 <script context="module">
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
-  import { CTX_ROUTER, CTX_ROUTE, getProps } from './utils';
+  import { CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent, isFunction } from './utils';
 </script>
 
 <script>
@@ -32,6 +32,7 @@
   let activeProps = {};
   let fullpath;
   let failure;
+  let hasLoaded;
 
   const fixedRoot = $routePath !== path && $routePath !== '/'
     ? `${$routePath}${path !== '/' ? path : ''}`
@@ -66,6 +67,22 @@
     activeProps = getProps($$props, thisProps);
   }
 
+  $: activeRouter && (async () => {
+    if (!component) { // component passed as slot
+      hasLoaded = true;
+    } else if (isSvelteComponent(component)) { // component passed as Svelte component
+      hasLoaded = true;
+    } else if (isPromise(component)) { // component passed as import()
+      const {default: M} = await component;
+      component = M;
+      hasLoaded = true;
+    } else if (isFunction(component) && activeRouter.path === path) { // component passed as () => import()
+      const {default: M} = await component();
+      component = M;
+      hasLoaded = true;
+    }
+  })();
+
   onDestroy(() => {
     if (unassignRoute) {
       unassignRoute(fullpath);
@@ -88,12 +105,14 @@
 {/if}
 
 {#if activeRouter}
-  {#if dynamic}
-    {#await dynamic}
-      {#if pending}{pending}{/if}
-    {:then c}
-      <svelte:component this={c.default} router={activeRouter} {...activeProps} />
-    {/await}
+  {#if !hasLoaded}
+    {#if pending}
+      {#if isSvelteComponent(pending)}
+        <svelte:component this={pending} router={activeRouter} {...activeProps} />
+      {:else}
+        {pending}
+      {/if}
+    {/if}
   {:else}
     {#if component}
       <svelte:component this={component} router={activeRouter} {...activeProps} />
