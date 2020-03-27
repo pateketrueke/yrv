@@ -90,18 +90,13 @@
   }
 </script>
 
-<style>
-  [data-failure] {
-    border: 1px dashed silver;
-  }
-</style>
 
 {#if !disabled}
   <slot />
 {/if}
 
 {#if failure && !fallback && !nofallback}
-  <fieldset data-failure>
+  <fieldset style="border: 1px dashed silver;">
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>
   </fieldset>

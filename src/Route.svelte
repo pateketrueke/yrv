@@ -97,14 +97,8 @@
   });
 </script>
 
-<style>
-  [data-failure] {
-    color: red;
-  }
-</style>
-
 {#if failure}
-  <p data-failure>{failure}</p>
+  <p style="color: red;">{failure}</p>
 {/if}
 
 {#if activeRouter}
