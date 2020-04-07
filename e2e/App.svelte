@@ -144,9 +144,3 @@
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
 </Router>
-
-<div data-test="container">
-  <Router>
-    <Route path="/import" component={() => import('./components/Example.svelte')} pending="Loading..." />
-  </Router>
-</div>

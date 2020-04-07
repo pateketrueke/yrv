@@ -19,15 +19,12 @@ function bundle(file, format) {
   };
 }
 
-export default {
+export default [{
   input: isProd ? 'src/index.js' : 'e2e/main.js',
   output: isProd ? [
     bundle(pkg.main, 'cjs'),
     bundle(pkg.module, 'es'),
-  ] : {
-    format: 'esm',
-    dir: 'e2e/public/assets'
-  },
+  ] : bundle('e2e/public/assets/test.js', 'iife'),
   plugins: [
     svelte({
       dev: isDev,
@@ -43,4 +40,17 @@ export default {
     }),
     isProd && terser(),
   ],
-};
+}, !isProd && {
+  input: 'e2e/async.js',
+  output: {
+    format: 'esm',
+    dir: 'e2e/public/assets'
+  },
+  plugins: [
+    svelte({
+      dev: isDev,
+    }),
+    resolve(),
+    commonjs(),
+  ]
+}];
