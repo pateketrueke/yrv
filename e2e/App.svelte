@@ -145,6 +145,8 @@
   </Route>
 </Router>
 
-<Router>
-  <Route path="/import" component={() => import('./components/Example.svelte')} />
-</Router>
+<div data-test="container">
+  <Router>
+    <Route path="/import" component={() => import('./components/Example.svelte')} pending="Loading..." />
+  </Router>
+</div>

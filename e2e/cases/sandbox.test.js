@@ -244,6 +244,7 @@ fixture('yrv (dynamic import)')
   .page(url('/import'));
 
 test('it should allow routes to be loaded with dyanmic import', async t => {
+  await t.expect(Selector('[data-test=container]').innerText).contains('Loading...');
   await t.expect(Selector('[data-test=import]').exists).ok();
 });
 
