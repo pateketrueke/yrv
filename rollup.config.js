@@ -24,7 +24,10 @@ export default {
   output: isProd ? [
     bundle(pkg.main, 'cjs'),
     bundle(pkg.module, 'es'),
-  ] : bundle('e2e/public/assets/test.js', 'iife'),
+  ] : {
+    format: 'esm',
+    dir: 'e2e/public/assets'
+  },
   plugins: [
     svelte({
       dev: isDev,
@@ -34,7 +37,7 @@ export default {
     replace({
       USE_HASH_CHANGE: JSON.stringify(!!process.env.HASHCHANGE),
     }),
-    buble({
+    isProd && buble({
       objectAssign: 'Object.assign',
       transforms: { dangerousForOf: true },
     }),

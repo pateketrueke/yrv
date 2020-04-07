@@ -23,7 +23,7 @@
 
 <Link exact href="/">Home</Link> | <Link href="/test">Test page</Link>
 | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
-| <Link exact href="/example">Example page</Link>
+| <Link exact href="/example">Example page</Link> | <Link href="/import">Call import</Link>
 
 <p>
   Links can open windows, and thay can set callbacks too:
@@ -143,4 +143,8 @@
   <Route fallback>
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
+</Router>
+
+<Router>
+  <Route path="/import" component={() => import('./components/Example.svelte')} />
 </Router>

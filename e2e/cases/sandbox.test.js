@@ -240,6 +240,13 @@ test('it should allow routes if conditions are met', async t => {
   await t.expect(Selector('[data-test=logged]').innerText).notContains('O.K.');
 });
 
+fixture('yrv (dynamic import)')
+  .page(url('/import'));
+
+test('it should allow routes to be loaded with dyanmic import', async t => {
+  await t.expect(Selector('[data-test=import]').exists).ok();
+});
+
 if (!process.env.HASHCHANGE) {
   fixture('yrv (base-href)')
     .page(url('/folder'));
