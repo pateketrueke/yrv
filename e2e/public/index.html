@@ -10,6 +10,19 @@
   <body>
     <script>if (!!window.MSInputMethodContext && !!document.documentMode)
       document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=default,Promise,Object.entries,Object.getOwnPropertyDescriptors"><\/script>');</script>
-    <script src="/assets/test.js"></script>
+    <script>
+      function shimport(src) {
+        try {
+          new Function('import("' + src + '")')();
+        } catch (e) {
+          var s = document.createElement('script');
+          s.src = 'https://unpkg.com/shimport';
+          s.dataset.main = src;
+          document.head.appendChild(s);
+        }
+      }
+
+      shimport('./assets/main.js');
+    </script>
   </body>
 </html>

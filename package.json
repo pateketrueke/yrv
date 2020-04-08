@@ -60,7 +60,7 @@
     "testcafe": "^1.5.0"
   },
   "dependencies": {
-    "abstract-nested-router": "^0.1.13",
+    "abstract-nested-router": "^0.1.15",
     "query-string": "^6.8.3"
   }
 }

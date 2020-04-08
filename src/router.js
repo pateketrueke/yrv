@@ -74,7 +74,14 @@ export function evtHandler() {
     baseUri = baseUri.replace(ROOT_URL, '');
   }
 
-  const [fullpath, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
+  // trailing slash is required to keep route-info on nested routes!
+  // see: https://github.com/pateketrueke/abstract-nested-router/commit/0f338384bddcfbaee30f3ea2c4eb0c24cf5174cd
+  const [fullpath, qs] = baseUri
+    .replace('/#', '#')
+    .replace(/^#\//, '/')
+    .replace(/\/?$/, '/')
+    .split('?');
+
   const query = queryString.parse(qs);
   const params = {};
   const keys = [];

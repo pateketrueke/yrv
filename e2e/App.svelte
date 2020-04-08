@@ -8,6 +8,10 @@
     Router.hashchange = USE_HASH_CHANGE;
   }
 
+  function delay(promise) {
+    return new Promise(ok => setTimeout(() => ok(promise), 200));
+  }
+
   import Testing from './components/Testing.svelte';
 
   let loggedIn;
@@ -30,8 +34,14 @@
   <Link open href="//google.com" on:close={() => /* eslint-disable no-alert */ alert('GREAT!')}>Open window</Link>
 </p>
 
+<div data-test="container">
+  <Router>
+    <Route path="/import" component={() => delay(import('./components/Example.svelte'))} pending="Loading..." />
+  </Router>
+</div>
+
 <Router path="/example">
-  | <Link exact href="/example/a">Link</Link> | <Link exact href="/example/a/b">Broken link</Link>
+  <Link exact href="/example/a">Link</Link> | <Link exact href="/example/a/b">Broken link</Link>
 
   <p data-test="example">
     <Route exact>Hello World</Route>

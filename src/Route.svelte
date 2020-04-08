@@ -56,7 +56,11 @@
       throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
 
-    [key, fullpath] = assignRoute(key, fixedRoot, {
+    const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
+      ? `${fixedRoot}/`
+      : fixedRoot;
+
+    [key, fullpath] = assignRoute(key, fixedRoute, {
       condition, redirect, fallback, exact,
     });
   } catch (e) {
