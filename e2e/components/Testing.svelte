@@ -27,6 +27,7 @@
 </script>
 
 <h3>Injected parameters</h3>
+
 <fieldset data-test="parameters">
   <legend>router</legend>
   <ul>
@@ -59,6 +60,7 @@
   </table>
 
   <Link on:click={() => overrideQueryParams('truth', 42)}>Do not click!</Link>
+  | <Link href="/test/props/Hello%20World.">Hello World.</Link>
 </fieldset>
 
 <Router>

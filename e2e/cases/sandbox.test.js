@@ -116,9 +116,10 @@ test('it should mount or redirect based on given condition', async t => {
 });
 
 fixture('yrv (nested params)')
-  .page(url('/test/props/Hello%20World'));
+  .page(url('/test/props'));
 
 test('it should inject params from resolved routes', async t => {
+  await t.click(Selector('a').withText('Hello World.'));
   await t.expect(Selector('p').withText('Value: Hello World').visible).ok();
 });
 

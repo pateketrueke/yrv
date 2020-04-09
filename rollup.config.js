@@ -19,25 +19,41 @@ function bundle(file, format) {
   };
 }
 
-export default {
-  input: isProd ? 'src/index.js' : 'e2e/main.js',
-  output: isProd ? [
+const plugins = [
+  svelte({
+    dev: isDev,
+  }),
+  resolve(),
+  commonjs(),
+  replace({
+    USE_HASH_CHANGE: JSON.stringify(!!process.env.HASHCHANGE),
+  }),
+  isProd && buble({
+    objectAssign: 'Object.assign',
+    transforms: { dangerousForOf: true },
+  }),
+  isProd && terser(),
+];
+
+const devConfig = [{
+  input: 'e2e/main.import.js',
+  output: { format: 'es', dir: 'e2e/public/assets' },
+  plugins
+}, {
+  input: 'e2e/main.js',
+  output: [
+    bundle('e2e/public/assets/main.js', 'es'),
+  ],
+  plugins,
+}];
+
+const prodConfig = [{
+  input: 'src/index.js',
+  output: [
     bundle(pkg.main, 'cjs'),
     bundle(pkg.module, 'es'),
-  ] : { format: 'es', dir: 'e2e/public/assets' },
-  plugins: [
-    svelte({
-      dev: isDev,
-    }),
-    resolve(),
-    commonjs(),
-    replace({
-      USE_HASH_CHANGE: JSON.stringify(!!process.env.HASHCHANGE),
-    }),
-    isProd && buble({
-      objectAssign: 'Object.assign',
-      transforms: { dangerousForOf: true },
-    }),
-    isProd && terser(),
   ],
-};
+  plugins,
+}];
+
+export default [...(isProd ? prodConfig : devConfig)];

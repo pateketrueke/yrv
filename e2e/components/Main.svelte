@@ -1,18 +1,14 @@
 <script>
   import {
     Router, Route, Link, router,
-  } from '../src';
+  } from '../../src';
 
   /* global USE_HASH_CHANGE */
   if (typeof USE_HASH_CHANGE !== 'undefined' && USE_HASH_CHANGE) {
     Router.hashchange = USE_HASH_CHANGE;
   }
 
-  function delay(promise) {
-    return new Promise(ok => setTimeout(() => ok(promise), 200));
-  }
-
-  import Testing from './components/Testing.svelte';
+  import Testing from './Testing.svelte';
 
   let loggedIn;
   let myLink = '/';
@@ -27,18 +23,11 @@
 
 <Link exact href="/">Home</Link> | <Link href="/test">Test page</Link>
 | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
-| <Link exact href="/example">Example page</Link> | <Link href="/import">Call import</Link>
 
 <p>
   Links can open windows, and thay can set callbacks too:
   <Link open href="//google.com" on:close={() => /* eslint-disable no-alert */ alert('GREAT!')}>Open window</Link>
 </p>
-
-<div data-test="container">
-  <Router>
-    <Route path="/import" component={() => delay(import('./components/Example.svelte'))} pending="Loading..." />
-  </Router>
-</div>
 
 <Router path="/example">
   <Link exact href="/example/a">Link</Link> | <Link exact href="/example/a/b">Broken link</Link>
