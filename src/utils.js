@@ -12,6 +12,7 @@ export const router = writable({
   path: '/',
   query: {},
   params: {},
+  initial: true,
 });
 
 export const CTX_ROUTER = {};

@@ -16,6 +16,7 @@ const shared = {};
 let errors = [];
 let routers = 0;
 let interval;
+let currentURL;
 
 // take snapshot from current state...
 router.subscribe(value => { shared.router = value; });
@@ -84,7 +85,15 @@ export function evtHandler() {
 
   // reset current state
   routeInfo.set({});
-  router.set({ path: cleanPath(fullpath), query, params });
+
+  if (currentURL !== baseUri) {
+    currentURL = baseUri;
+    router.set({
+      path: cleanPath(fullpath),
+      query,
+      params,
+    });
+  }
 
   // load all matching routes...
   baseRouter.resolve(fullpath, (err, result) => {

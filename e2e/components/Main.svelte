@@ -12,6 +12,11 @@
 
   let loggedIn;
   let myLink = '/';
+  let count = 0;
+
+  router.subscribe(info => {
+    if (!info.initial) count += 1;
+  });
 </script>
 
 <h1>
@@ -143,3 +148,8 @@
     <h2 data-test="fallback">NOT FOUND</h2>
   </Route>
 </Router>
+
+<div>
+  <p>You can also hook into the router's state with <code>`router.subscribe(...)`, e.g.</code></p>
+  <p data-test="counter">Times router-info has been changed: {count}</p>
+</div>
