@@ -62,6 +62,8 @@ Available props:
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
+> Nested routers does not need the same path to be declared inside, e.g. the router for `/top` has inside a `/sub` router — due that, `/top/sub` will be used for the inner router (the same as declaring this router outside).
+
 ### `<Route {key} {path} {props} {exact} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
 
 Main container for routing, they can hold any component or children.
@@ -150,6 +152,22 @@ Aditionally, you can setup  `go` to moving around:
 - `$router` &mdash; Store with shared routeInfo details, similar to `let:router`
 
 > `yrv` gracefully degrades to `location.hash` on environments where `history` is not suitable, also it can be forced through `Router.hashchange = true`.
+
+### Route Info
+
+Route changes are propagated through stores, if you want to listen too just subscribe, e.g.
+
+```js
+import { router } from 'yrv';
+
+router.subscribe(e => {
+  if (!e.initial) console.log(e);
+});
+```
+
+Using this technique you gain access to the same detail object as `let:router` does.
+
+> Notice the `initial` property is present as soon the store is initialized, consecutive changes will not have it anymore.
 
 ### IE11 support
 
