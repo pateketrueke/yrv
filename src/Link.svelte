@@ -25,7 +25,7 @@
 
   // rebase active URL
   $: if (!/^(\w+:)?\/\//.test(href)) {
-    fixedHref = ROOT_URL + href;
+    fixedHref = ROOT_URL + href.replace(/^\//, '');
   }
 
   $: if (ref && $router.path) {

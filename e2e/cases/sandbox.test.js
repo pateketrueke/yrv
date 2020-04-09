@@ -16,6 +16,8 @@ fixture('yrv (dsl)')
 test('it just loads!', async t => {
   await t.expect(Selector('h1').withText('Example page').visible).ok();
   await t.expect(Selector('[data-test=counter]').innerText).contains(1);
+  await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/');
+  await t.expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
 });
 
 test('it would mount Route-less content', async t => {
@@ -95,6 +97,12 @@ fixture('yrv (query params)')
 test('it should parse from location.search', async t => {
   await t.expect(Selector('li').withText('query: {}').exists).ok();
   await t.expect(Selector('[data-test=counter]').innerText).contains(1);
+
+  await t.expect(Selector('a').withText('Test page').getAttribute('href')).eql('/test');
+  await t.expect(Selector('a').withText('Test page').hasAttribute('aria-current')).ok();
+
+  await t.expect(Selector('a').withText('Test props').getAttribute('href')).eql('/test/props');
+  await t.expect(Selector('a').withText('Test props').hasAttribute('aria-current')).ok();
 });
 
 test('it should take queryParams from navigateTo()', async t => {
@@ -285,7 +293,7 @@ if (!process.env.HASHCHANGE) {
   test('it should handle <base href="..." /> on all routes and links', async t => {
     await t.click(Selector('a').withText('Test page'));
     await t.expect(Selector('h2').withText('Testing features').visible).ok();
-    await t.expect(Selector('a').withText('Home').getAttribute('href')).contains('/folder/');
+    await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder');
 
     await t.click(Selector('a').withText('Test props'));
     await t.click(Selector('a').withText('Do not click!'));

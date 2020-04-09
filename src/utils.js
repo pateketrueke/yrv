@@ -121,7 +121,7 @@ export function isActive(uri, path, exact) {
     } else if (uri.includes('*') || uri.includes(':')) {
       cache[[uri, path, exact]] = Router.matches(uri, path);
     } else {
-      cache[[uri, path, exact]] = path.replace(/\/$/, '') === uri;
+      cache[[uri, path, exact]] = cleanPath(path) === uri;
     }
   }
 
