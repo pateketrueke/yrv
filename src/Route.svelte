@@ -82,7 +82,7 @@
         component = module.default;
         hasLoaded = true;
       });
-    } else if (activeRouter.path === path) { // component passed as () => import()
+    } else { // component passed as () => import()
       component().then(module => {
         component = module.default;
         hasLoaded = true;

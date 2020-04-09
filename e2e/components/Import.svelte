@@ -10,6 +10,6 @@
 
 <div data-test="container">
   <Router>
-    <Route path="/import" component={() => delay(import('./Example.svelte'))} pending="Loading..." />
+    <Route fallback component={() => delay(import('./Example.svelte'))} pending="Loading..." />
   </Router>
 </div>
