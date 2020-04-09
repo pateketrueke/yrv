@@ -62,9 +62,9 @@ Available props:
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
-> Nested routers does not need the same path to be declared inside, e.g. the router for `/top` has inside a `/sub` router — due that, `/top/sub` will be used for the inner router (the same as declaring this router outside).
+> Nested routers does not need the same path to be declared inside, e.g. the router for `/top` has inside a `/sub` router &mdash; due that, `/top/sub` will be used for the inner router (the same as declaring this router outside).
 
-### `<Route {key} {path} {props} {exact} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
+### `<Route {key} {path} {exact} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
 
 Main container for routing, they can hold any component or children.
 
@@ -72,7 +72,6 @@ Available props:
 
 - `{key}` &mdash; The route identity, not its path; default to random pseudo-hash
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
-- `{props}` &mdash; Additional properties for rendered component
 - `{exact}` &mdash; If set, the route will render only if the route exactly matches
 - `{pending}` &mdash; Svelte-component or String; rendered during the loading of dynamic components
 - `{fallback}` &mdash; If set, the route will render only if no more routes were matched
@@ -84,7 +83,7 @@ Available props:
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
-> {component} prop examples:
+**{component} prop examples:**
 
 ```html
 <script>
@@ -182,3 +181,92 @@ Support for IE11 is _granted_ if you include, at least, the following polyfills 
 > `document.write()` is used because conditional comments were dropped in IE10, so this way you can conditionally load polyfills anyway.
 
 Also, you MUST to [enable either `buble` or `babel`](https://github.com/sveltejs/svelte/issues/2621) within your build pipeline to transpile down to ES5.
+
+### Frequently Asked Questions
+
+**How to conditionally render a `<Router />` component?**
+
+Both Route/Router components supports the `disabled` and `condition` props, but:
+
+- Use `condition` to allow/disallow route-dispatching dynamically
+- Use `disabled` to skip from rendering, it will add/remove the route
+
+This new `disabled` prop would work as you're expecting:
+
+```html
+<Router disabled={!showNavBar}>
+  ...
+</Router>
+```
+
+**Why `path` can't be an empty string like other routers does?**
+
+Even if browsers treat `http://localhost:8080` and `http://localhost:8080/` as the same thing I wanted to keep paths clear as possible.
+
+Internally `yrv` normalizes any given URI to keep a trailing slash, so `/foo` is `/foo/` for matching purposes.
+
+Also, the default path is usually `/` so there's no point on having to declare anything else:
+
+```html
+<Route>OK</Route>
+<Route path="/">OK</Route>
+```
+
+**What is `routeInfo` and how can I access it outside routes?**
+
+This object is very similar to what you get with `let:router` inside components.
+
+Use the `$router` store to access it, e.g.
+
+```html
+<script>
+  import { router } from 'yrv';
+</script>
+<pre>{JSON.stringify($router, null, 2)}</pre>
+```
+
+**Why it does not work with Parcel or webpack/snowpack?**
+
+If you're getting any of the errors below:
+
+- store.subscribe is not a function
+- Class constructor SvelteComponent cannot be invoked without 'new'
+- 'on_outro' is not exported by [...]
+- 'target' is a required option
+
+Make sure you're using the right settings:
+
+1. Add mainFields into resolve config, e.g. `mainFields: ['svelte', 'browser', 'module', 'main']`
+2. Remove `exclude: /node_modules/` from `svelte-loader` config
+
+> If you're using an online tool that is not the official Svelte REPL the behavior is unexpected and no further support will be granted.
+
+**Can I use hash-based routes _à la_ Gmail? e.g. `index.html#/profile`, `index.html#/book/42`?**
+
+Yes, URIs like that are suitable for embedded apps like Electron, where normal URLs would fail.
+
+Also this mode is the default used on the Svelte REPL, because is not an iframe, nor a regular webpage... it's a weird thing!
+
+> If you enable `Router.hashchange = true` all your regular links will be automatically rewritten to hash-based URIs instead, see how it works in our test suite.
+
+**Why I'm getting `<Component> was created with unknown prop 'router'` in the browser's console?**
+
+If you're not using the `router` prop inside your route-components then just add:
+
+```html
+<script>
+  export const router = null;
+</script>
+```
+
+That will remove the warning and also will make happy `eslint-plugin-svelte3` in your workflow.
+
+**Why `router.subscribe` is called two times when I first open the page?**
+
+Any subscription to stores will fire twice as they have an initial value, once the router resolves (e.g. the initial route) then a second event is fired.
+
+> In this case, and additional property `initial` is added to identify such event.
+
+**Is there any method that allows me to detect route change?**
+
+Yes, you can subscribe to the router store, e.g. `router.subscribe(...)` &mdash; [see above](#route-info).
