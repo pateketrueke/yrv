@@ -109,6 +109,10 @@ export function getProps(given, required) {
   };
 }
 
+export function cleanPath(uri) {
+  return uri !== '/' ? uri.replace(/\/$/, '') : uri;
+}
+
 export function isActive(uri, path, exact) {
   if (!cache[[uri, path, exact]]) {
     if (exact !== true && path.indexOf(uri) === 0) {
@@ -116,7 +120,7 @@ export function isActive(uri, path, exact) {
     } else if (uri.includes('*') || uri.includes(':')) {
       cache[[uri, path, exact]] = Router.matches(uri, path);
     } else {
-      cache[[uri, path, exact]] = path === uri;
+      cache[[uri, path, exact]] = path.replace(/\/$/, '') === uri;
     }
   }
 

@@ -3,7 +3,7 @@ import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
 
 import {
-  ROOT_URL, hashchangeEnable, navigateTo, isActive, router,
+  ROOT_URL, hashchangeEnable, navigateTo, cleanPath, isActive, router,
 } from './utils';
 
 export const baseRouter = new Router();
@@ -76,23 +76,15 @@ export function evtHandler() {
 
   // trailing slash is required to keep route-info on nested routes!
   // see: https://github.com/pateketrueke/abstract-nested-router/commit/0f338384bddcfbaee30f3ea2c4eb0c24cf5174cd
-  const [fullpath, qs] = baseUri
-    .replace('/#', '#')
-    .replace(/^#\//, '/')
-    .replace(/\/?$/, '/')
-    .split('?');
-
+  const [fixedUri, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
+  const fullpath = fixedUri.replace(/\/?$/, '/');
   const query = queryString.parse(qs);
   const params = {};
   const keys = [];
 
   // reset current state
   routeInfo.set({});
-  router.set({
-    query,
-    params,
-    path: fullpath,
-  });
+  router.set({ path: cleanPath(fullpath), query, params });
 
   // load all matching routes...
   baseRouter.resolve(fullpath, (err, result) => {
@@ -107,11 +99,14 @@ export function evtHandler() {
 
   const toDelete = {};
 
-  if (failure) {
+  // it's fine to omit failures for '/' paths
+  if (failure && failure.path !== '/') {
     keys.reduce((prev, cur) => {
       prev[cur] = null;
       return prev;
     }, toDelete);
+  } else {
+    failure = null;
   }
 
   // clear previously failed handlers
@@ -120,11 +115,12 @@ export function evtHandler() {
 
   try {
     // clear routes that not longer matches!
-    baseRouter.find(fullpath).forEach(sub => {
-      if (sub.exact && !sub.matches) {
-        toDelete[sub.key] = null;
-      }
-    });
+    baseRouter.find(cleanPath(fullpath))
+      .forEach(sub => {
+        if (sub.exact && !sub.matches) {
+          toDelete[sub.key] = null;
+        }
+      });
   } catch (e) {
     // this is fine
   }
