@@ -276,7 +276,7 @@ test('it should allow routes if conditions are met', async t => {
   await t.expect(Selector('[data-test=counter]').innerText).contains(4);
 });
 
-if (!process.env.CI) {
+if (!process.env.HASHCHANGE) {
   fixture('yrv (dynamic import)')
     .page(url('/import'));
 
@@ -284,9 +284,7 @@ if (!process.env.CI) {
     await t.expect(Selector('[data-test=container]').innerText).contains('Loading...');
     await t.expect(Selector('[data-test=import]').exists).ok();
   });
-}
 
-if (!process.env.HASHCHANGE) {
   fixture('yrv (base-href)')
     .page(url('/folder'));
 

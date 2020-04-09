@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 const cache = {};
 const baseTag = document.getElementsByTagName('base');
-const basePrefix = (baseTag[0] && baseTag[0].href.replace(/\/$/, '')) || '/';
+const basePrefix = (baseTag[0] && baseTag[0].href) || '/';
 
 export const ROOT_URL = basePrefix.replace(window.location.origin, '');
 
@@ -79,7 +79,13 @@ export function navigateTo(path, options) {
   }
 
   if (hashchangeEnable()) {
-    window.location.hash = path.replace(/^#/, '');
+    let fixedURL = path.replace(/^#/, '');
+
+    if (ROOT_URL !== '/') {
+      fixedURL = fixedURL.replace(ROOT_URL, '');
+    }
+
+    window.location.hash = fixedURL !== '/' ? fixedURL : '';
     return;
   }
 

@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
 
   import {
-    ROOT_URL, fixedLocation, navigateTo, isActive, getProps, router,
+    ROOT_URL, hashchangeEnable, fixedLocation, navigateTo, isActive, getProps, router,
   } from './utils';
 
   let ref;
@@ -25,7 +25,7 @@
 
   // rebase active URL
   $: if (!/^(\w+:)?\/\//.test(href)) {
-    fixedHref = ROOT_URL + href.replace(/^\//, '');
+    fixedHref = ROOT_URL + (hashchangeEnable() ? '#' + href : href.replace(/^\//, ''));
   }
 
   $: if (ref && $router.path) {
