@@ -4,7 +4,7 @@
   } from '../../src';
 
   function delay(promise) {
-    return new Promise(ok => setTimeout(() => ok(promise), 200));
+    return new Promise(ok => setTimeout(() => ok(promise), 500));
   }
 </script>
 

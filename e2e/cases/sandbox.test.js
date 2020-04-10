@@ -11,7 +11,7 @@ function url(x = '') {
 }
 
 fixture('yrv (dsl)')
-  .page(url());
+  .page(url('/'));
 
 test('it just loads!', async t => {
   await t.expect(Selector('h1').withText('Example page').visible).ok();
@@ -291,7 +291,7 @@ if (!process.env.HASHCHANGE) {
   test('it should handle <base href="..." /> on all routes and links', async t => {
     await t.click(Selector('a').withText('Test page'));
     await t.expect(Selector('h2').withText('Testing features').visible).ok();
-    await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder');
+    await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder/');
 
     await t.click(Selector('a').withText('Test props'));
     await t.click(Selector('a').withText('Do not click!'));
