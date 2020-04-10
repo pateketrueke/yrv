@@ -22,8 +22,7 @@
     "lint": "eslint --ext js,svelte src e2e",
     "prepublishOnly": "NODE_ENV=production npm run build",
     "pretest": "npm run lint && NODE_ENV=test npm run build",
-    "test": "npm run test:e2e -- e2e/cases",
-    "test:ci": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
+    "test": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
     "test:e2e": "BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
   },
   "repository": {
