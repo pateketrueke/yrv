@@ -173,11 +173,13 @@ export function addRouter(root, fallback, callback) {
   }
 
   // register error-handlers
-  onError[root] = { fallback, callback };
+  if (!onError[root]) {
+    onError[root] = { fallback, callback };
+  }
+
   routers += 1;
 
   return () => {
-    delete onError[root];
     routers -= 1;
 
     if (!routers) {
