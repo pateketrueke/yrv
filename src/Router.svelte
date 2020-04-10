@@ -59,7 +59,11 @@
   }
 
   function unassignRoute(route) {
-    baseRouter.rm(route);
+    try {
+      baseRouter.rm(route);
+    } catch (e) {
+      // 🔥 this is fine...
+    }
     findRoutes();
   }
 

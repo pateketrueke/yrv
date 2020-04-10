@@ -40,9 +40,15 @@ const devConfig = [{
   output: { format: 'es', dir: 'e2e/public/assets' },
   plugins
 }, {
+  input: 'e2e/main.routers.js',
+  output: [
+    bundle('e2e/public/assets/main.routers.js', 'iife'),
+  ],
+  plugins
+}, {
   input: 'e2e/main.js',
   output: [
-    bundle('e2e/public/assets/main.js', 'es'),
+    bundle('e2e/public/assets/main.js', 'iife'),
   ],
   plugins,
 }];

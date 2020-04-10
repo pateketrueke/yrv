@@ -36,7 +36,7 @@ export function handleRoutes(map, params) {
   const keys = [];
 
   map.some(x => {
-    if (x.key && x.matches && !x.fallback && !shared.routeInfo[x.key]) {
+    if (x.key && x.matches && !shared.routeInfo[x.key]) {
       if (x.redirect && (x.condition === null || x.condition(shared.router) !== true)) {
         if (x.exact && shared.router.path !== x.path) return false;
         navigateTo(x.redirect);
@@ -173,7 +173,7 @@ export function addRouter(root, fallback, callback) {
   }
 
   // register error-handlers
-  if (!onError[root]) {
+  if (!onError[root] || fallback) {
     onError[root] = { fallback, callback };
   }
 

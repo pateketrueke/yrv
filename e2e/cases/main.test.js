@@ -1,21 +1,7 @@
 import { Selector } from 'testcafe';
+import { url, href } from '../helpers';
 
 /* global fixture, test */
-
-function url(x, y) {
-  if (!y && process.env.HASHCHANGE) {
-    return `${process.env.BASE_URL}#${x}`;
-  }
-
-  return process.env.BASE_URL + x;
-}
-
-function href(x) {
-  if (process.env.HASHCHANGE) {
-    return `#${x !== '/' ? x : ''}`;
-  }
-  return x;
-}
 
 fixture('yrv (dsl)')
   .page(url('/'));
@@ -285,12 +271,14 @@ test('it should allow routes if conditions are met', async t => {
   await t.expect(Selector('[data-test=counter]').innerText).contains(4);
 });
 
-fixture('yrv (dynamic import)')
+fixture('yrv (dynamic imports)')
   .page(url('/import', true));
 
-test('it should allow routes to be loaded with dyanmic import', async t => {
-  await t.expect(Selector('[data-test=container]').innerText).contains('Loading...');
-  await t.expect(Selector('[data-test=import]').exists).ok();
+test('it should allow routes to be loaded through dynamic-imports', async t => {
+  await t
+    .expect(Selector('[data-test=container]').innerText).contains('Loading...')
+    .expect(Selector('[data-test=import]').exists)
+    .ok();
 });
 
 if (!process.env.HASHCHANGE) {

@@ -84,8 +84,6 @@ Available props:
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
-**{component} prop examples:**
-
 ```html
 <script>
   import SvelteComponent from 'path/to/svelte-component.svelte';
@@ -94,17 +92,19 @@ Available props:
 <Link href="/">Home</Link>
 | <Link href="/svelte-component">Svelte component</Link>
 | <Link href="/promise">Promised component</Link>
-| <Link href="/async">Async component</Link>
+| <Link href="/lazy">Lazy component</Link>
 
 <p>
   <Router>
     <Route exact>Hello World</Route>
     <Route exact path="/svelte-component" component={SvelteComponent}/>
     <Route exact path="/promise" component={import('path/to/other-component.svelte')}/>
-    <Route exact path="/async" component={() => import('path/to/another-component.svelte')}/>
+    <Route exact path="/lazy" component={() => import('path/to/another-component.svelte')}/>
   </Router>
 </p>
 ```
+
+> Behind the scenes, for making dynamic-imports work, the bundler _should_ inline them or just write-out the required chunks to make it work natively (`<script type="module" />`) or through `shimport`, etc.
 
 ### `<Link {go} {href} {open} {title} {exact} {reload} {replace} {class} />`
 
