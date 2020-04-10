@@ -5,6 +5,7 @@
 ![Build status](https://github.com/pateketrueke/yrv/workflows/build/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/yrv)](https://www.npmjs.com/package/yrv)
 [![Known Vulnerabilities](https://snyk.io/test/npm/yrv/badge.svg)](https://snyk.io/test/npm/yrv)
+[![donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8MXLRJ7QQXGYY)
 
 </div>
 
@@ -198,6 +199,25 @@ This new `disabled` prop would work as you're expecting:
   ...
 </Router>
 ```
+
+**What means the `exact` property and how it works?**
+
+Say you have three routes:
+
+- `/a` (exact)
+- `/a/b` (non-exact)
+- `/a/b/c` (exact)
+
+Now, you navigate from `/a` to `/a/b/c`:
+
+- Since `/a` was active, and it was exact, `yrv` clears out the `routeInfo` for that route.
+- Since `/a/b` is not exact, `yrv` activate this route because is half-way to the final route.
+
+> If you plan to have more routes nested, then the route will never be `exact` (at least at top-levels).
+
+This is also true for `<Link />` components &mdash; as soon as they match the `[aria-current]` attribute will be added on them to denote _active_ links.
+
+If the link for `/a` were also `exact`, then it'll be _active_ if the matching route is `/a` only.
 
 **Why `path` can't be an empty string like other routers does?**
 
