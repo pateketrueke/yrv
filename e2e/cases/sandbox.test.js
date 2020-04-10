@@ -10,13 +10,20 @@ function url(x, y) {
   return process.env.BASE_URL + x;
 }
 
+function href(x) {
+  if (process.env.HASHCHANGE) {
+    return `#${x !== '/' ? x : ''}`;
+  }
+  return x;
+}
+
 fixture('yrv (dsl)')
   .page(url('/'));
 
 test('it just loads!', async t => {
   await t.expect(Selector('h1').withText('Example page').visible).ok();
   await t.expect(Selector('[data-test=counter]').innerText).contains(1);
-  await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/');
+  await t.expect(Selector('a').withText('Home').getAttribute('href')).eql(href('/'));
   await t.expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
 });
 
@@ -98,10 +105,10 @@ test('it should parse from location.search', async t => {
   await t.expect(Selector('li').withText('query: {}').exists).ok();
   await t.expect(Selector('[data-test=counter]').innerText).contains(1);
 
-  await t.expect(Selector('a').withText('Test page').getAttribute('href')).eql('/test');
+  await t.expect(Selector('a').withText('Test page').getAttribute('href')).eql(href('/test'));
   await t.expect(Selector('a').withText('Test page').hasAttribute('aria-current')).ok();
 
-  await t.expect(Selector('a').withText('Test props').getAttribute('href')).eql('/test/props');
+  await t.expect(Selector('a').withText('Test props').getAttribute('href')).eql(href('/test/props'));
   await t.expect(Selector('a').withText('Test props').hasAttribute('aria-current')).ok();
 });
 
@@ -146,29 +153,31 @@ test('it should inject params from resolved routes', async t => {
   await t.expect(Selector('[data-test=counter]').innerText).contains(2);
 });
 
-fixture('yrv (anchored routes)')
-  .page(url('/sub'));
+if (!process.env.HASHCHANGE) {
+  fixture('yrv (anchored routes)')
+    .page(url('/sub'));
 
-test('it should inject params from resolved routes', async t => {
-  await t.click(Selector('a').withText('Root'));
-  await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
-  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
-  await t.expect(Selector('[data-test=counter]').innerText).contains(2);
-});
+  test('it should inject params from resolved routes', async t => {
+    await t.click(Selector('a').withText('Root'));
+    await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
+    await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+    await t.expect(Selector('[data-test=counter]').innerText).contains(2);
+  });
 
-test('it should skip non-exact routes from matched ones', async t => {
-  await t.click(Selector('a').withText('About page'));
-  await t.expect(Selector('p[data-test=anchored]').innerText).contains('ABOUT');
-  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('HOME');
-  await t.expect(Selector('[data-test=counter]').innerText).contains(2);
-});
+  test('it should skip non-exact routes from matched ones', async t => {
+    await t.click(Selector('a').withText('About page'));
+    await t.expect(Selector('p[data-test=anchored]').innerText).contains('ABOUT');
+    await t.expect(Selector('p[data-test=anchored]').innerText).notContains('HOME');
+    await t.expect(Selector('[data-test=counter]').innerText).contains(2);
+  });
 
-test('it should handle non-matched routes as fallback', async t => {
-  await t.click(Selector('a').withText('Broken anchor'));
-  await t.expect(Selector('h2[data-test=fallback]').exists).notOk();
-  await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
-  await t.expect(Selector('[data-test=counter]').innerText).contains(2);
-});
+  test('it should handle non-matched routes as fallback', async t => {
+    await t.click(Selector('a').withText('Broken anchor'));
+    await t.expect(Selector('h2[data-test=fallback]').exists).notOk();
+    await t.expect(Selector('fieldset').innerText).contains("Unreachable '/sub#broken'");
+    await t.expect(Selector('[data-test=counter]').innerText).contains(2);
+  });
+}
 
 fixture('yrv (nested routes)')
   .page(url('/top'));
@@ -284,28 +293,31 @@ test('it should allow routes to be loaded with dyanmic import', async t => {
   await t.expect(Selector('[data-test=import]').exists).ok();
 });
 
-fixture('yrv (base-href)')
-  .page(url('/folder', true));
+if (!process.env.HASHCHANGE) {
+  fixture('yrv (base-href)')
+    .page(url('/folder', true));
 
-test('it should rebase all links to preserve base-href location', async t => {
-  await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder');
-  await t.expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
-});
+  test('it should rebase all links to preserve base-href location', async t => {
+    await t.expect(Selector('a').withText('Home').getAttribute('href')).eql(href('/folder'));
+    await t.expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
+  });
 
-test('it should handle <base href="..." /> on all routes and links', async t => {
-  await t.click(Selector('a').withText('Test page'));
-  await t.expect(Selector('h2').withText('Testing features').visible).ok();
+  test('it should handle <base href="..." /> on all routes and links', async t => {
+    await t.click(Selector('a').withText('Test page'));
+    await t.expect(Selector('h2').withText('Testing features').visible).ok();
 
-  await t.click(Selector('a').withText('Test props'));
-  await t.click(Selector('a').withText('Do not click!'));
-  await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
+    await t.click(Selector('a').withText('Test props'));
+    await t.click(Selector('a').withText('Do not click!'));
+    await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
 
-  await t.click(Selector('a').withText('Anchor page'));
-  await t.click(Selector('a').withText('Root'));
-  await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
-  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+    await t.click(Selector('a').withText('Anchor page'));
+    await t.click(Selector('a').withText('Root'));
 
-  await t.click(Selector('a').withText('Link'));
-  await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
-  await t.expect(Selector('[data-test=counter]').innerText).contains(7);
-});
+    await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
+    await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+
+    await t.click(Selector('a').withText('Link'));
+    await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
+    await t.expect(Selector('[data-test=counter]').innerText).contains(7);
+  });
+}
