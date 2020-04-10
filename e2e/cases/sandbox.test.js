@@ -2,8 +2,8 @@ import { Selector } from 'testcafe';
 
 /* global fixture, test */
 
-function url(x = '') {
-  if (process.env.HASHCHANGE) {
+function url(x, y) {
+  if (!y && process.env.HASHCHANGE) {
     return `${process.env.BASE_URL}#${x}`;
   }
 
@@ -276,34 +276,36 @@ test('it should allow routes if conditions are met', async t => {
   await t.expect(Selector('[data-test=counter]').innerText).contains(4);
 });
 
-if (!process.env.HASHCHANGE) {
-  fixture('yrv (dynamic import)')
-    .page(url('/import'));
+fixture('yrv (dynamic import)')
+  .page(url('/import', true));
 
-  test('it should allow routes to be loaded with dyanmic import', async t => {
-    await t.expect(Selector('[data-test=container]').innerText).contains('Loading...');
-    await t.expect(Selector('[data-test=import]').exists).ok();
-  });
+test('it should allow routes to be loaded with dyanmic import', async t => {
+  await t.expect(Selector('[data-test=container]').innerText).contains('Loading...');
+  await t.expect(Selector('[data-test=import]').exists).ok();
+});
 
-  fixture('yrv (base-href)')
-    .page(url('/folder'));
+fixture('yrv (base-href)')
+  .page(url('/folder', true));
 
-  test('it should handle <base href="..." /> on all routes and links', async t => {
-    await t.click(Selector('a').withText('Test page'));
-    await t.expect(Selector('h2').withText('Testing features').visible).ok();
-    await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder/');
+test('it should rebase all links to preserve base-href location', async t => {
+  await t.expect(Selector('a').withText('Home').getAttribute('href')).eql('/folder');
+  await t.expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
+});
 
-    await t.click(Selector('a').withText('Test props'));
-    await t.click(Selector('a').withText('Do not click!'));
-    await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
+test('it should handle <base href="..." /> on all routes and links', async t => {
+  await t.click(Selector('a').withText('Test page'));
+  await t.expect(Selector('h2').withText('Testing features').visible).ok();
 
-    await t.click(Selector('a').withText('Anchor page'));
-    await t.click(Selector('a').withText('Root'));
-    await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
-    await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+  await t.click(Selector('a').withText('Test props'));
+  await t.click(Selector('a').withText('Do not click!'));
+  await t.expect(Selector('li').withText('query: {"truth":"42"}').exists).ok();
 
-    await t.click(Selector('a').withText('Link'));
-    await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
-    await t.expect(Selector('[data-test=counter]').innerText).contains(7);
-  });
-}
+  await t.click(Selector('a').withText('Anchor page'));
+  await t.click(Selector('a').withText('Root'));
+  await t.expect(Selector('p[data-test=anchored]').innerText).contains('HOME');
+  await t.expect(Selector('p[data-test=anchored]').innerText).notContains('ABOUT');
+
+  await t.click(Selector('a').withText('Link'));
+  await t.expect(Selector('p[data-test=example').innerText).contains('Hello a');
+  await t.expect(Selector('[data-test=counter]').innerText).contains(7);
+});

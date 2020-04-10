@@ -30,7 +30,7 @@ export function hashchangeEnable(value) {
 }
 
 export function fixedLocation(path, callback, doFinally) {
-  const baseUri = hashchangeEnable() ? window.location.hash.replace('#', '') : window.location.pathname;
+  const baseUri = HASHCHANGE ? window.location.hash.replace('#', '') : window.location.pathname;
 
   // this will rebase anchors to avoid location changes
   if (path.charAt() !== '/') {
@@ -50,6 +50,10 @@ export function fixedLocation(path, callback, doFinally) {
   }
 }
 
+export function cleanPath(uri, fix) {
+  return uri !== '/' || fix ? uri.replace(/\/$/, '') : uri;
+}
+
 export function navigateTo(path, options) {
   const {
     reload, replace,
@@ -65,11 +69,6 @@ export function navigateTo(path, options) {
     path = path.replace(/:([a-zA-Z][a-zA-Z0-9_-]*)/g, (_, key) => params[key]);
   }
 
-  // rebase active URL
-  if (ROOT_URL !== '/' && path.indexOf(ROOT_URL) !== 0) {
-    path = ROOT_URL + path;
-  }
-
   if (queryParams) {
     const qs = queryString.stringify(queryParams);
 
@@ -78,11 +77,11 @@ export function navigateTo(path, options) {
     }
   }
 
-  if (hashchangeEnable()) {
-    let fixedURL = path.replace(/^#/, '');
+  if (HASHCHANGE) {
+    let fixedURL = path.replace(/^#|#$/g, '');
 
     if (ROOT_URL !== '/') {
-      fixedURL = fixedURL.replace(ROOT_URL, '');
+      fixedURL = fixedURL.replace(cleanPath(ROOT_URL), '');
     }
 
     window.location.hash = fixedURL !== '/' ? fixedURL : '';
@@ -114,10 +113,6 @@ export function getProps(given, required) {
     ...sub,
     ...others,
   };
-}
-
-export function cleanPath(uri) {
-  return uri !== '/' ? uri.replace(/\/$/, '') : uri;
 }
 
 export function isActive(uri, path, exact) {

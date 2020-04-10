@@ -3,7 +3,7 @@ import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
 
 import {
-  ROOT_URL, hashchangeEnable, navigateTo, cleanPath, isActive, router,
+  ROOT_URL, HASHCHANGE, navigateTo, cleanPath, isActive, router,
 } from './utils';
 
 export const baseRouter = new Router();
@@ -67,12 +67,12 @@ export function handleRoutes(map, params) {
 }
 
 export function evtHandler() {
-  let baseUri = !hashchangeEnable() ? window.location.href.replace(window.location.origin, '') : window.location.hash || '/';
+  let baseUri = !HASHCHANGE ? window.location.href.replace(window.location.origin, '') : window.location.hash || '/';
   let failure;
 
   // unprefix active URL
   if (ROOT_URL !== '/') {
-    baseUri = baseUri.replace(ROOT_URL, '');
+    baseUri = baseUri.replace(cleanPath(ROOT_URL), '');
   }
 
   // trailing slash is required to keep route-info on nested routes!

@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
 
   import {
-    ROOT_URL, hashchangeEnable, fixedLocation, navigateTo, isActive, getProps, router,
+    ROOT_URL, HASHCHANGE, fixedLocation, navigateTo, cleanPath, isActive, getProps, router,
   } from './utils';
 
   let ref;
@@ -25,7 +25,7 @@
 
   // rebase active URL
   $: if (!/^(\w+:)?\/\//.test(href)) {
-    fixedHref = ROOT_URL + (hashchangeEnable() ? `#${href}` : href.replace(/^\//, ''));
+    fixedHref = cleanPath(ROOT_URL, true) + cleanPath(HASHCHANGE ? `#${href}` : href);
   }
 
   $: if (ref && $router.path) {
@@ -84,8 +84,8 @@
       return;
     }
 
-    fixedLocation(href, nextURL => {
-      navigateTo(nextURL, { reload, replace });
+    fixedLocation(href, () => {
+      navigateTo(fixedHref, { reload, replace });
     }, () => dispatch('click', e));
   }
 </script>
@@ -95,7 +95,7 @@
     <slot />
   </button>
 {:else}
-  <a {...fixedProps} href={fixedHref || href} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
+  <a {...fixedProps} href={cleanPath(fixedHref || href)} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
     <slot />
   </a>
 {/if}
