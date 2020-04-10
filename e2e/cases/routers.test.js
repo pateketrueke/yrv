@@ -8,6 +8,10 @@ fixture('yrv (nested routers)')
 
 test('should keep working as expected when isLoggedIn is unchecked', async t => {
   await t
+    .click(Selector('input[type=checkbox]'))
+    .click(Selector('input[type=checkbox]'));
+
+  await t
     .expect(Selector('h1').innerText).contains('This is Home')
     .expect(Selector('a').withText('Home').hasAttribute('aria-current')).ok();
 
