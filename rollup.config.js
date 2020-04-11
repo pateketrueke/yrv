@@ -12,7 +12,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 function bundle(file, format) {
   return {
-    sourcemap: false,
+    sourcemap: process.env.GENERATE_SOURCEMAP || !isProd,
     name: pkg.name,
     format,
     file,
@@ -38,13 +38,13 @@ const plugins = [
 const devConfig = [{
   input: 'e2e/main.import.js',
   output: { format: 'es', dir: 'e2e/public/assets' },
-  plugins
+  plugins,
 }, {
   input: 'e2e/main.routers.js',
   output: [
     bundle('e2e/public/assets/main.routers.js', 'iife'),
   ],
-  plugins
+  plugins,
 }, {
   input: 'e2e/main.js',
   output: [

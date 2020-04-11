@@ -16,14 +16,15 @@
     "dist/*"
   ],
   "scripts": {
+    "analyze": "cross-env GENERATE_SOURCEMAP=true npm run prepublishOnly && source-map-explorer dist/*.js",
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "serve": "sirv start e2e/public --dev --quiet --single --port 8080 --host 0.0.0.0",
     "lint": "eslint --ext js,svelte src e2e",
-    "prepublishOnly": "NODE_ENV=production npm run build",
+    "prepublishOnly": "cross-env NODE_ENV=production npm run build",
     "pretest": "npm run lint && NODE_ENV=test npm run build",
     "test": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
-    "test:e2e": "BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
+    "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "acorn": ">=6.4.1",
+    "cross-env": "^7.0.2",
     "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
@@ -55,6 +57,7 @@
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^5.2.0",
     "serialize-javascript": ">=2.1.1",
+    "source-map-explorer": "^2.4.2",
     "sirv-cli": "^0.4.4",
     "svelte": "^3.18.2",
     "testcafe": "^1.8.4"
