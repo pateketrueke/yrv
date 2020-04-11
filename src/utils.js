@@ -1,6 +1,6 @@
 import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 
 const cache = {};
 const baseTag = document.getElementsByTagName('base');
@@ -70,7 +70,7 @@ export function navigateTo(path, options) {
   }
 
   if (queryParams) {
-    const qs = queryString.stringify(queryParams);
+    const qs = stringify(queryParams);
 
     if (qs) {
       path += `?${qs}`;
