@@ -84,6 +84,8 @@ Available props:
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
+When `yrv` adds a new route, it'll use any given `key` from its props &mdash; once routes are detached they're also removed from the router registry, due that, the next time the same route is mounted a new key is generated (if isn't present already).
+
 ```html
 <script>
   import SvelteComponent from 'path/to/svelte-component.svelte';
@@ -98,8 +100,8 @@ Available props:
   <Router>
     <Route exact>Hello World</Route>
     <Route exact path="/svelte-component" component={SvelteComponent}/>
-    <Route exact path="/promise" component={import('path/to/other-component.svelte')}/>
-    <Route exact path="/lazy" component={() => import('path/to/another-component.svelte')}/>
+    <Route exact path="/promise" component="{import('path/to/other-component.svelte')}"/>
+    <Route exact path="/lazy" component="{() => import('path/to/another-component.svelte')}"/>
   </Router>
 </p>
 ```
