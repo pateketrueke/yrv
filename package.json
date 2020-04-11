@@ -22,7 +22,7 @@
     "serve": "sirv start e2e/public --dev --quiet --single --port 8080 --host 0.0.0.0",
     "lint": "eslint --ext js,svelte src e2e",
     "prepublishOnly": "cross-env NODE_ENV=production npm run build",
-    "pretest": "npm run lint && NODE_ENV=test npm run build",
+    "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
     "test": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
   },
