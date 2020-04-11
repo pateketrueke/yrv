@@ -27,16 +27,18 @@
     ? `${$basePath}${path !== '/' ? path : ''}`
     : path;
 
-  try {
-    if (condition !== null && typeof condition !== 'function') {
-      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
-    }
+  if (!IS_PRODUCTION) {
+    try {
+      if (condition !== null && typeof condition !== 'function') {
+        throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+      }
 
-    if (path.charAt() !== '#' && path.charAt() !== '/') {
-      throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+      if (path.charAt() !== '#' && path.charAt() !== '/') {
+        throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+      }
+    } catch (e) {
+      failure = e;
     }
-  } catch (e) {
-    failure = e;
   }
 
   function assignRoute(key, route, detail) {
@@ -94,17 +96,11 @@
   }
 </script>
 
-<style>
-  [data-failure] {
-    border: 1px dashed silver;
-  }
-</style>
-
 {#if !disabled}
   <slot />
 {/if}
 
-{#if failure && !fallback && !nofallback}
+{#if !IS_PRODUCTION && failure && !fallback && !nofallback}
   <fieldset data-failure>
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>

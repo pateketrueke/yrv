@@ -39,33 +39,35 @@
     ? `${$routePath}${path !== '/' ? path : ''}`
     : path;
 
-  try {
-    if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
-      throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
+  if (!IS_PRODUCTION) {
+    try {
+      if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
+        throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
+      }
+
+      if (condition !== null && typeof condition !== 'function') {
+        throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+      }
+
+      if (path.charAt() !== '#' && path.charAt() !== '/') {
+        throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+      }
+
+      if (!assignRoute) {
+        throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
+      }
+    } catch (e) {
+      failure = e;
     }
-
-    if (condition !== null && typeof condition !== 'function') {
-      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
-    }
-
-    if (path.charAt() !== '#' && path.charAt() !== '/') {
-      throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
-    }
-
-    if (!assignRoute) {
-      throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
-    }
-
-    const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
-      ? `${fixedRoot}/`
-      : fixedRoot;
-
-    [key, fullpath] = assignRoute(key, fixedRoute, {
-      condition, redirect, fallback, exact,
-    });
-  } catch (e) {
-    failure = e;
   }
+
+  const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
+    ? `${fixedRoot}/`
+    : fixedRoot;
+
+  [key, fullpath] = assignRoute(key, fixedRoute, {
+    condition, redirect, fallback, exact,
+  });
 
   $: if (key) {
     activeRouter = !disabled && $routeInfo[key];
@@ -101,13 +103,7 @@
   });
 </script>
 
-<style>
-  [data-failure] {
-    color: red;
-  }
-</style>
-
-{#if failure}
+{#if !IS_PRODUCTION && failure}
   <p data-failure>{failure}</p>
 {/if}
 

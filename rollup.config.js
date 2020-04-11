@@ -22,11 +22,16 @@ function bundle(file, format) {
 const plugins = [
   svelte({
     dev: isDev,
+    onwarn: (warning, handler) => {
+      if (warning.code === 'missing-declaration' && warning.message === "'IS_PRODUCTION' is not defined") return;
+      handler(warning);
+    },
   }),
   resolve(),
   commonjs(),
   replace({
     USE_HASH_CHANGE: JSON.stringify(!!process.env.HASHCHANGE),
+    IS_PRODUCTION: isProd,
   }),
   isProd && buble({
     objectAssign: 'Object.assign',
