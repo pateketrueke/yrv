@@ -1,4 +1,4 @@
-import queryString from 'query-string';
+import { parse } from 'query-string';
 import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
 
@@ -79,7 +79,7 @@ export function evtHandler() {
   // see: https://github.com/pateketrueke/abstract-nested-router/commit/0f338384bddcfbaee30f3ea2c4eb0c24cf5174cd
   const [fixedUri, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
   const fullpath = fixedUri.replace(/\/?$/, '/');
-  const query = queryString.parse(qs);
+  const query = parse(qs);
   const params = {};
   const keys = [];
 
