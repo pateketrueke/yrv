@@ -12,13 +12,13 @@
   } from 'svelte';
 
   let cleanup;
-  let failure;
+  // let failure;
   let fallback;
 
   export let path = '/';
   export let disabled = false;
   export let condition = null;
-  export let nofallback = false;
+  // export let nofallback = false;
 
   const routerContext = getContext(CTX_ROUTER);
   const basePath = routerContext ? routerContext.basePath : writable(path);
@@ -29,14 +29,15 @@
 
   try {
     if (condition !== null && typeof condition !== 'function') {
-      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+      // throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
     }
 
     if (path.charAt() !== '#' && path.charAt() !== '/') {
-      throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+      // throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
     }
   } catch (e) {
-    failure = e;
+    // failure = e;
+    console.error(e);
   }
 
   function assignRoute(key, route, detail) {
@@ -94,19 +95,19 @@
   }
 </script>
 
-<style>
+<!-- <style>
   [data-failure] {
     border: 1px dashed silver;
   }
-</style>
+</style> -->
 
 {#if !disabled}
   <slot />
 {/if}
 
-{#if failure && !fallback && !nofallback}
+<!-- {#if failure && !fallback && !nofallback}
   <fieldset data-failure>
     <legend>Router failure: {path}</legend>
     <pre>{failure}</pre>
   </fieldset>
-{/if}
+{/if} -->

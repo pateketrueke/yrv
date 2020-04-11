@@ -32,7 +32,7 @@
   let activeRouter = null;
   let activeProps = {};
   let fullpath;
-  let failure;
+  // let failure;
   let hasLoaded;
 
   const fixedRoot = $routePath !== path && $routePath !== '/'
@@ -41,19 +41,19 @@
 
   try {
     if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
-      throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
+      // throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
     }
 
     if (condition !== null && typeof condition !== 'function') {
-      throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
+      // throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
     }
 
     if (path.charAt() !== '#' && path.charAt() !== '/') {
-      throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
+      // throw new TypeError(`Expecting a leading slash or hash, given '${path}'`);
     }
 
     if (!assignRoute) {
-      throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
+      // throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
 
     const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
@@ -64,7 +64,8 @@
       condition, redirect, fallback, exact,
     });
   } catch (e) {
-    failure = e;
+    // failure = e;
+    console.error(e);
   }
 
   $: if (key) {
@@ -101,15 +102,15 @@
   });
 </script>
 
-<style>
+<!-- <style>
   [data-failure] {
     color: red;
   }
-</style>
+</style> -->
 
-{#if failure}
+<!-- {#if failure}
   <p data-failure>{failure}</p>
-{/if}
+{/if} -->
 
 {#if activeRouter}
   {#if !hasLoaded}
