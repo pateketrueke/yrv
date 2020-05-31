@@ -1,4 +1,5 @@
 .DS_Store
+*.todo
 dist
 node_modules
 e2e/public/assets
