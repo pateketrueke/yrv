@@ -10,5 +10,6 @@ jobs:
       - uses: tacoss/nodejs@master
         env:
           BROWSER: chromium:headless
+          NODE_ENV: development
         with:
           args: ci
