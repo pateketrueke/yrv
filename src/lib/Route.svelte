@@ -40,6 +40,7 @@
     : path;
 
   try {
+    //IF DEBUG
     if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
       throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
     }
@@ -55,6 +56,7 @@
     if (!assignRoute) {
       throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
+    //ENDIF
 
     const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
       ? `${fixedRoot}/`
@@ -101,6 +103,7 @@
   });
 </script>
 
+<!--IF DEBUG-->
 <style>
   [data-failure] {
     color: red;
@@ -110,6 +113,7 @@
 {#if failure}
   <p data-failure>{failure}</p>
 {/if}
+<!--ENDIF-->
 
 {#if activeRouter}
   {#if !hasLoaded}

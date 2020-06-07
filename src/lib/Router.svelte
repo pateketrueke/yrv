@@ -27,6 +27,7 @@
     ? `${$basePath}${path !== '/' ? path : ''}`
     : path;
 
+  //IF DEBUG
   try {
     if (condition !== null && typeof condition !== 'function') {
       throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
@@ -38,6 +39,7 @@
   } catch (e) {
     failure = e;
   }
+  //ENDIF
 
   function assignRoute(key, route, detail) {
     key = key || Math.random().toString(36).substr(2);
@@ -94,15 +96,16 @@
   }
 </script>
 
+{#if !disabled}
+  <slot />
+{/if}
+
+<!--IF DEBUG-->
 <style>
   [data-failure] {
     border: 1px dashed silver;
   }
 </style>
-
-{#if !disabled}
-  <slot />
-{/if}
 
 {#if failure && !fallback && !nofallback}
   <fieldset data-failure>
@@ -110,3 +113,4 @@
     <pre>{failure}</pre>
   </fieldset>
 {/if}
+<!--ENDIF-->

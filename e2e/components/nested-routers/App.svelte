@@ -1,7 +1,7 @@
 <script>
   import {
     Router, Route, Link,
-  } from '../../../src';
+  } from '../../../src/main';
   import Home from './Home.svelte';
   import Players from './Players.svelte';
   import NotFound from './NotFound.svelte';

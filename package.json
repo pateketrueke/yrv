@@ -26,6 +26,34 @@
     "test": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
   },
+  "tarima": {
+    "from": ["e2e", "src"],
+    "ignore": [
+      "**/{lib,cases,components,public}/**",
+      "**/helpers.js"
+    ],
+    "bundle": [
+      "**/main.js",
+      "**/import.js",
+      "**/routers.js"
+    ],
+    "bundleOptions": {
+      "extensions": {
+        "js": "es6"
+      },
+      "rollup": {
+        "context": "window",
+        "plugins": [
+          "rollup-plugin-svelte",
+          "rollup-plugin-node-resolve",
+          "rollup-plugin-commonjs"
+        ]
+      },
+      "buble": {
+        "objectAssign": "Object.assign"
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pateketrueke/yrv.git"
@@ -53,13 +81,11 @@
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
-    "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^5.2.0",
     "serialize-javascript": ">=2.1.1",
     "source-map-explorer": "^2.4.2",
-    "sirv-cli": "^0.4.4",
     "svelte": "^3.18.2",
+    "tarima": "^4.7.4",
     "testcafe": "^1.8.4"
   },
   "dependencies": {

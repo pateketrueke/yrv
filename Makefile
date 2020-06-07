@@ -6,7 +6,7 @@ ci: src deps clean ## Run CI scripts
 	@HASHCHANGE=true npm run test -- --color $(E2E_FLAGS)
 
 dev: src deps ## Start dev tasks
-	@npm run dev & npm run serve
+	@npm run dev
 
 e2e: src deps ## Run E2E tests locally
 	@npm run test:e2e -- e2e/cases $(E2E_FLAGS)

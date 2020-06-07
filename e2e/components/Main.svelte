@@ -1,7 +1,7 @@
 <script>
   import {
     Router, Route, Link, router,
-  } from '../../src';
+  } from '../../src/main';
 
   /* global USE_HASH_CHANGE */
   if (typeof USE_HASH_CHANGE !== 'undefined' && USE_HASH_CHANGE) {
