@@ -32,15 +32,26 @@
   let activeRouter = null;
   let activeProps = {};
   let fullpath;
-  let failure;
   let hasLoaded;
 
   const fixedRoot = $routePath !== path && $routePath !== '/'
     ? `${$routePath}${path !== '/' ? path : ''}`
     : path;
 
+  function resolve() {
+    const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
+      ? `${fixedRoot}/`
+      : fixedRoot;
+
+    [key, fullpath] = assignRoute(key, fixedRoute, {
+      condition, redirect, fallback, exact,
+    });
+  }
+
+  // IF DEBUG
+  let failure;
+
   try {
-    // IF DEBUG
     if (redirect !== null && !/^(?:\w+:\/\/|\/)/.test(redirect)) {
       throw new TypeError(`Expecting valid URL to redirect, given '${redirect}'`);
     }
@@ -56,18 +67,12 @@
     if (!assignRoute) {
       throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
-    // ENDIF
 
-    const fixedRoute = path !== fixedRoot && fixedRoot.substr(-1) !== '/'
-      ? `${fixedRoot}/`
-      : fixedRoot;
-
-    [key, fullpath] = assignRoute(key, fixedRoute, {
-      condition, redirect, fallback, exact,
-    });
+    resolve();
   } catch (e) {
     failure = e;
   }
+  // ENDIF
 
   $: if (key) {
     activeRouter = !disabled && $routeInfo[key];

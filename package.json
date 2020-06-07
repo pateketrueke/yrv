@@ -3,7 +3,7 @@
   "version": "0.0.30",
   "description": "Your routing!",
   "main": "build/main.js",
-  "svelte": "src/main.js",
+  "svelte": "build/main.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -20,24 +20,41 @@
     "lint": "eslint --ext js,svelte src e2e",
     "build": "tarima -f DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
     "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
-    "prepublishOnly": "rm -rf build && tarima -fy main --cjs",
+    "prepublishOnly": "rm -rf build && tarima -e production -fy main -y lib --es",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
   "tarima": {
-    "from": [
-      "e2e",
-      "src"
-    ],
+    "from": {
+      "default": [
+        "src"
+      ],
+      "development": [
+        "e2e"
+      ]
+    },
     "public": "build",
-    "ignore": [
-      "**/{lib,cases,components,public}/**",
-      "**/helpers.js",
-      "**/_*"
-    ],
-    "bundle": [
-      "**/{main,import,testing,routers}.js"
-    ],
+    "ignore": {
+      "default": [
+        "**/{cases,components,public}/**",
+        "**/helpers.js",
+        "**/_*"
+      ],
+      "development": [
+        "**/lib/**"
+      ],
+      "production": [
+        "**/test/**"
+      ]
+    },
+    "bundle": {
+      "default": [
+        "**/{import,testing,routers}.js"
+      ],
+      "development": [
+        "**/main.js"
+      ]
+    },
     "rename": [
       "**/test/**/!(index).html:{basedir}/{name}/index.html",
       "**/{src,e2e}/**:{fullpath/1}",
@@ -47,6 +64,9 @@
       "extensions": {
         "js": "es6"
       },
+      "process": [
+        "svelte"
+      ],
       "rollup": {
         "context": "window",
         "format": "iife",
@@ -95,7 +115,7 @@
     "rollup-plugin-svelte": "^5.0.3",
     "serialize-javascript": ">=2.1.1",
     "svelte": "^3.18.2",
-    "tarima": "^4.7.7",
+    "tarima": "^4.7.9",
     "testcafe": "^1.8.4"
   },
   "dependencies": {
