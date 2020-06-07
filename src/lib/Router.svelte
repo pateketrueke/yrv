@@ -19,9 +19,9 @@
   export let disabled = false;
   export let condition = null;
 
-  /*IF DEBUG*/
+  // IF DEBUG
   export let nofallback = false;
-  /*ENDIF*/
+  // ENDIF
 
   const routerContext = getContext(CTX_ROUTER);
   const basePath = routerContext ? routerContext.basePath : writable(path);
@@ -30,7 +30,7 @@
     ? `${$basePath}${path !== '/' ? path : ''}`
     : path;
 
-  //IF DEBUG
+  // IF DEBUG
   try {
     if (condition !== null && typeof condition !== 'function') {
       throw new TypeError(`Expecting condition to be a function, given '${condition}'`);
@@ -42,7 +42,7 @@
   } catch (e) {
     failure = e;
   }
-  //ENDIF
+  // ENDIF
 
   function assignRoute(key, route, detail) {
     key = key || Math.random().toString(36).substr(2);

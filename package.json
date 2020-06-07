@@ -2,9 +2,8 @@
   "name": "yrv",
   "version": "0.0.30",
   "description": "Your routing!",
-  "main": "dist/yrv.js",
-  "svelte": "src/index.js",
-  "module": "dist/yrv.es.js",
+  "main": "build/main.js",
+  "svelte": "src/main.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -12,16 +11,16 @@
   },
   "homepage": "https://github.com/pateketrueke/yrv",
   "files": [
-    "src/**",
-    "dist/*"
+    "src/lib/**",
+    "src/main.js",
+    "build/main.js"
   ],
   "scripts": {
-    "analyze": "cross-env GENERATE_SOURCEMAP=true npm run prepublishOnly && source-map-explorer dist/*.js",
     "dev": "tarima watch -d",
-    "build": "tarima -f DEBUG=true",
     "lint": "eslint --ext js,svelte src e2e",
-    "prepublishOnly": "cross-env NODE_ENV=production npm run build",
+    "build": "tarima -f DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
     "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
+    "prepublishOnly": "rm -rf build && tarima -fy main --cjs",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
@@ -50,6 +49,7 @@
       },
       "rollup": {
         "context": "window",
+        "format": "iife",
         "plugins": [
           "rollup-plugin-svelte",
           "rollup-plugin-node-resolve",
@@ -94,9 +94,8 @@
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-svelte": "^5.0.3",
     "serialize-javascript": ">=2.1.1",
-    "source-map-explorer": "^2.4.2",
     "svelte": "^3.18.2",
-    "tarima": "^4.7.5",
+    "tarima": "^4.7.7",
     "testcafe": "^1.8.4"
   },
   "dependencies": {
