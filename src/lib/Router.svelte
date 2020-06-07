@@ -18,7 +18,10 @@
   export let path = '/';
   export let disabled = false;
   export let condition = null;
+
+  /*IF DEBUG*/
   export let nofallback = false;
+  /*ENDIF*/
 
   const routerContext = getContext(CTX_ROUTER);
   const basePath = routerContext ? routerContext.basePath : writable(path);

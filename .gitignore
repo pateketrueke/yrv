@@ -2,5 +2,6 @@
 *.todo
 .tarima
 dist
+build
 node_modules
 e2e/public/assets

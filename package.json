@@ -17,25 +17,32 @@
   ],
   "scripts": {
     "analyze": "cross-env GENERATE_SOURCEMAP=true npm run prepublishOnly && source-map-explorer dist/*.js",
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
-    "serve": "sirv start e2e/public --dev --quiet --single --port 8080 --host 0.0.0.0",
+    "dev": "tarima watch -d",
+    "build": "tarima -f DEBUG=true",
     "lint": "eslint --ext js,svelte src e2e",
     "prepublishOnly": "cross-env NODE_ENV=production npm run build",
     "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
-    "test": "npm run test:e2e -- -a 'npm run serve' e2e/cases",
-    "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}"
+    "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
+    "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
   "tarima": {
-    "from": ["e2e", "src"],
+    "from": [
+      "e2e",
+      "src"
+    ],
+    "public": "build",
     "ignore": [
       "**/{lib,cases,components,public}/**",
-      "**/helpers.js"
+      "**/helpers.js",
+      "**/_*"
     ],
     "bundle": [
-      "**/main.js",
-      "**/import.js",
-      "**/routers.js"
+      "**/{main,import,testing,routers}.js"
+    ],
+    "rename": [
+      "**/test/**/!(index).html:{basedir}/{name}/index.html",
+      "**/{src,e2e}/**:{fullpath/1}",
+      "**/test/**:{fullpath/1}"
     ],
     "bundleOptions": {
       "extensions": {
@@ -50,7 +57,10 @@
         ]
       },
       "buble": {
-        "objectAssign": "Object.assign"
+        "objectAssign": "Object.assign",
+        "transforms": {
+          "dangerousForOf": true
+        }
       }
     }
   },
@@ -77,6 +87,7 @@
     "eslint-plugin-svelte3": "^2.7.3",
     "eslint-utils": ">=1.4.1",
     "minimist": ">=1.2.2",
+    "pug": "^3.0.0",
     "rollup": "^2.0.6",
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.0.0",
@@ -85,7 +96,7 @@
     "serialize-javascript": ">=2.1.1",
     "source-map-explorer": "^2.4.2",
     "svelte": "^3.18.2",
-    "tarima": "^4.7.4",
+    "tarima": "^4.7.5",
     "testcafe": "^1.8.4"
   },
   "dependencies": {
