@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
-    "build": "tarima -f DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
+    "build": "tarima -qf DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
     "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
     "prepublishOnly": "rm -rf build && tarima -e production -fy main -y lib --es",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
@@ -29,7 +29,7 @@
       "default": [
         "src"
       ],
-      "development": [
+      "test": [
         "e2e"
       ]
     },
@@ -40,7 +40,7 @@
         "**/helpers.js",
         "**/_*"
       ],
-      "development": [
+      "test": [
         "**/lib/**"
       ],
       "production": [
@@ -51,7 +51,7 @@
       "default": [
         "**/{import,testing,routers}.js"
       ],
-      "development": [
+      "test": [
         "**/main.js"
       ]
     },
