@@ -19,7 +19,7 @@
   });
 </script>
 
-<h1>
+<h1 id="top">
   <Link>Example page</Link>
   <small>{$router.path}</small>
 </h1>
@@ -153,3 +153,5 @@
   <p>You can also hook into the router's state with <code>`router.subscribe(...)`, e.g.</code></p>
   <p data-test="counter">Times router-info has been changed: {count}</p>
 </div>
+
+<a style="margin-top:1000px;display:block" href="#top">&uarr;</a>

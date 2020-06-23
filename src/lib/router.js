@@ -75,6 +75,13 @@ export function evtHandler() {
     baseUri = baseUri.replace(cleanPath(ROOT_URL), '');
   }
 
+  // skip given anchors if already exists on document, see #43
+  if (
+    /^#[\w-]+$/.test(window.location.hash)
+    && document.querySelector(window.location.hash)
+    && currentURL === baseUri.split('#')[0]
+  ) return;
+
   // trailing slash is required to keep route-info on nested routes!
   // see: https://github.com/pateketrueke/abstract-nested-router/commit/0f338384bddcfbaee30f3ea2c4eb0c24cf5174cd
   const [fixedUri, qs] = baseUri.replace('/#', '#').replace(/^#\//, '/').split('?');
