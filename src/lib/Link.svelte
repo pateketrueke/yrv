@@ -12,7 +12,7 @@
 
   export let go = null;
   export let open = null;
-  export let href = '/';
+  export let href = '';
   export let title = '';
   export let button = false;
   export let exact = false;
@@ -59,7 +59,7 @@
       return;
     }
 
-    if (!fixedHref) {
+    if (!fixedHref && href !== '') {
       if (open) {
         let specs = typeof open === 'string' ? open : '';
 
@@ -85,7 +85,7 @@
     }
 
     fixedLocation(href, () => {
-      navigateTo(fixedHref, { reload, replace });
+      navigateTo(fixedHref || '/', { reload, replace });
     }, () => dispatch('click', e));
   }
 </script>

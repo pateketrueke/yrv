@@ -20,7 +20,7 @@
 </script>
 
 <h1>
-  Example page
+  <Link>Example page</Link>
   <small>{$router.path}</small>
 </h1>
 
