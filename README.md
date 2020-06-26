@@ -54,16 +54,16 @@ Install `yrv` through NPM or Yarn:
 
 ### `<Router {path} {disabled} {condition} {nofallback} />`
 
-This component will hold any given routes as children, path is always derived from parent ones.
+This component will hold any given routes as children, `path` is always derived from parent routes.
 
 Available props:
 
-- `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
+- `{path}` &mdash; Any segment to derive a fullpath from, defaults to `/`
 - `{disabled}` &mdash; Boolean; Similar to condition, but for bound props
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure
 
-> Nested routers does not need the same path to be declared inside, e.g. the router for `/top` has inside a `/sub` router &mdash; due that, `/top/sub` will be used for the inner router (the same as declaring this router outside).
+> Nested routers does not need the same path to be declared inside, e.g. if the router for `/top` has a `/sub` router inside, inner router will use the route `/top/sub`, (the same as declaring `/top/sub` route outside the parent router).
 
 ### `<Route {key} {path} {exact} {pending} {fallback} {component} {disabled} {condition} {redirect} let:router />`
 
@@ -71,20 +71,20 @@ Main container for routing, they can hold any component or children.
 
 Available props:
 
-- `{key}` &mdash; The route identity, not its path; default to random pseudo-hash
+- `{key}` &mdash; The route identity, not its path; defaults to random pseudo-hash
 - `{path}` &mdash; Any segment to derive a fullpath from, default to `/`
 - `{exact}` &mdash; If set, the route will render only if the route exactly matches
 - `{pending}` &mdash; Svelte-component or String; rendered during the loading of dynamic components
 - `{fallback}` &mdash; If set, the route will render only if no more routes were matched
 - `{component}` &mdash; Accepts either a valid svelte-component, a promise, or a dynamic import function
-- `{disabled}` &mdash; Boolean; Similar to condition, but for bound props
-- `{condition}` &mdash; Function; if given, the route will render only if evaluates to true
-- `{redirect}` &mdash; Alternate redirection location, only if the previous condition was true
+- `{disabled}` &mdash; Boolean; Similar to `condition`, but for bound props
+- `{condition}` &mdash; Function; if given, the route will render only if evaluates to `true`
+- `{redirect}` &mdash; Alternate redirection location, only if the previous condition was `true`
 - `let:router` &mdash; Injects the `router` context, it also provides `failure` in case of errors
 
 > If you omit `exact`, then `/x` would match both `/` and `/x` routes &mdash; [see docs](https://www.npmjs.com/package/abstract-nested-router#params)
 
-When `yrv` adds a new route, it'll use any given `key` from its props &mdash; once routes are detached they're also removed from the router registry, due that, the next time the same route is mounted a new key is generated (if isn't present already).
+When `yrv` adds a new route, it'll use any given `key` from its props &mdash; once routes are detached they're also removed from the router registry, due to that, the next time the same route is mounted a new key is generated (if isn't present already).
 
 ```html
 <script>
@@ -136,7 +136,7 @@ Normal `on:click` events are still allowed, so you can use:
 
 > Active _links_ will gain the `[aria-current]` attribute, and `[disabled]` if they're buttons.
 
-Aditionally, you can setup  `go` to moving around:
+Aditionally, you can setup  `go` to move around:
 
 - `"back"` &mdash; String; if given, will invoke `history.back()`
 - `"fwd"` &mdash; String; if given, will invoke `history.fwd()`
@@ -183,13 +183,13 @@ Support for IE11 is _granted_ if you include, at least, the following polyfills 
 
 > `document.write()` is used because conditional comments were dropped in IE10, so this way you can conditionally load polyfills anyway.
 
-Also, you MUST to [enable either `buble` or `babel`](https://github.com/sveltejs/svelte/issues/2621) within your build pipeline to transpile down to ES5.
+Also, you MUST [enable either `buble` or `babel`](https://github.com/sveltejs/svelte/issues/2621) within your build pipeline to transpile down to ES5.
 
 ### Frequently Asked Questions
 
 **How to conditionally render a `<Router />` component?**
 
-Both Route/Router components supports the `disabled` and `condition` props, but:
+Both Route/Router components support the `disabled` and `condition` props, but:
 
 - Use `condition` to allow/disallow route-dispatching dynamically
 - Use `disabled` to skip from rendering, it will add/remove the route
@@ -247,7 +247,7 @@ Use the `$router` store to access it, e.g.
 <pre>{JSON.stringify($router, null, 2)}</pre>
 ```
 
-**Why it does not work with Parcel or webpack/snowpack?**
+**Why does Yrv not work with Parcel or webpack/snowpack?**
 
 If you're getting any of the errors below:
 
@@ -281,7 +281,7 @@ If you're not using the `router` prop inside your route-components then just add
 </script>
 ```
 
-That will remove the warning and also will make happy `eslint-plugin-svelte3` in your workflow.
+That will remove the warning and also will make `eslint-plugin-svelte3` in your workflow happy.
 
 **Why `router.subscribe` is called two times when I first open the page?**
 
