@@ -113,7 +113,7 @@
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-svelte": "^5.0.3",
-    "serialize-javascript": ">=2.1.1",
+    "serialize-javascript": ">=3.1.0",
     "svelte": "^3.18.2",
     "tarima": "^4.7.12",
     "testcafe": "^1.8.4"
