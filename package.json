@@ -11,9 +11,7 @@
   },
   "homepage": "https://github.com/pateketrueke/yrv",
   "files": [
-    "src/lib/**",
-    "src/main.js",
-    "build/main.js"
+    "build/**"
   ],
   "scripts": {
     "dev": "tarima watch -d",
