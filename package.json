@@ -3,7 +3,7 @@
   "version": "0.0.32",
   "description": "Your routing!",
   "main": "build/index.js",
-  "svelte": "build/main.js",
+  "svelte": "build/index.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -76,7 +76,7 @@
         ],
         "aliases": {
           "default": {
-            "yrv": "./src/index.js"
+            "yrv": "./build/index.js"
           },
           "test": {
             "yrv": "./build/dev/index.js"
@@ -122,7 +122,7 @@
     "rollup-plugin-svelte": "^5.0.3",
     "serialize-javascript": ">=3.1.0",
     "svelte": "^3.18.2",
-    "tarima": "^4.8.4",
+    "tarima": "^4.8.5",
     "testcafe": "^1.8.4"
   },
   "dependencies": {
