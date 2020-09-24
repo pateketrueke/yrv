@@ -76,7 +76,7 @@
         ],
         "aliases": {
           "default": {
-            "yrv": "./build/index.js"
+            "yrv": "./src/index.js"
           },
           "test": {
             "yrv": "./build/dev/index.js"
