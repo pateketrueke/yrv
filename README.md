@@ -292,3 +292,9 @@ Any subscription to stores will fire twice as they have an initial value, once t
 **Is there any method that allows me to detect route change?**
 
 Yes, you can subscribe to the router store, e.g. `router.subscribe(...)` &mdash; [see above](#route-info).
+
+**Is there a way to reduce the bundle size of yrv?**
+
+Since `v0.0.33` you'll be getting the most reduced version we can ship, however it comes without development warnings.
+
+>  You can configure your bundler to map `'yrv': './node_modules/yrv/build/dev/index.js'` (I'm not sure if importing `yrv/build/dev` works too)
