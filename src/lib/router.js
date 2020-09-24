@@ -1,6 +1,5 @@
-import { parse } from 'query-string';
-import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
+import { Router, parse } from './vendor';
 
 import {
   ROOT_URL, HASHCHANGE, navigateTo, cleanPath, isActive, router,

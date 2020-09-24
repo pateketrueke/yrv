@@ -1,5 +1,5 @@
 <script>
-  import { Router, Route, Link } from '../../../src/main';
+  import { Router, Route, Link } from 'yrv';
   import List from './List.svelte';
   import NewTeam from './NewTeam.svelte';
 </script>

@@ -1,6 +1,5 @@
-import Router from 'abstract-nested-router';
 import { writable } from 'svelte/store';
-import { stringify } from 'query-string';
+import { Router, stringify } from './vendor';
 
 const cache = {};
 const baseTag = document.getElementsByTagName('base');

@@ -11,21 +11,25 @@
   },
   "homepage": "https://github.com/pateketrueke/yrv",
   "files": [
-    "build/**"
+    "build/lib/*.*",
+    "build/main.js"
   ],
   "scripts": {
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
-    "build": "tarima -qf DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
-    "pretest": "npm run lint && cross-env NODE_ENV=test npm run build",
-    "prepublishOnly": "rm -rf build && tarima -e production -fy main -y lib --es",
-    "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
+    "build": "cross-env tarima -qfM DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
+    "pretest": "npm run lint && npm run build",
+    "prepublishOnly": "rm -rf build/* && NODE_ENV=production npm run build",
+    "test": "cross-env NODE_ENV=test npm run build && npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
   "tarima": {
     "from": {
       "default": [
         "src"
+      ],
+      "development": [
+        "e2e"
       ],
       "test": [
         "e2e"
@@ -38,19 +42,15 @@
         "**/helpers.js",
         "**/_*"
       ],
-      "test": [
-        "**/lib/**"
-      ],
-      "production": [
-        "**/test/**"
+      "development": [
+        "**/lib/**",
+        "**/main.js"
       ]
     },
     "bundle": {
       "default": [
-        "**/{import,testing,routers}.js"
-      ],
-      "test": [
-        "**/main.js"
+        "**/app/*.js",
+        "**/vendor.js"
       ]
     },
     "rename": [
@@ -72,7 +72,15 @@
           "rollup-plugin-svelte",
           "rollup-plugin-node-resolve",
           "rollup-plugin-commonjs"
-        ]
+        ],
+        "aliases": {
+          "default": {
+            "yrv": "./src/main.js"
+          },
+          "test": {
+            "yrv": "./build/main.js"
+          }
+        }
       },
       "buble": {
         "objectAssign": "Object.assign",
@@ -113,7 +121,7 @@
     "rollup-plugin-svelte": "^5.0.3",
     "serialize-javascript": ">=3.1.0",
     "svelte": "^3.18.2",
-    "tarima": "^4.7.12",
+    "tarima": "^4.8.4",
     "testcafe": "^1.8.4"
   },
   "dependencies": {

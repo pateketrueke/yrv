@@ -1,3 +1,3 @@
-import App from './components/nested-routers/App.svelte';
+import App from '../components/Import.svelte';
 
 new App({ target: document.body }); // eslint-disable-line

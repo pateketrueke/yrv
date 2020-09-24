@@ -1,7 +1,7 @@
 <script>
   import {
     Router, Route,
-  } from '../../src/main';
+  } from 'yrv';
 
   function delay(promise) {
     return new Promise(ok => setTimeout(() => ok(promise), 500));

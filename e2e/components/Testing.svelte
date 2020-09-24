@@ -1,7 +1,7 @@
 <script>
   import {
     Router, Route, Link, navigateTo,
-  } from '../../src/main';
+  } from 'yrv';
 
   export let router = null;
 
