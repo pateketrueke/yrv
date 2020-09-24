@@ -17,10 +17,11 @@
   "scripts": {
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
+    "dist": "cross-env NODE_ENV=production npm run build",
     "build": "cross-env tarima -qfM DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
-    "pretest": "npm run lint && npm run build",
-    "prepublishOnly": "rm -rf build/* && NODE_ENV=production npm run build",
-    "test": "cross-env NODE_ENV=test npm run build && npm run test:e2e -- -a 'npm run dev' e2e/cases",
+    "pretest": "npm run lint && npm run dist && cross-env NODE_ENV=test npm run build",
+    "prepublishOnly": "rm -rf build/* && npm run dist",
+    "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
   "tarima": {
