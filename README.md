@@ -1,6 +1,6 @@
 <div align="center">
 
-![yrv](yrv.png)
+![yrv](Japan_road_sign_201-D.svg)
 
 ![Build status](https://github.com/pateketrueke/yrv/workflows/build/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/yrv)](https://www.npmjs.com/package/yrv)
