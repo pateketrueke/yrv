@@ -2,7 +2,7 @@
   "name": "yrv",
   "version": "0.0.32",
   "description": "Your routing!",
-  "main": "build/main.js",
+  "main": "build/index.js",
   "svelte": "build/main.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
@@ -11,30 +11,25 @@
   },
   "homepage": "https://github.com/pateketrueke/yrv",
   "files": [
+    "build/index.js",
     "build/lib/*.*",
-    "build/main.js",
-    "src/lib/*.*",
-    "src/main.js"
+    "build/dev/**"
   ],
   "scripts": {
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
     "dist": "cross-env NODE_ENV=production npm run build",
     "build": "cross-env tarima -qfM USE_HASH_CHANGE=$HASHCHANGE",
-    "pretest": "npm run lint && npm run dist && cross-env NODE_ENV=test npm run build",
-    "prepublishOnly": "rm -rf build/* && npm run dist",
+    "build:debug": "cross-env DEBUG=true npm run dist && mkdir -p build/dev && mv build/lib build/index.js $_",
+    "pretest": "npm run lint && npm run build:debug && cross-env NODE_ENV=test npm run build",
+    "prepublishOnly": "rm -rf build/* && npm run build:debug && npm run dist",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
   },
   "tarima": {
     "from": {
       "default": [
-        "src"
-      ],
-      "development": [
-        "e2e"
-      ],
-      "test": [
+        "src",
         "e2e"
       ]
     },
@@ -47,7 +42,10 @@
       ],
       "development": [
         "**/lib/**",
-        "**/main.js"
+        "**/index.js"
+      ],
+      "production": [
+        "**/{e2e,test}/**"
       ]
     },
     "bundle": {
@@ -78,10 +76,10 @@
         ],
         "aliases": {
           "default": {
-            "yrv": "./src/main.js"
+            "yrv": "./src/index.js"
           },
           "test": {
-            "yrv": "./build/main.js"
+            "yrv": "./build/dev/index.js"
           }
         }
       },
