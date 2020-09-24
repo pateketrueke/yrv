@@ -21,7 +21,7 @@
     "dist": "cross-env NODE_ENV=production npm run build",
     "build": "cross-env tarima -qfM USE_HASH_CHANGE=$HASHCHANGE",
     "build:debug": "cross-env DEBUG=true npm run dist && mkdir -p build/dev && mv build/lib build/index.js $_",
-    "pretest": "npm run lint && npm run build:debug && cross-env NODE_ENV=test npm run build",
+    "pretest": "rm -rf build/* && npm run lint && npm run build:debug && cross-env NODE_ENV=test npm run build",
     "prepublishOnly": "rm -rf build/* && npm run build:debug && npm run dist",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
     "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
