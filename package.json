@@ -12,13 +12,15 @@
   "homepage": "https://github.com/pateketrueke/yrv",
   "files": [
     "build/lib/*.*",
-    "build/main.js"
+    "build/main.js",
+    "src/lib/*.*",
+    "src/main.js"
   ],
   "scripts": {
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
     "dist": "cross-env NODE_ENV=production npm run build",
-    "build": "cross-env tarima -qfM DEBUG=true USE_HASH_CHANGE=$HASHCHANGE",
+    "build": "cross-env tarima -qfM USE_HASH_CHANGE=$HASHCHANGE",
     "pretest": "npm run lint && npm run dist && cross-env NODE_ENV=test npm run build",
     "prepublishOnly": "rm -rf build/* && npm run dist",
     "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
