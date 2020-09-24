@@ -15,7 +15,7 @@ dev: src deps ## Start dev tasks
 e2e: src deps ## Run E2E tests locally
 	@npm run test:e2e -- e2e/cases $(E2E_FLAGS)
 
-test: clean
+test: src deps clean
 	@npm test
 
 deps: package*.json
