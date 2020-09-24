@@ -73,6 +73,9 @@
     failure = e;
   }
   // ENDIF
+  // IF_NOT DEBUG
+  resolve();
+  // ENDIF
 
   $: if (key) {
     activeRouter = !disabled && $routeInfo[key];
