@@ -6,8 +6,8 @@ help: Makefile
 	@awk -F':.*?##' '/^[a-z0-9\\%!:-]+:.*##/{gsub("%","*",$$1);gsub("\\\\",":*",$$1);printf "\033[36m%8s\033[0m %s\n",$$1,$$2}' $<
 
 ci: src deps clean ## Run CI scripts
-	@npm run test -- --color $(E2E_FLAGS)
-	@HASHCHANGE=true npm run test -- --color $(E2E_FLAGS)
+	@npm test -- --color $(E2E_FLAGS)
+	@HASHCHANGE=true npm test -- --color $(E2E_FLAGS)
 
 dev: src deps ## Start dev tasks
 	@npm run dev
