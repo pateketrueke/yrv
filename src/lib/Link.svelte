@@ -51,12 +51,7 @@
   const dispatch = createEventDispatcher();
 
   // this will enable `<Link on:click={...} />` calls
-  function onClick(e) {
-    // user used a keyboard shortcut to force open link in a new tab
-    if (e.target.tagName === 'A' && (e.metaKey || e.ctrlKey || e.button !== 0)) {
-      return;
-    }
-
+  function handleOnClick(e) {
     e.preventDefault();
 
     if (typeof go === 'string' && window.history.length > 1) {
@@ -95,14 +90,23 @@
       navigateTo(fixedHref || '/', { reload, replace });
     }, () => dispatch('click', e));
   }
+
+  function handleAnchorOnClick(e) {
+    // user used a keyboard shortcut to force open link in a new tab
+    if (e.metaKey || e.ctrlKey || e.button !== 0) {
+      return;
+    }
+  
+    handleOnClick(e);
+  }
 </script>
 
 {#if button}
-  <button {...fixedProps} bind:this={ref} class={cssClass} {title} on:click={onClick}>
+  <button {...fixedProps} bind:this={ref} class={cssClass} {title} on:click={handleOnClick}>
     <slot />
   </button>
 {:else}
-  <a {...fixedProps} href={cleanPath(fixedHref || href)} bind:this={ref} class={cssClass} {title} on:click={onClick}>
+  <a {...fixedProps} href={cleanPath(fixedHref || href)} bind:this={ref} class={cssClass} {title} on:click={handleAnchorOnClick}>
     <slot />
   </a>
 {/if}
