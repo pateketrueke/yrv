@@ -310,26 +310,29 @@ if (!process.env.HASHCHANGE) {
   });
 }
 
-fixture('yrv (links a new-tab)')
-  .page(url('/'));
+// this test seems to be working if you don't use chrom*:headless
+if (!process.argv.some(x => x.includes(':headless'))) {
+  fixture('yrv (links a new-tab)')
+    .page(url('/'));
 
-test('should open links on new tabs', async t => {
-  const initialURL = await t.eval(() => document.documentURI);
+  test('should open links on new tabs', async t => {
+    const initialURL = await t.eval(() => document.documentURI);
 
-  await t.click(Selector('a').withText('Test page'), { modifiers: { meta: true } }).wait(1000);
+    await t.click(Selector('a').withText('Test page'), { modifiers: { meta: true } }).wait(1000);
 
-  const openedURL = await t.eval(() => document.documentURI);
+    const openedURL = await t.eval(() => document.documentURI);
 
-  await t.expect(initialURL).notEql(openedURL);
+    await t.expect(initialURL).notEql(openedURL);
 
-  try {
-    // this crashes the browser after closing
-    await t.eval(() => window.close());
-  } catch (e) {
-    // ok
-  }
+    try {
+      // this crashes the browser after closing
+      await t.eval(() => window.close());
+    } catch (e) {
+      // ok
+    }
 
-  const prevURL = await t.wait(1000).eval(() => document.documentURI);
+    const prevURL = await t.eval(() => document.documentURI);
 
-  await t.expect(initialURL).eql(prevURL);
-});
+    await t.expect(initialURL).eql(prevURL);
+  });
+}
