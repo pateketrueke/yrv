@@ -52,6 +52,13 @@
 
   // this will enable `<Link on:click={...} />` calls
   function onClick(e) {
+    // user used a keyboard shortcut to force open link in a new tab
+    if (e.target.tagName === 'A' && (e.metaKey || e.ctrlKey || e.button !== 0)) {
+      return;
+    }
+    
+    e.preventDefault();
+
     if (typeof go === 'string' && window.history.length > 1) {
       if (go === 'back') window.history.back();
       else if (go === 'fwd') window.history.forward();
@@ -91,11 +98,11 @@
 </script>
 
 {#if button}
-  <button {...fixedProps} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
+  <button {...fixedProps} bind:this={ref} class={cssClass} {title} on:click={onClick}>
     <slot />
   </button>
 {:else}
-  <a {...fixedProps} href={cleanPath(fixedHref || href)} bind:this={ref} class={cssClass} {title} on:click|preventDefault={onClick}>
+  <a {...fixedProps} href={cleanPath(fixedHref || href)} bind:this={ref} class={cssClass} {title} on:click={onClick}>
     <slot />
   </a>
 {/if}
