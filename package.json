@@ -1,6 +1,6 @@
 {
   "name": "yrv",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Your routing!",
   "main": "build/index.js",
   "svelte": "build/index.js",
