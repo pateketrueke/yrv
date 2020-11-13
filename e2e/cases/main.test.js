@@ -309,3 +309,25 @@ if (!process.env.HASHCHANGE) {
     await t.expect(Selector('[data-test=counter]').innerText).contains(7);
   });
 }
+
+fixture('yrv (links a new-tab)')
+  .page(url('/'));
+
+test('should open links on new tabs', async t => {
+  const initialURL = await t.eval(() => document.documentURI);
+
+  await t.click(Selector('a').withText('Test page'), { modifiers: { meta: true } }).wait(1000);
+
+  const openedURL = await t.eval(() => document.documentURI);
+
+  await t.expect(initialURL).notEql(openedURL);
+
+  try {
+    // this crashes the browser after closing
+    await t.eval(() => window.close());
+  } catch (e) {}
+
+  const prevURL = await t.eval(() => document.documentURI);
+
+  await t.expect(initialURL).eql(prevURL);
+});
