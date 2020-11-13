@@ -329,7 +329,7 @@ test('should open links on new tabs', async t => {
     // ok
   }
 
-  const prevURL = await t.eval(() => document.documentURI);
+  const prevURL = await t.wait(1000).eval(() => document.documentURI);
 
   await t.expect(initialURL).eql(prevURL);
 });
