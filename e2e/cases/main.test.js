@@ -325,7 +325,9 @@ test('should open links on new tabs', async t => {
   try {
     // this crashes the browser after closing
     await t.eval(() => window.close());
-  } catch (e) {}
+  } catch (e) {
+    // ok
+  }
 
   const prevURL = await t.eval(() => document.documentURI);
 

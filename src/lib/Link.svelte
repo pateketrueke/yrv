@@ -56,7 +56,7 @@
     if (e.target.tagName === 'A' && (e.metaKey || e.ctrlKey || e.button !== 0)) {
       return;
     }
-    
+
     e.preventDefault();
 
     if (typeof go === 'string' && window.history.length > 1) {

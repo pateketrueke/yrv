@@ -30,7 +30,7 @@
 | <Link href="/sub">Anchor page</Link> | <Link href="/e">Error page</Link>
 
 <p>
-  Links can open windows, and thay can set callbacks too:
+  Links can open windows, and they can set callbacks too:
   <Link open href="//google.com" on:close={() => /* eslint-disable no-alert */ alert('GREAT!')}>Open window</Link>
 </p>
 
