@@ -125,7 +125,7 @@
     "standard-version": "^9.0.0",
     "svelte": "^3.18.2",
     "tarima": "^4.8.5",
-    "testcafe": "^15.1.317922"
+    "testcafe": "^1.9.4"
   },
   "dependencies": {
     "abstract-nested-router": "^0.1.20",
