@@ -16,6 +16,7 @@
     "build/dev/**"
   ],
   "scripts": {
+    "release": "standard-version",
     "dev": "tarima watch -d",
     "lint": "eslint --ext js,svelte src e2e",
     "dist": "cross-env NODE_ENV=production npm run build",
@@ -108,7 +109,7 @@
   "devDependencies": {
     "acorn": ">=6.4.1",
     "cross-env": "^7.0.2",
-    "eslint": "^6.4.0",
+    "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-svelte3": "^2.7.3",
@@ -121,6 +122,7 @@
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-svelte": "^5.0.3",
     "serialize-javascript": ">=3.1.0",
+    "standard-version": "^9.0.0",
     "svelte": "^3.18.2",
     "tarima": "^4.8.5",
     "testcafe": "^1.9.4"
