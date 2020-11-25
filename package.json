@@ -109,7 +109,7 @@
   "devDependencies": {
     "acorn": ">=6.4.1",
     "cross-env": "^7.0.2",
-    "eslint": "^7.13.0",
+    "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-svelte3": "^2.7.3",
