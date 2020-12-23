@@ -52,13 +52,14 @@ Install `yrv` through NPM or Yarn:
 
 > You MUST declare at least, one top-level `Router` to setup the bindings.
 
-### `<Router {path} {disabled} {condition} {nofallback} />`
+### `<Router {path} {pending} {disabled} {condition} {nofallback} />`
 
 This component will hold any given routes as children, `path` is always derived from parent routes.
 
 Available props:
 
 - `{path}` &mdash; Any segment to derive a fullpath from, defaults to `/`
+- `{pending}` &mdash; Svelte-component or String; top-level `pending` support
 - `{disabled}` &mdash; Boolean; Similar to condition, but for bound props
 - `{condition}` &mdash; Function; if given, render only if evaluates to true
 - `{nofallback}` &mdash; If set, non-matched routes will never raise a failure

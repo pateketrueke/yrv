@@ -9,7 +9,7 @@
 </script>
 
 <div data-test="container">
-  <Router>
-    <Route fallback component={() => delay(import('./Example.svelte'))} pending="Loading..." />
+  <Router pending="Loading...">
+    <Route fallback component={() => delay(import('./Example.svelte'))} />
   </Router>
 </div>
