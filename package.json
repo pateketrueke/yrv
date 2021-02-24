@@ -6,6 +6,7 @@
   "svelte": "build/index.js",
   "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
   "license": "MIT",
+  "types": "types/index.d.ts",
   "bugs": {
     "url": "https://github.com/pateketrueke/yrv/issues"
   },
