@@ -14,7 +14,8 @@
   "files": [
     "build/index.js",
     "build/lib/*.*",
-    "build/dev/**"
+    "build/dev/**",
+    "types/*.*"
   ],
   "scripts": {
     "release": "standard-version",
