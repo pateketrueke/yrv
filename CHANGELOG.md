@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.38](https://github.com/pateketrueke/yrv/compare/v0.0.37...v0.0.38) (2021-03-10)
+
+
+### Bug Fixes
+
+* make sure types are included on the package; closes [#72](https://github.com/pateketrueke/yrv/issues/72) ([72c07f2](https://github.com/pateketrueke/yrv/commit/72c07f2fa57aefef23af093fab58430e318231a9))
+
 ### [0.0.37](https://github.com/pateketrueke/yrv/compare/v0.0.35...v0.0.37) (2021-03-10)
 
 
