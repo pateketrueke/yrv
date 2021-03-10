@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.36](https://github.com/pateketrueke/yrv/compare/v0.0.35...v0.0.36) (2021-03-09)
+
+
+### Features
+
+* adds in auto release and auto-publishing ([f587f9b](https://github.com/pateketrueke/yrv/commit/f587f9b35c48586b05bcc08f645021ed801c073b))
+* Adds in Standard Version ([af0a5e4](https://github.com/pateketrueke/yrv/commit/af0a5e4d6b9f25480a5b3b88ed3151c00516792c)), closes [#28](https://github.com/pateketrueke/yrv/issues/28)
+* Adds in TypeScript definitions for the repository ([4273f09](https://github.com/pateketrueke/yrv/commit/4273f09a778ff38b7c11eb0ef108209ac5f12749))
+
+
+### Bug Fixes
+
+* Adds changes to move to ubuntu runner instead of self-hosted ([83f605c](https://github.com/pateketrueke/yrv/commit/83f605ce8f0eedc58de761af1b9ee8901a0dda8c))
+* patch top-level pending component on routers, thanks to [@jhechtf](https://github.com/jhechtf) - closes [#34](https://github.com/pateketrueke/yrv/issues/34) ([83f74bc](https://github.com/pateketrueke/yrv/commit/83f74bcae474ba122c5dacc8c4aeb0625b2645ea))
+
 ### [0.0.35](https://github.com/pateketrueke/yrv/compare/v0.0.34...v0.0.35) (2020-11-13)
 
 ### [0.0.34](https://github.com/pateketrueke/yrv/compare/v0.0.33...v0.0.34) (2020-11-13)
