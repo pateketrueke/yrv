@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.44](https://github.com/pateketrueke/yrv/compare/v0.0.43...v0.0.44) (2021-06-27)
+
+
+### Bug Fixes
+
+* debug entry-point ([e500aad](https://github.com/pateketrueke/yrv/commit/e500aad01fb3314f2a84cdf7079b5f194b5015ad))
+* enable DEBUG while on dev and CI ([2bddc76](https://github.com/pateketrueke/yrv/commit/2bddc761be5e791005b345d97e43b0b06e10a084))
+* rebuild before tests to enable cross-env changes ([6aea3f8](https://github.com/pateketrueke/yrv/commit/6aea3f8d9cc5daac53e97127d56901ae33362ed2))
+* use ...activeProps for active Route components ([cf41085](https://github.com/pateketrueke/yrv/commit/cf41085c3aaa20bd4d25d76f9e1b6650a997e808))
+
 ### [0.0.43](https://github.com/pateketrueke/yrv/compare/v0.0.42...v0.0.43) (2021-06-27)
 
 ### [0.0.42](https://github.com/pateketrueke/yrv/compare/v0.0.41...v0.0.42) (2021-05-09)
