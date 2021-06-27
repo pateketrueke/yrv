@@ -296,6 +296,6 @@ Yes, you can subscribe to the router store, e.g. `router.subscribe(...)` &mdash;
 
 **Is there a way to reduce the bundle size of yrv?**
 
-Since `v0.0.33` you'll be getting the most reduced version we can ship, however it comes without development warnings.
+Since `v0.0.46` you'll be getting the most reduced version we can ship, however it comes without development warnings.
 
->  You can configure your bundler to map `'yrv': './node_modules/yrv/build/dev/index.js'` (I'm not sure if importing `yrv/build/dev` works too)
+> Consume it as `import { ... } from 'yrv/debug'` right away and you'll get a more complete version with included DEBUG information.
