@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.46](https://github.com/pateketrueke/yrv/compare/v0.0.45...v0.0.46) (2021-06-27)
+
+
+### Bug Fixes
+
+* run tests on CI for PRs only, master is for release ([c5ad7a4](https://github.com/pateketrueke/yrv/commit/c5ad7a4c66cab235cd09970f6f9bffe13560701a))
+* setup NPM token before releasing ([258dbe2](https://github.com/pateketrueke/yrv/commit/258dbe2211514c4d544470e8b00e6c8011e7fdae))
+
 ### [0.0.45](https://github.com/pateketrueke/yrv/compare/v0.0.44...v0.0.45) (2021-06-27)
 
 
