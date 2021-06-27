@@ -28,6 +28,6 @@ jobs:
           branch: ${{ github.ref }}
           tags: true
       - name: Publish
-        run: npm publish
+        run: make release && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

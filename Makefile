@@ -24,3 +24,7 @@ deps: package*.json
 clean:
 	@rm -f cache.json
 	@rm -rf build/*
+
+release: clean
+	@npm run build:debug
+	@NODE_ENV=production npm run build
