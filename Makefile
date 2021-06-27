@@ -28,3 +28,6 @@ clean:
 release: clean
 	@npm run build:debug
 	@NODE_ENV=production npm run build
+ifneq ($(CI),)
+	@echo '//registry.npmjs.org/:_authToken=$${NODE_AUTH_TOKEN}' > .npmrc
+endif
