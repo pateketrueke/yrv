@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.45](https://github.com/pateketrueke/yrv/compare/v0.0.44...v0.0.45) (2021-06-27)
+
+
+### Bug Fixes
+
+* move release step outside npm scripts ([40a870c](https://github.com/pateketrueke/yrv/commit/40a870cbe99a7dc05cdb4a633083914011c4fac4))
+
 ### [0.0.44](https://github.com/pateketrueke/yrv/compare/v0.0.43...v0.0.44) (2021-06-27)
 
 
