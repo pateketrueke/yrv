@@ -2,102 +2,45 @@
   "name": "yrv",
   "version": "0.0.42",
   "description": "Your routing!",
-  "main": "build/index.js",
-  "svelte": "build/index.js",
-  "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
-  "license": "MIT",
   "types": "types/index.d.ts",
-  "bugs": {
-    "url": "https://github.com/pateketrueke/yrv/issues"
-  },
-  "homepage": "https://github.com/pateketrueke/yrv",
+  "svelte": "build/dist/index.js",
   "files": [
-    "build/index.js",
-    "build/lib/*.*",
-    "build/dev/**",
+    "build/**",
     "types/*.*"
   ],
   "scripts": {
     "release": "standard-version",
-    "dev": "tarima watch -d",
+    "dev": "npm run build:test -- -w",
     "lint": "eslint --ext js,svelte src e2e",
-    "dist": "cross-env NODE_ENV=production npm run build",
-    "build": "cross-env tarima -qfM USE_HASH_CHANGE=$HASHCHANGE",
-    "build:debug": "cross-env DEBUG=true npm run dist && mkdir -p build/dev && mv build/lib build/index.js build/dev",
-    "pretest": "rm -rf build/* && npm run lint && npm run build:debug && cross-env NODE_ENV=test npm run build",
-    "prepublishOnly": "rm -rf build/* && npm run build:debug && npm run dist",
-    "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases",
-    "test:e2e": "cross-env BASE_URL=http://localhost:3000 testcafe ${BROWSER:-chrome:headless}"
+    "mortero": "cross-env USE_HASH_CHANGE=$HASHCHANGE mortero -ayrv:./src",
+    "build:debug": "cross-env DEBUG=true npm run mortero -- src -Xtest -qRKDbuild/dev",
+    "build:test": "npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
+    "build": "cross-env DEBUG=false mortero src -qfKRXtest --format esm && mkdir -p build/dist && mv build/lib build/index.js build/dist",
+    "prepublishOnly": "rm -rf build/* && npm run build:debug && cross-env NODE_ENV=production npm run build",
+    "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}",
+    "test": "npm run build:test && npm run test:e2e -- -a 'npm run dev' e2e/cases"
   },
-  "tarima": {
-    "from": {
-      "default": [
-        "src",
-        "e2e"
-      ]
-    },
-    "public": "build",
-    "ignore": {
-      "default": [
-        "**/{cases,components,public}/**",
-        "**/helpers.js",
-        "**/_*"
-      ],
-      "development": [
-        "**/lib/**",
-        "**/index.js"
-      ],
-      "production": [
-        "**/{e2e,test}/**"
-      ]
-    },
-    "bundle": {
-      "default": [
-        "**/app/*.js",
-        "**/vendor.js"
-      ]
-    },
+  "mortero": {
+    "bundle": [
+      "**/app/*.js",
+      "**/vendor.js"
+    ],
     "rename": [
       "**/test/**/!(index).html:{basedir}/{name}/index.html",
-      "**/{src,e2e}/**:{fullpath/1}",
-      "**/test/**:{fullpath/1}"
-    ],
-    "bundleOptions": {
-      "extensions": {
-        "js": "es6"
-      },
-      "process": [
-        "svelte"
-      ],
-      "rollup": {
-        "context": "window",
-        "format": "iife",
-        "plugins": [
-          "rollup-plugin-svelte",
-          "rollup-plugin-node-resolve",
-          "rollup-plugin-commonjs"
-        ],
-        "aliases": {
-          "default": {
-            "yrv": "./src/index.js"
-          },
-          "test": {
-            "yrv": "./build/dev/index.js"
-          }
-        }
-      },
-      "buble": {
-        "objectAssign": "Object.assign",
-        "transforms": {
-          "dangerousForOf": true
-        }
-      }
-    }
+      "**/{src,e2e}/**:{filepath/1}",
+      "**/test/**:{filepath/1}"
+    ]
   },
+  "bugs": {
+    "url": "https://github.com/pateketrueke/yrv/issues"
+  },
+  "homepage": "https://github.com/pateketrueke/yrv",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pateketrueke/yrv.git"
   },
+  "author": "Alvaro Cabrera <pateketrueke@gmail.com>",
+  "license": "MIT",
   "keywords": [
     "router",
     "svelte",
@@ -109,28 +52,29 @@
     "svelte": "3.x"
   },
   "devDependencies": {
+    "abstract-nested-router": "^0.1.20",
     "acorn": ">=6.4.1",
     "cross-env": "^7.0.2",
-    "eslint": "^6.4.0",
+    "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-svelte3": "^2.7.3",
+    "eslint-plugin-svelte3": "^3.2.0",
     "eslint-utils": ">=1.4.1",
+    "glob-parent": ">=5.1.2",
     "minimist": ">=1.2.2",
+    "mortero": "^0.0.30",
     "pug": "^3.0.0",
-    "rollup": "^2.0.6",
-    "rollup-plugin-buble": "^0.19.8",
+    "query-string": "^6.8.3",
+    "rollup": "^2.8.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
-    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-svelte": "^7.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "serialize-javascript": ">=3.1.0",
+    "sirv-cli": "^1.0.8",
     "standard-version": "^9.0.0",
-    "svelte": "^3.18.2",
-    "tarima": "^4.8.5",
-    "testcafe": "^1.9.4"
-  },
-  "dependencies": {
-    "abstract-nested-router": "^0.1.20",
-    "query-string": "^6.8.3"
+    "svelte": "^3.38.2",
+    "testcafe": "^1.9.4",
+    "trim-newlines": ">=3.0.1"
   }
 }

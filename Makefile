@@ -22,5 +22,5 @@ deps: package*.json
 	@(((ls node_modules | grep .) > /dev/null 2>&1) || npm i) || true
 
 clean:
-	@rm -f .tarima
+	@rm -f cache.json
 	@rm -rf build/*
