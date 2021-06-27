@@ -6,7 +6,8 @@
   "svelte": "build/dist/index.js",
   "files": [
     "build/**",
-    "types/*.*"
+    "types/*.*",
+    "debug.js"
   ],
   "scripts": {
     "release": "standard-version",
