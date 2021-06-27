@@ -75,6 +75,7 @@
     "standard-version": "^9.0.0",
     "svelte": "^3.38.2",
     "testcafe": "^1.9.4",
-    "trim-newlines": ">=3.0.1"
+    "trim-newlines": ">=3.0.1",
+    "ws": ">=5.2.3"
   }
 }
