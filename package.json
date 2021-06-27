@@ -15,11 +15,11 @@
     "dev": "cross-env DEBUG=true npm run build:test -- -w",
     "mortero": "cross-env USE_HASH_CHANGE=$HASHCHANGE mortero -ayrv:./src",
     "build:debug": "cross-env DEBUG=true npm run mortero -- src -Xtest -RKDbuild/dev",
-    "build:test": "npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
+    "build:test": "cross-env DEBUG=true npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
     "build": "cross-env DEBUG=false mortero src -fKRXtest --format esm && mkdir -p build/dist && mv build/lib build/index.js build/dist",
     "prepublishOnly": "rm -rf build/* && npm run build:debug && cross-env NODE_ENV=production npm run build",
     "test:e2e": "cross-env BASE_URL=http://localhost:8080 testcafe ${BROWSER:-chrome:headless}",
-    "test": "npm run test:e2e -- -a 'npm run dev' e2e/cases"
+    "test": "npm run build:test -- -fyjs && npm run test:e2e -- -q -a 'npm run dev' e2e/cases"
   },
   "mortero": {
     "bundle": [
