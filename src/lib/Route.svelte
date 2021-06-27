@@ -80,6 +80,7 @@
   $: if (key) {
     activeRouter = !disabled && $routeInfo[key];
     activeProps = getProps($$props, thisProps);
+    activeProps.router = activeRouter;
   }
 
   $: if (activeRouter) {
@@ -127,18 +128,18 @@
   {#if !hasLoaded}
     {#if pending || pendingComponent}
       {#if isSvelteComponent(pending)}
-        <svelte:component this={pending} router={activeRouter} {...activeProps} />
+        <svelte:component this={pending} {...activeProps} />
       {:else if isSvelteComponent(pendingComponent)}
-        <svelte:component this={pendingComponent} router={activeRouter} {...activeProps} />
+        <svelte:component this={pendingComponent} {...activeProps} />
       {:else}
         {pending || pendingComponent}
       {/if}
     {/if}
   {:else}
     {#if component}
-      <svelte:component this={component} router={activeRouter} {...activeProps} />
+      <svelte:component this={component} {...activeProps} />
     {:else}
-      <slot router={activeRouter} props={activeProps} />
+      <slot {...activeProps} />
     {/if}
   {/if}
 {/if}
