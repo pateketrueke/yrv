@@ -154,7 +154,7 @@ Aditionally, you can setup  `go` to move around:
   - `queryParams` &mdash; Additional search-params for the new location
 - `$router` &mdash; Store with shared routeInfo details, similar to `let:router`
 
-> `yrv` gracefully degrades to `location.hash` on environments where `history` is not suitable, also it can be forced through `Router.hashchange = true`.
+> `yrv` gracefully degrades to `location.hash` on environments where `history` is not suitable, also it can be forced through `router.hashchange = true`.
 
 ### Route Info
 
@@ -270,7 +270,7 @@ Yes, URIs like that are suitable for embedded apps like Electron, where normal U
 
 Also this mode is the default used on the Svelte REPL, because is not an iframe, nor a regular webpage... it's a weird thing!
 
-> If you enable `Router.hashchange = true` all your regular links will be automatically rewritten to hash-based URIs instead, see how it works in our test suite.
+> If you enable `router.hashchange = true` all your regular links will be automatically rewritten to hash-based URIs instead, see how it works in our test suite.
 
 **Why I'm getting `<Component> was created with unknown prop 'router'` in the browser's console?**
 
@@ -296,6 +296,6 @@ Yes, you can subscribe to the router store, e.g. `router.subscribe(...)` &mdash;
 
 **Is there a way to reduce the bundle size of yrv?**
 
-Since `v0.0.33` you'll be getting the most reduced version we can ship, however it comes without development warnings.
+Since `v0.0.46` you'll be getting the most reduced version we can ship, however it comes without development warnings.
 
->  You can configure your bundler to map `'yrv': './node_modules/yrv/build/dev/index.js'` (I'm not sure if importing `yrv/build/dev` works too)
+> Consume it as `import { ... } from 'yrv/debug'` right away and you'll get a more complete version with included DEBUG information.
