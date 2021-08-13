@@ -4,9 +4,12 @@
   "description": "Your routing!",
   "types": "types/index.d.ts",
   "main": "build/dist/index.js",
+  "module": "build/src/index.js",
   "svelte": "build/dist/index.js",
   "files": [
-    "build/**",
+    "build/dev/**",
+    "build/dist/**",
+    "build/src/index.js",
     "types/*.*",
     "debug.js"
   ],
@@ -14,10 +17,13 @@
     "release": "standard-version",
     "lint": "eslint --ext js,svelte src e2e",
     "dev": "npm run build:test -- -w",
+    "prebuild": "rm -rf build",
     "mortero": "mortero -ayrv:./src USE_HASH_CHANGE=$HASHCHANGE DEBUG=true",
+    "build:svelte": "npm run mortero -- src -Xtest -Dbuild/src -Nsvelte -B'**/index.js' -fyindex.js --format esm",
     "build:debug": "npm run mortero -- src -Xtest -KDbuild/dev --format esm",
     "build:test": "npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
-    "build": "mortero src -fKXtest --format esm && mkdir -p build/dist && mv build/lib build/index.js build/dist",
+    "build:all": "mortero src -fKXtest --format esm && mkdir -p build/dist && mv build/lib build/index.js build/dist",
+    "build": "npm run build:all && npm run build:debug && npm run build:svelte",
     "test": "npm run build:test -- -fyjs && testcafe ${BROWSER:-chrome:headless} -q -a 'npm run dev' e2e/cases"
   },
   "mortero": {
@@ -58,7 +64,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-svelte3": "^3.2.0",
     "eslint-utils": ">=1.4.1",
-    "mortero": "^0.0.33",
+    "mortero": "^0.0.42",
     "pug": "^3.0.0",
     "query-string": "^6.8.3",
     "standard-version": "^9.0.0",
