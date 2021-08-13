@@ -3,12 +3,11 @@
     Router, Route, Link, router,
   } from 'yrv';
 
-  /* global USE_HASH_CHANGE */
-  if (typeof USE_HASH_CHANGE !== 'undefined' && USE_HASH_CHANGE) {
-    Router.hashchange = USE_HASH_CHANGE;
-  }
-
   import Testing from './Testing.svelte';
+
+  export let hashchange = null;
+
+  router.hashchange = hashchange;
 
   let loggedIn;
   let myLink = '/';

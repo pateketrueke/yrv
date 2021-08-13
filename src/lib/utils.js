@@ -18,7 +18,7 @@ export const CTX_ROUTER = {};
 export const CTX_ROUTE = {};
 
 // use location.hash on embedded pages, e.g. Svelte REPL
-export let HASHCHANGE = window.location.origin === 'null';
+let HASHCHANGE = window.location.origin === 'null';
 
 export function hashchangeEnable(value) {
   if (typeof value === 'boolean') {
@@ -28,8 +28,15 @@ export function hashchangeEnable(value) {
   return HASHCHANGE;
 }
 
+Object.defineProperty(router, 'hashchange', {
+  set: value => hashchangeEnable(value),
+  get: () => hashchangeEnable(),
+  configurable: false,
+  enumerable: false,
+});
+
 export function fixedLocation(path, callback, doFinally) {
-  const baseUri = HASHCHANGE ? window.location.hash.replace('#', '') : window.location.pathname;
+  const baseUri = router.hashchange ? window.location.hash.replace('#', '') : window.location.pathname;
 
   // this will rebase anchors to avoid location changes
   if (path.charAt() !== '/') {
@@ -76,7 +83,7 @@ export function navigateTo(path, options) {
     }
   }
 
-  if (HASHCHANGE) {
+  if (router.hashchange) {
     let fixedURL = path.replace(/^#|#$/g, '');
 
     if (ROOT_URL !== '/') {

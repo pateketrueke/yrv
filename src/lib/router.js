@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import { Router, parse } from './vendor';
 
 import {
-  ROOT_URL, HASHCHANGE, navigateTo, cleanPath, isActive, router,
+  ROOT_URL, navigateTo, cleanPath, isActive, router,
 } from './utils';
 
 export const baseRouter = new Router();
@@ -66,7 +66,7 @@ export function handleRoutes(map, params) {
 }
 
 export function evtHandler() {
-  let baseUri = !HASHCHANGE ? window.location.href.replace(window.location.origin, '') : window.location.hash || '/';
+  let baseUri = !router.hashchange ? window.location.href.replace(window.location.origin, '') : window.location.hash || '/';
   let failure;
 
   // unprefix active URL
