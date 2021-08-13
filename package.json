@@ -17,18 +17,22 @@
     "release": "standard-version",
     "lint": "eslint --ext js,svelte src e2e",
     "dev": "npm run build:test -- -w",
+    "postbuild": "npm run copy:vendor && npm run copy:index",
     "prebuild": "rm -rf build",
+    "copy:vendor": "cp build/src/vendor.js build/dev/ && cp build/src/vendor.js build/dist/",
+    "copy:index": "cp src/index.js build/dev/ && cp src/index.js build/dist/",
     "mortero": "mortero -ayrv:./src USE_HASH_CHANGE=$HASHCHANGE DEBUG=true",
-    "build:svelte": "npm run mortero -- src -Xtest -Dbuild/src -Nsvelte -B'**/index.js' -fyindex.js --format esm",
-    "build:debug": "npm run mortero -- src -Xtest -KDbuild/dev --format esm",
+    "build:module": "npm run mortero -- src -Xtest -Dbuild/src -Nsvelte -fyindex.js --format esm",
+    "build:debug": "npm run mortero -- src/lib -Xtest -fKDbuild/dev --format esm",
     "build:test": "npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
-    "build:all": "mortero src -fKXtest --format esm && mkdir -p build/dist && mv build/lib build/index.js build/dist",
-    "build": "npm run build:all && npm run build:debug && npm run build:svelte",
+    "build:all": "mortero src/lib -fKXtest -Dbuild/dist --format esm",
+    "build": "npm run build:all && npm run build:debug && npm run build:module",
     "test": "npm run build:test -- -fyjs && testcafe ${BROWSER:-chrome:headless} -q -a 'npm run dev' e2e/cases"
   },
   "mortero": {
     "bundle": [
       "**/app/*.js",
+      "**/index.js",
       "**/vendor.js"
     ],
     "rename": [

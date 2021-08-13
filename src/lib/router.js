@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { Router, parse } from './vendor';
+import { Router, parse } from '../vendor';
 
 import {
   ROOT_URL, navigateTo, cleanPath, isActive, router,

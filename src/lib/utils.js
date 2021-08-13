@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { Router, stringify } from './vendor';
+import { Router, stringify } from '../vendor';
 
 const cache = {};
 const baseTag = document.getElementsByTagName('base');
