@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.50](https://github.com/pateketrueke/yrv/compare/v0.0.49...v0.0.50) (2021-08-13)
+
+
+### Bug Fixes
+
+* make sure vendor.js is bundled ([b863696](https://github.com/pateketrueke/yrv/commit/b8636962b82bb5488c2ec5286c2c9c3097165104))
+
 ### [0.0.49](https://github.com/pateketrueke/yrv/compare/v0.0.48...v0.0.49) (2021-08-13)
 
 ### [0.0.48](https://github.com/pateketrueke/yrv/compare/v0.0.47...v0.0.48) (2021-08-11)
