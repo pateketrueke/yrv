@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.49](https://github.com/pateketrueke/yrv/compare/v0.0.48...v0.0.49) (2021-08-13)
+
 ### [0.0.48](https://github.com/pateketrueke/yrv/compare/v0.0.47...v0.0.48) (2021-08-11)
 
 ### [0.0.47](https://github.com/pateketrueke/yrv/compare/v0.0.46...v0.0.47) (2021-06-30)
