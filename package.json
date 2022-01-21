@@ -68,11 +68,11 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-svelte3": "^3.2.0",
     "eslint-utils": ">=1.4.1",
-    "mortero": "^0.0.42",
+    "mortero": "^0.0.50",
     "pug": "^3.0.0",
     "query-string": "^6.8.3",
     "standard-version": "^9.0.0",
-    "svelte": "^3.38.2",
+    "svelte": "^3.46.2",
     "testcafe": "^1.9.4"
   }
 }
