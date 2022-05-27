@@ -1,8 +1,5 @@
 <script>
-  import Router from '../../src/lib/Router.svelte';
-  import Route from '../../src/lib/Route.svelte';
-  import Link from '../../src/lib/Link.svelte';
-  import { router } from '../../src/lib/utils';
+  import { Router, Route, Link, router } from 'yrv';
 
   import Testing from './Testing.svelte';
 

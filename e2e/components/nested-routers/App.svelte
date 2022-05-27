@@ -1,7 +1,5 @@
 <script>
-  import Router from '../../../src/lib/Router.svelte';
-  import Route from '../../../src/lib/Route.svelte';
-  import Link from '../../../src/lib/Link.svelte';
+  import { Router, Route, Link } from 'yrv';
 
   import Home from './Home.svelte';
   import Players from './Players.svelte';

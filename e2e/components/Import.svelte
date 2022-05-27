@@ -1,6 +1,5 @@
 <script>
-  import Router from '../../src/lib/Router.svelte';
-  import Route from '../../src/lib/Route.svelte';
+  import { Router, Route } from 'yrv';
 
   function delay(promise) {
     return new Promise(ok => setTimeout(() => ok(promise), 500));
