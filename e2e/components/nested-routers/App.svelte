@@ -1,7 +1,8 @@
 <script>
-  import {
-    Router, Route, Link,
-  } from 'yrv';
+  import Router from '../../../src/lib/Router.svelte';
+  import Route from '../../../src/lib/Route.svelte';
+  import Link from '../../../src/lib/Link.svelte';
+
   import Home from './Home.svelte';
   import Players from './Players.svelte';
   import NotFound from './NotFound.svelte';

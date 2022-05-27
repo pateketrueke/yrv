@@ -1,7 +1,8 @@
 <script>
-  import {
-    Router, Route, Link, router,
-  } from 'yrv';
+  import Router from '../../src/lib/Router.svelte';
+  import Route from '../../src/lib/Route.svelte';
+  import Link from '../../src/lib/Link.svelte';
+  import { router } from '../../src/lib/utils';
 
   import Testing from './Testing.svelte';
 
@@ -19,7 +20,7 @@
 </script>
 
 <h1 id="top">
-  <Link>Example page</Link>
+  <span>Example page</span>
   <small>{$router.path}</small>
 </h1>
 
