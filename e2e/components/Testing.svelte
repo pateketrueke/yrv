@@ -1,7 +1,8 @@
 <script>
-  import {
-    Router, Route, Link, navigateTo,
-  } from 'yrv';
+  import Router from '../../src/lib/Router.svelte';
+  import Route from '../../src/lib/Route.svelte';
+  import Link from '../../src/lib/Link.svelte';
+  import { navigateTo } from '../../src/lib/utils';
 
   export let router = null;
 
