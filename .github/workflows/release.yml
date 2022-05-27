@@ -20,6 +20,7 @@ jobs:
           git config --local user.name "Release Bot"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - run: npm i
+      - run: npm test
       - run: npm run release
       - name: Push Changes
         uses: ad-m/github-push-action@master
