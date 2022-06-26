@@ -59,11 +59,11 @@
 </p>
 
 <p data-test="nested">
-  <Router path="/top">
-    <Route exact fallback>?</Route>
-    <Route exact path="/foo/a">a</Route>
-    <Route exact path="/bar/b">b</Route>
-    <Route exact path="/bar/c">c</Route>
+  <Router exact path="/top">
+    <Route fallback>?</Route>
+    <Route path="/foo/a">a</Route>
+    <Route path="/bar/b">b</Route>
+    <Route path="/bar/c">c</Route>
   </Router>
 </p>
 
