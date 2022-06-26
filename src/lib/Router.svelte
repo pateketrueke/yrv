@@ -19,6 +19,7 @@
 
   export let key = '';
   export let path = '/';
+  export let exact = null;
   export let pending = null;
   export let disabled = false;
   export let condition = null;
@@ -53,6 +54,10 @@
 
     const $key = [key, _key].filter(Boolean).join('.');
     const handler = { key: $key, ...detail };
+
+    if (handler.exact === null) {
+      handler.exact = exact;
+    }
 
     let fullpath;
     baseRouter.mount(fixedRoot, () => {
