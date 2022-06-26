@@ -68,10 +68,6 @@
       throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
 
-    if (!key) {
-      throw new TypeError(`Expecting a key per-route definition, given route: ${path}`);
-    }
-
     resolve();
   } catch (e) {
     failure = e;

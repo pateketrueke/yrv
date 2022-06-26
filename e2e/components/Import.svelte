@@ -8,6 +8,6 @@
 
 <div data-test="container">
   <Router pending="Loading...">
-    <Route key="imported" fallback component={() => delay(import('./Example.svelte'))} />
+    <Route fallback component={() => delay(import('./Example.svelte'))} />
   </Router>
 </div>

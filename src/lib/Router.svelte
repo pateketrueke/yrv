@@ -49,6 +49,8 @@
   // ENDIF
 
   function assignRoute(_key, route, detail) {
+    _key = _key || `route-${Math.random().toString(36).substr(2)}`;
+
     const $key = [key, _key].filter(Boolean).join('.');
     const handler = { key: $key, ...detail };
 
