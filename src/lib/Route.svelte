@@ -2,7 +2,7 @@
   import { writable } from 'svelte/store';
   import { routeInfo } from './router';
   import {
-    CTX_ROUTER, CTX_ROUTE, getProps, isPromise, isSvelteComponent,
+    CTX_ROUTER, CTX_ROUTE, router, getProps, isPromise, isSvelteComponent,
   } from './utils';
 </script>
 
@@ -68,6 +68,10 @@
       throw new TypeError(`Missing top-level <Router>, given route: ${path}`);
     }
 
+    if (!key) {
+      throw new TypeError(`Expecting a key per-route definition, given route: ${path}`);
+    }
+
     resolve();
   } catch (e) {
     failure = e;
@@ -84,6 +88,12 @@
   }
 
   $: if (activeRouter) {
+    for (const k in $router.params) {
+      if (typeof activeRouter.params[k] === 'undefined') {
+        activeRouter.params[k] = $router.params[k];
+      }
+    }
+
     if (!component) { // component passed as slot
       hasLoaded = true;
     } else if (isSvelteComponent(component)) { // component passed as Svelte component
@@ -125,6 +135,7 @@
 <!--ENDIF-->
 
 {#if activeRouter}
+<!--<fieldset><legend>{key} ({exact} | {fullpath})</legend>-->
   {#if !hasLoaded}
     {#if pending || pendingComponent}
       {#if isSvelteComponent(pending)}
@@ -142,4 +153,5 @@
       <slot {...activeProps} />
     {/if}
   {/if}
+<!--</fieldset>-->
 {/if}

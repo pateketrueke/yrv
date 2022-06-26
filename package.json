@@ -1,6 +1,6 @@
 {
   "name": "yrv",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "description": "Your routing!",
   "types": "types/index.d.ts",
   "_main": "build/dist/index.js",
@@ -27,7 +27,8 @@
     "build:test": "npm run mortero -- src e2e -X{lib,cases,components} -Xhelpers.js -X'**/_*'",
     "build:all": "mortero src/lib -fKXtest -Dbuild/dist --format esm --platform browser",
     "build": "npm run build:all && npm run build:debug && npm run build:module",
-    "test": "npm run build:test -- -fyjs && testcafe ${BROWSER:-chrome:headless} --color -q -a 'npm run dev' e2e/cases"
+    "test:e2e": "testcafe ${BROWSER:-chrome:headless} --color -q",
+    "test": "npm run build:test -- -fyjs && npm run test:e2e -- -a 'npm run dev' e2e/cases"
   },
   "mortero": {
     "bundle": [
@@ -62,7 +63,7 @@
     "svelte": "3.x"
   },
   "devDependencies": {
-    "abstract-nested-router": "^0.1.20",
+    "abstract-nested-router": "^0.2.1",
     "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",

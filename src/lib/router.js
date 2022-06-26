@@ -21,6 +21,16 @@ let currentURL;
 router.subscribe(value => { shared.router = value; });
 routeInfo.subscribe(value => { shared.routeInfo = value; });
 
+export function getDepth(value) {
+  value = value.replace(/(?<=.)\/$/, '');
+
+  let c = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    if (value[i] === '/') c += 1;
+  }
+  return c;
+}
+
 export function doFallback(failure, fallback) {
   routeInfo.update(defaults => ({
     ...defaults,
@@ -31,32 +41,39 @@ export function doFallback(failure, fallback) {
   }));
 }
 
-export function handleRoutes(map, params) {
+// const d = {};
+export function handleRoutes(map, params, enforce) {
   const keys = [];
 
   map.some(x => {
-    if (x.key && x.matches && !shared.routeInfo[x.key]) {
+    if (x.key && (enforce || (x.matches && !shared.routeInfo[x.key]))) {
       if (x.redirect && (x.condition === null || x.condition(shared.router) !== true)) {
         if (x.exact && shared.router.path !== x.path) return false;
         navigateTo(x.redirect);
         return true;
       }
 
-      if (x.exact) {
-        keys.push(x.key);
+      if (x.exact && x.path !== currentURL) {
+        if (currentURL.replace(/[#/]$/, '') !== x.path) return false;
       }
 
-      // extend shared params...
+      if (enforce && x.fallback) {
+        return false;
+      }
+
       Object.assign(params, x.params);
 
       // upgrade matching routes!
       routeInfo.update(defaults => ({
         ...defaults,
+        // ...d,
         [x.key]: {
           ...shared.router,
           ...x,
         },
       }));
+
+      keys.push(x.key);
     }
 
     return false;
@@ -87,10 +104,6 @@ export function evtHandler() {
   const fullpath = fixedUri.replace(/\/?$/, '/');
   const query = parse(qs);
   const params = {};
-  const keys = [];
-
-  // reset current state
-  routeInfo.set({});
 
   if (currentURL !== baseUri) {
     currentURL = baseUri;
@@ -101,25 +114,29 @@ export function evtHandler() {
     });
   }
 
+  routeInfo.set({});
+
   // load all matching routes...
   baseRouter.resolve(fullpath, (err, result) => {
     if (err) {
       failure = err;
       return;
     }
-
-    // save exact-keys for deletion after failures!
-    keys.push(...handleRoutes(result, params));
+    console.log(result);
+    handleRoutes(result, params);
   });
 
-  const toDelete = {};
+  if (!failure) {
+    try {
+      handleRoutes(baseRouter.find(fullpath), params, true);
+    } catch (e) {
+      // noop
+    }
+  }
 
   // it's fine to omit failures for '/' paths
   if (failure && failure.path !== '/') {
-    keys.reduce((prev, cur) => {
-      prev[cur] = null;
-      return prev;
-    }, toDelete);
+    console.debug(failure);
   } else {
     failure = null;
   }
@@ -127,24 +144,6 @@ export function evtHandler() {
   // clear previously failed handlers
   errors.forEach(cb => cb());
   errors = [];
-
-  try {
-    // clear routes that not longer matches!
-    baseRouter.find(cleanPath(fullpath))
-      .forEach(sub => {
-        if (sub.exact && !sub.matches) {
-          toDelete[sub.key] = null;
-        }
-      });
-  } catch (e) {
-    // this is fine
-  }
-
-  // drop unwanted routes...
-  routeInfo.update(defaults => ({
-    ...defaults,
-    ...toDelete,
-  }));
 
   let fallback;
 

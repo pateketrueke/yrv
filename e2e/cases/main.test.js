@@ -42,6 +42,16 @@ test('it should mount nested content', async t => {
   await t.click(Selector('a').withText('Link'));
   await t.expect(Selector('[data-test=example]').withText('Hello a').visible).ok();
   await t.expect(Selector('[data-test=counter]').innerText).contains(2);
+  await t.expect(Selector('[data-test=unordered]').innerText).notContains('III');
+
+  await t.click(Selector('a').withText('List'));
+  await t.expect(Selector('[data-test=unordered]').innerText).eql('III');
+
+  await t.click(Selector('a').withText('Show'));
+  await t.expect(Selector('[data-test=unordered]').innerText).eql('II III');
+
+  await t.click(Selector('a').withText('Edit'));
+  await t.expect(Selector('[data-test=unordered]').innerText).eql('I II III');
 });
 
 test('it should fallback on unmatched routes', async t => {
@@ -169,21 +179,25 @@ fixture('yrv (nested routes)')
   .page(url('/top'));
 
 test('it should nothing at top-level', async t => {
+  await t.expect(Selector('p[data-test=nested]').innerText).contains('?');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
 
   await t.click(Selector('a').withText('1'));
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('?');
   await t.expect(Selector('p[data-test=nested]').innerText).contains('a');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
 
   await t.click(Selector('a').withText('2'));
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('?');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
   await t.expect(Selector('p[data-test=nested]').innerText).contains('b');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('c');
 
   await t.click(Selector('a').withText('3'));
+  await t.expect(Selector('p[data-test=nested]').innerText).notContains('?');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('a');
   await t.expect(Selector('p[data-test=nested]').innerText).notContains('b');
   await t.expect(Selector('p[data-test=nested]').innerText).contains('c');
@@ -195,7 +209,7 @@ fixture('yrv (hashed routes)')
 
 test('it should load root-handlers', async t => {
   await t.expect(Selector('[data-test=hashed]').innerText).contains('GIST INFO');
-  await t.expect(Selector('[data-test=hashed]').innerText).notContains('SHA1');
+  await t.expect(Selector('[data-test=hashed]').innerText).notContains('SHA1: N/A');
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(edit)');
   await t.expect(Selector('[data-test=hashed]').innerText).notContains('(save)');
   await t.expect(Selector('[data-test=counter]').innerText).contains(1);

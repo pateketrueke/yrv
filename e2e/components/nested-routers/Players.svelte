@@ -11,6 +11,6 @@
 <Link href="/players/team/new">New Team</Link>
 
 <Router>
-  <Route exact component="{List}" />
-  <Route path="/team/new" exact component="{NewTeam}" />
+  <Route key="list" exact component="{List}" />
+  <Route key="new" path="/team/new" exact component="{NewTeam}" />
 </Router>
