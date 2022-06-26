@@ -17,7 +17,7 @@
 <Router>
   {#if isLoggedIn}
     <Route key="home" exact component="{Home}" />
-    <Route key="players" path="/players" component="{Players}" />
+    <Route key="play" path="/players" component="{Players}" />
     <Route key="404" fallback component={NotFound} />
   {:else}
     <Route key="ask" fallback component={Login} />

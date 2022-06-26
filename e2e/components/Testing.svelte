@@ -64,7 +64,7 @@
 </fieldset>
 
 <Router>
-  <Route key="test-info" path="/:value" let:router>
+  <Route path="/:value" let:router>
     <p>Value: {router.params.value}</p>
   </Route>
 </Router>

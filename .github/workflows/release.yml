@@ -13,21 +13,24 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: actions/setup-node@v2
+
+      - uses: tacoss/nodejs@v2
         with:
-          node-version: "14"
+          args: make ci
+
       - run: |
           git config --local user.name "Release Bot"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - run: npm i
-      - run: npm test
+
       - run: npm run release
+
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           tags: true
+
       - name: Publish
         run: make release && npm publish
         env:
