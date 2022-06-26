@@ -9,7 +9,10 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: tacoss/nodejs@master
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: tacoss/nodejs@v2
         with:
           args: make ci
