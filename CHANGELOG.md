@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.55](https://github.com/pateketrueke/yrv/compare/v0.0.52...v0.0.55) (2022-06-26)
+
+
+### Bug Fixes
+
+* revert alias support ([8e1b907](https://github.com/pateketrueke/yrv/commit/8e1b9072f1b0bc462018c19ddcac3f5b53b896c7))
+* run tests before releasing ([77e30d8](https://github.com/pateketrueke/yrv/commit/77e30d840cc73acdf49a084da55b147b33accd18))
+
 ### [0.0.54](https://github.com/pateketrueke/yrv/compare/v0.0.52...v0.0.54) (2022-06-26)
 
 

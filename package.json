@@ -1,6 +1,6 @@
 {
   "name": "yrv",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "description": "Your routing!",
   "types": "types/index.d.ts",
   "_main": "build/dist/index.js",
