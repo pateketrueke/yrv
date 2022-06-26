@@ -32,8 +32,6 @@ export function doFallback(failure, fallback) {
 }
 
 export function handleRoutes(map, params, enforce) {
-  const keys = [];
-
   map.some(x => {
     if (x.key && (enforce || (x.matches && !shared.routeInfo[x.key]))) {
       if (x.redirect && (x.condition === null || x.condition(shared.router) !== true)) {
@@ -60,14 +58,10 @@ export function handleRoutes(map, params, enforce) {
           ...x,
         },
       }));
-
-      keys.push(x.key);
     }
 
     return false;
   });
-
-  return keys;
 }
 
 export function evtHandler() {
@@ -110,7 +104,7 @@ export function evtHandler() {
       failure = err;
       return;
     }
-    console.log(result);
+
     handleRoutes(result, params);
   });
 
