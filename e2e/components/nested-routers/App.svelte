@@ -9,17 +9,17 @@
   let isLoggedIn = true;
 </script>
 
-<Link>Home</Link> |
+<Link href="/">Home</Link> |
 <Link href="/players">Players</Link> |
 <Link href="/notfound">Not found</Link> |
 <input type="checkbox" bind:checked={isLoggedIn}> isLoggedIn
 
 <Router>
   {#if isLoggedIn}
-    <Route exact component="{Home}" />
-    <Route path="/players" component="{Players}" />
-    <Route key="fixed" fallback component={NotFound} />
+    <Route key="home" exact component="{Home}" />
+    <Route key="players" path="/players" component="{Players}" />
+    <Route key="404" fallback component={NotFound} />
   {:else}
-    <Route key="fixed" fallback component={Login} />
+    <Route key="ask" fallback component={Login} />
   {/if}
 </Router>

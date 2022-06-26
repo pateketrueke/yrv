@@ -4,6 +4,8 @@
   import {
     baseRouter, addRouter, findRoutes, doFallback,
   } from './router';
+
+  // const __CACHED_ROUTES__ = new Map();
 </script>
 
 <script>
@@ -15,6 +17,7 @@
   let failure;
   let fallback;
 
+  export let key = '';
   export let path = '/';
   export let pending = null;
   export let disabled = false;
@@ -45,23 +48,19 @@
   }
   // ENDIF
 
-  function assignRoute(key, route, detail) {
-    key = key || Math.random().toString(36).substr(2);
-
-    // consider as nested routes if they does not have any segment
-    const nested = !route.substr(1).includes('/');
-    const handler = { key, nested, ...detail };
+  function assignRoute(_key, route, detail) {
+    const $key = [key, _key].filter(Boolean).join('.');
+    const handler = { key: $key, ...detail };
 
     let fullpath;
-
     baseRouter.mount(fixedRoot, () => {
       fullpath = baseRouter.add(route, handler);
-      fallback = (handler.fallback && key) || fallback;
+      fallback = (handler.fallback && $key) || fallback;
     });
 
     findRoutes();
 
-    return [key, fullpath];
+    return [$key, fullpath];
   }
 
   function unassignRoute(route) {
@@ -102,7 +101,7 @@
 </script>
 
 {#if !disabled}
-  <slot />
+  <slot router={$router} />
 {/if}
 
 <!--IF DEBUG-->
