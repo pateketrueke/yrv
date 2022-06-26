@@ -14,9 +14,13 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - uses: tacoss/nodejs@v2
+      - uses: actions/setup-node@v3
         with:
-          args: make ci
+          node-version: 14
+
+      - run: npm i
+      - run: npm test
+      - run: HASHCHANGE=true npm test
 
       - run: |
           git config --local user.name "Release Bot"
